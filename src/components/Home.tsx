@@ -1,7 +1,10 @@
 import { Link } from 'react-router-dom';
 import vertStackLogo from '/vertstack.svg';
+import { useTranslation } from 'react-i18next';
 
 function Home() {
+  const { t } = useTranslation();
+
   return (
     <main className="home-container">
       <div className="title-container">
@@ -10,24 +13,25 @@ function Home() {
           alt="VERT Stack Logo"
           className="inline-logo"
         />
-        <h1>Welcome to the VERT Stack Template</h1>
+        <h1>{t('home.title')}</h1>
       </div>
-      <p>
-        This template provides a solid foundation for building modern web
-        applications using:
-      </p>
+      <p>{t('home.description')}</p>
       <ul>
         <li>
-          <strong>V</strong>ite for fast development and efficient building
+          <strong>V</strong>
+          {t('home.features.vite')}
         </li>
         <li>
-          <strong>E</strong>SLint for consistent code quality
+          <strong>E</strong>
+          {t('home.features.eslint')}
         </li>
         <li>
-          <strong>R</strong>eact for building user interfaces
+          <strong>R</strong>
+          {t('home.features.react')}
         </li>
         <li>
-          <strong>T</strong>ypeScript for type safety
+          <strong>T</strong>
+          {t('home.features.typescript')}
         </li>
       </ul>
       <p>
@@ -36,7 +40,7 @@ function Home() {
       </p>
       <div className="cta-container">
         <Link to="/api-example" className="button-link">
-          View API Example
+          {t('home.cta')}
         </Link>
       </div>
     </main>

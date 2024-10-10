@@ -8,6 +8,7 @@ import {
 import { HelmetProvider, Helmet } from 'react-helmet-async';
 import ErrorBoundary from './components/ErrorBoundary';
 import Navbar from './components/Navbar';
+import { useTranslation } from 'react-i18next';
 
 const Home = React.lazy(() => import('./components/Home'));
 const About = React.lazy(() => import('./components/About'));
@@ -16,16 +17,18 @@ const ApiExample = React.lazy(() => import('./components/ApiExample'));
 
 const TitleComponent: React.FC = () => {
   const location = useLocation();
+  const { t } = useTranslation();
+
   const getTitle = () => {
     switch (location.pathname) {
       case '/':
-        return 'Home - VERT Stack Template';
+        return t('home.title');
       case '/about':
-        return 'About - VERT Stack Template';
+        return t('about.title');
       case '/contact':
-        return 'Contact - VERT Stack Template';
+        return t('contact.title');
       case '/api-example':
-        return 'API Example - VERT Stack Template';
+        return t('apiExample.title');
       default:
         return 'VERT Stack Template';
     }
@@ -33,7 +36,9 @@ const TitleComponent: React.FC = () => {
 
   return (
     <Helmet>
-      <title>{getTitle()}</title>
+      <html lang={navigator.language} />
+      <title>{getTitle()} - VERT Stack Template</title>
+      <meta name="description" content={t('home.description')} />
     </Helmet>
   );
 };
@@ -49,7 +54,7 @@ const App: React.FC = () => {
         }
       >
         <Router>
-          <div lang="en">
+          <div>
             <TitleComponent />
             <a href="#main-content" className="skip-link">
               Skip to main content

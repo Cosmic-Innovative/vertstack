@@ -2,6 +2,8 @@ import React from 'react';
 import { render, screen, act } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import App from './App';
+import { I18nextProvider } from 'react-i18next';
+import i18n from './i18n.mock';
 
 // Mock the components
 vi.mock('./components/Home', () => ({
@@ -27,10 +29,14 @@ vi.mock('react', async (importOriginal) => {
   };
 });
 
+const renderWithI18n = (component: React.ReactElement) => {
+  return render(<I18nextProvider i18n={i18n}>{component}</I18nextProvider>);
+};
+
 describe('App', () => {
   it('renders navigation and home page', async () => {
     await act(async () => {
-      render(<App />);
+      renderWithI18n(<App />);
     });
 
     // Check if navigation links are present
@@ -45,7 +51,7 @@ describe('App', () => {
 
   it('renders the navbar', async () => {
     await act(async () => {
-      render(<App />);
+      renderWithI18n(<App />);
     });
     const navElement = screen.getByRole('navigation');
     expect(navElement).toBeInTheDocument();
@@ -53,7 +59,7 @@ describe('App', () => {
 
   it('renders the main container', async () => {
     await act(async () => {
-      render(<App />);
+      renderWithI18n(<App />);
     });
     const mainContainer = await screen.findByText('Home Page');
     expect(mainContainer.closest('.container')).toBeInTheDocument();

@@ -1,0 +1,31 @@
+{
+  "home": {
+    "title": "Bienvenido a la Plantilla VERT Stack",
+    "description": "Esta plantilla proporciona una base sólida para construir aplicaciones web modernas utilizando:",
+    "features": {
+      "vite": "Vite para un desarrollo rápido y una construcción eficiente",
+      "eslint": "ESLint para una calidad de código consistente",
+      "react": "React para construir interfaces de usuario",
+      "typescript": "TypeScript para seguridad de tipos"
+    },
+    "cta": "Ver Ejemplo de API"
+  },
+  "about": {
+    "title": "Acerca de",
+    "description": "Esta es la página de información de nuestra aplicación VERT stack."
+  },
+  "contact": {
+    "title": "Contacto",
+    "description": "Esta es la página de contacto de nuestra aplicación VERT stack."
+  },
+  "apiExample": {
+    "title": "Ejemplo de Integración de API",
+    "description": "Esta página demuestra cómo integrar una API externa utilizando el stack VERT. Muestra la obtención de datos, el manejo de estados de carga y error, y la visualización de los resultados."
+  },
+  "navbar": {
+    "home": "Inicio",
+    "about": "Acerca de",
+    "contact": "Contacto",
+    "apiExample": "Ejemplo de API"
+  }
+}

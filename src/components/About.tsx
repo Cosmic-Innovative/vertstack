@@ -1,8 +1,12 @@
+import { useTranslation } from 'react-i18next';
+
 function About() {
+  const { t } = useTranslation();
+
   return (
     <div>
-      <h1>About</h1>
-      <p>This is the about page of our VERT stack application.</p>
+      <h1>{t('about.title')}</h1>
+      <p>{t('about.description')}</p>
     </div>
   );
 }
