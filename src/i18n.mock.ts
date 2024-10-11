@@ -11,6 +11,8 @@ i18n.use(initReactI18next).init({
       translations: {
         home: {
           title: 'Welcome to the VERT Stack Template',
+          description:
+            'This template provides a solid foundation for building modern web applications using:',
           cta: 'View API Example',
         },
         about: {
@@ -24,6 +26,8 @@ i18n.use(initReactI18next).init({
         },
         apiExample: {
           title: 'API Integration Example',
+          description:
+            'This page demonstrates how to integrate an external API using the VERT stack. It showcases fetching data, handling loading and error states, and displaying the results.',
         },
         navbar: {
           home: 'Home',
@@ -31,6 +35,11 @@ i18n.use(initReactI18next).init({
           contact: 'Contact',
           apiExample: 'API Example',
         },
+      },
+    },
+    es: {
+      translations: {
+        // Add Spanish translations here
       },
     },
   },

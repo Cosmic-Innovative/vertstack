@@ -1,10 +1,11 @@
-import { render, screen, waitFor, act } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import UserList from './UserList';
 import * as api from '../utils/api';
+import { render } from '../test-utils';
 
 vi.mock('../utils/api', () => ({
-  fetchData: vi.fn(() => new Promise(() => {})), // This will create a promise that never resolves
+  fetchData: vi.fn(() => new Promise(() => {})),
   sanitizeInput: vi.fn((input) => input),
 }));
 
@@ -14,10 +15,7 @@ describe('UserList', () => {
   });
 
   it('renders loading state initially', async () => {
-    await act(async () => {
-      render(<UserList />);
-    });
-
+    render(<UserList />, { route: '/en' });
     expect(screen.getByText('Loading user data...')).toBeInTheDocument();
   });
 
@@ -39,7 +37,7 @@ describe('UserList', () => {
 
     (api.fetchData as ReturnType<typeof vi.fn>).mockResolvedValue(mockUsers);
 
-    render(<UserList />);
+    render(<UserList />, { route: '/en' });
 
     await waitFor(() => {
       expect(
@@ -57,7 +55,7 @@ describe('UserList', () => {
       new Error('Failed to fetch'),
     );
 
-    render(<UserList />);
+    render(<UserList />, { route: '/en' });
 
     await waitFor(() => {
       expect(screen.getByText(/Error fetching user data/)).toBeInTheDocument();
