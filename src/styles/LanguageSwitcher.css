@@ -1,0 +1,29 @@
+.language-switcher {
+  display: flex;
+  gap: 10px;
+}
+
+.language-button {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.language-button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.language-button:not(:disabled):hover {
+  opacity: 0.8;
+}
+
+.language-code {
+  font-size: 14px;
+  font-weight: bold;
+}

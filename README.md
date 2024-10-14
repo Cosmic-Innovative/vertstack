@@ -33,6 +33,8 @@ A web application development stack, prepared for a wide range of production sce
 - 🚄 Optimized performance with code splitting and lazy loading
 - ♿ Comprehensive accessibility features with WCAG 2.1 compliance
 - 📱 Progressive Web App (PWA) support for enhanced mobile experience
+- 🗣️ Robust internationalization support with easy language switching
+- 🔍 Enhanced SEO with dynamic meta tags, structured data, and Open Graph support
 
 ## Project Structure
 
@@ -152,6 +154,20 @@ While easily customizable, the vert stack is opinionated. Use pnpm.
 2. Run `pnpm install` to install dependencies
 3. Run `pnpm dev` to start the development server
 
+## Available Scripts
+
+- `pnpm dev`: Start the development server
+- `pnpm build`: Build the project for production
+- `pnpm preview`: Preview the production build
+- `pnpm lint`: Run ESLint
+- `pnpm lint:fix`: Run ESLint and automatically fix issues
+- `pnpm format`: Run Prettier to format all files
+- `pnpm prepare`: Install Husky git hooks (runs automatically after install)
+- `pnpm test`: Run Vitest tests
+- `pnpm test:watch`: Run Vitest in watch mode
+- `pnpm test:coverage`: Run Vitest with coverage report
+- `pnpm test:related`: Run Vitest related to quickly check if changes have broken any related tests
+
 ## PWA Support
 
 This template now includes Progressive Web App (PWA) support, allowing users to install the app on their devices and use it offline.
@@ -244,19 +260,34 @@ This utility provides error handling and type safety. Modify the `api.ts` file t
 
 Remember to update your environment files (`.env.*`) with the appropriate API URLs for each environment.
 
-## Available Scripts
+## Internationalization
 
-- `pnpm dev`: Start the development server
-- `pnpm build`: Build the project for production
-- `pnpm preview`: Preview the production build
-- `pnpm lint`: Run ESLint
-- `pnpm lint:fix`: Run ESLint and automatically fix issues
-- `pnpm format`: Run Prettier to format all files
-- `pnpm prepare`: Install Husky git hooks (runs automatically after install)
-- `pnpm test`: Run Vitest tests
-- `pnpm test:watch`: Run Vitest in watch mode
-- `pnpm test:coverage`: Run Vitest with coverage report
-- `pnpm test:related`: Run Vitest related to quickly check if changes have broken any related tests
+The VERT Stack Template comes with built-in internationalization support using react-i18next. Here are some key features:
+
+- Support for multiple languages (currently English and Spanish)
+- Easy language switching with the LanguageSwitcher component
+- Route-based language selection (e.g., /en/about, /es/about)
+- Translations for navigation and page titles
+
+To add a new language:
+
+1. Create a new JSON file in the `src/locales` directory (e.g., `fr.json` for French)
+2. Add the new language to the `supportedLanguages` array in `src/App.tsx`
+3. Update the LanguageSwitcher component in `src/components/LanguageSwitcher.tsx` to include the new language
+
+## SEO
+
+The template includes several SEO optimizations:
+
+- Dynamic page titles and meta descriptions based on routes and current language
+- Open Graph and Twitter Card meta tags for improved social media sharing
+- Structured data (JSON-LD) for rich snippets in search results
+- Proper use of semantic HTML elements for better accessibility and SEO
+
+To customize SEO settings for a specific page:
+
+1. Update the `getTitle` function in the `TitleComponent` in `src/App.tsx`
+2. Modify the meta tags and structured data as needed for your specific content
 
 ## Testing
 

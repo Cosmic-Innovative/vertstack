@@ -14,6 +14,9 @@ importers:
       i18next:
         specifier: ^23.8.2
         version: 23.15.2
+      i18next-browser-languagedetector:
+        specifier: ^8.0.0
+        version: 8.0.0
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -2040,6 +2043,9 @@ packages:
     resolution: {integrity: sha512-+dQSyqPh4x1hlO1swXBiNb2HzTDN1I2IGLQx1GrBuiqFJfoMrnZWwVmatvSiO+Iz8fBUnf+lekwNo4c2LlXItg==}
     engines: {node: '>=14'}
     hasBin: true
+
+  i18next-browser-languagedetector@8.0.0:
+    resolution: {integrity: sha512-zhXdJXTTCoG39QsrOCiOabnWj2jecouOqbchu3EfhtSHxIB5Uugnm9JaizenOy39h7ne3+fLikIjeW88+rgszw==}
 
   i18next@23.15.2:
     resolution: {integrity: sha512-zcPSWzCvw6uKnuYHIqs4W7hTuB9e3AFcSdZgvCWoPXIZsBjBd4djN2/2uOHIB+1DFFkQnMBXvhNg7J3WyCuywQ==}
@@ -5558,6 +5564,10 @@ snapshots:
   human-signals@5.0.0: {}
 
   husky@8.0.3: {}
+
+  i18next-browser-languagedetector@8.0.0:
+    dependencies:
+      '@babel/runtime': 7.25.7
 
   i18next@23.15.2:
     dependencies:

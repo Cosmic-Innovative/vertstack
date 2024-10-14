@@ -1,5 +1,6 @@
 import React, { Suspense } from 'react';
 import {
+  BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
@@ -57,17 +58,88 @@ export const TitleComponent: React.FC = () => {
     }
   };
 
+  const title = getTitle();
+  const description = t('home.description');
+  const url = `https://example.com${pathname}`;
+
   return (
     <Helmet>
       <html lang={i18n.language} />
-      <title>{getTitle()} - VERT Stack Template</title>
-      <meta name="description" content={t('home.description')} />
+      <title>{title} - VERT Stack Template</title>
+      <meta name="description" content={description} />
+
+      {/* Open Graph / Facebook */}
+      <meta property="og:type" content="website" />
+      <meta property="og:url" content={url} />
+      <meta property="og:title" content={title} />
+      <meta property="og:description" content={description} />
+      <meta property="og:image" content="https://example.com/og-image.jpg" />
+
+      {/* Twitter */}
+      <meta property="twitter:card" content="summary_large_image" />
+      <meta property="twitter:url" content={url} />
+      <meta property="twitter:title" content={title} />
+      <meta property="twitter:description" content={description} />
+      <meta
+        property="twitter:image"
+        content="https://example.com/twitter-image.jpg"
+      />
+
+      {/* Structured Data */}
+      <script type="application/ld+json">
+        {JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'WebSite',
+          name: 'VERT Stack Template',
+          url: 'https://example.com',
+          description: description,
+          potentialAction: {
+            '@type': 'SearchAction',
+            target: 'https://example.com/search?q={search_term_string}',
+            'query-input': 'required name=search_term_string',
+          },
+        })}
+      </script>
     </Helmet>
   );
 };
 
-const App: React.FC = () => {
-  return (
+const AppContent: React.FC = () => (
+  <>
+    <TitleComponent />
+    <a href="#main-content" className="skip-link">
+      Skip to main content
+    </a>
+    <Navbar />
+    <main id="main-content" className="container">
+      <Suspense fallback={<div aria-live="polite">Loading...</div>}>
+        <Routes>
+          <Route path="/" element={<Navigate to="/en" replace />} />
+          <Route path="/:lang" element={<LanguageRoute component={Home} />} />
+          <Route
+            path="/:lang/about"
+            element={<LanguageRoute component={About} />}
+          />
+          <Route
+            path="/:lang/contact"
+            element={<LanguageRoute component={Contact} />}
+          />
+          <Route
+            path="/:lang/api-example"
+            element={<LanguageRoute component={ApiExample} />}
+          />
+        </Routes>
+      </Suspense>
+    </main>
+  </>
+);
+
+interface AppProps {
+  useRouter?: boolean;
+}
+
+const App: React.FC<AppProps> = ({ useRouter = true }) => {
+  const content = (
     <HelmetProvider>
       <ErrorBoundary
         fallback={
@@ -76,37 +148,12 @@ const App: React.FC = () => {
           </div>
         }
       >
-        <TitleComponent />
-        <a href="#main-content" className="skip-link">
-          Skip to main content
-        </a>
-        <Navbar />
-        <main id="main-content" className="container">
-          <Suspense fallback={<div aria-live="polite">Loading...</div>}>
-            <Routes>
-              <Route path="/" element={<Navigate to="/en" replace />} />
-              <Route
-                path="/:lang"
-                element={<LanguageRoute component={Home} />}
-              />
-              <Route
-                path="/:lang/about"
-                element={<LanguageRoute component={About} />}
-              />
-              <Route
-                path="/:lang/contact"
-                element={<LanguageRoute component={Contact} />}
-              />
-              <Route
-                path="/:lang/api-example"
-                element={<LanguageRoute component={ApiExample} />}
-              />
-            </Routes>
-          </Suspense>
-        </main>
+        <AppContent />
       </ErrorBoundary>
     </HelmetProvider>
   );
+
+  return useRouter ? <Router>{content}</Router> : content;
 };
 
 export default App;
