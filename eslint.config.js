@@ -36,7 +36,9 @@ export default [
       globals: {
         ...globals.browser,
         ...globals.es2021,
+        ...globals.node, // Add Node.js globals
         ...vitestPlugin.environments.env.globals,
+        process: 'readonly', // Explicitly allow 'process'
       },
     },
     settings: {
