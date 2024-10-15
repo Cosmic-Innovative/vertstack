@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '../i18n.mock';
@@ -14,21 +14,51 @@ const renderWithRouter = (ui: React.ReactElement, { route = '/' } = {}) => {
 };
 
 describe('LanguageSwitcher', () => {
-  it('renders language buttons', () => {
+  it('renders language dropdown', () => {
     renderWithRouter(<LanguageSwitcher />);
-    expect(screen.getByLabelText('Switch to English')).toBeInTheDocument();
-    expect(screen.getByLabelText('Switch to Spanish')).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: /English|Español/i }),
+    ).toBeInTheDocument();
   });
 
-  it('disables current language button', () => {
+  it('opens dropdown when clicked', () => {
     renderWithRouter(<LanguageSwitcher />);
-    expect(screen.getByLabelText('Switch to English')).toBeDisabled();
-    expect(screen.getByLabelText('Switch to Spanish')).not.toBeDisabled();
+    const toggleButton = screen.getByRole('button', {
+      name: /English|Español/i,
+    });
+    fireEvent.click(toggleButton);
+    expect(screen.getAllByRole('button').length).toBeGreaterThan(1);
   });
 
-  it('changes language when button is clicked', () => {
+  it('changes language when option is clicked', async () => {
     renderWithRouter(<LanguageSwitcher />);
-    fireEvent.click(screen.getByLabelText('Switch to Spanish'));
-    expect(i18n.language).toBe('es');
+    const initialLanguage = i18n.language;
+    const toggleButton = screen.getByRole('button', {
+      name: /English|Español/i,
+    });
+    fireEvent.click(toggleButton);
+    const otherLanguageOption = screen.getByRole('button', {
+      name: initialLanguage === 'en' ? /Español/i : /English/i,
+    });
+    fireEvent.click(otherLanguageOption);
+    await waitFor(() => {
+      expect(i18n.language).toBe(initialLanguage === 'en' ? 'es' : 'en');
+    });
+  });
+
+  it('closes dropdown after language change', async () => {
+    renderWithRouter(<LanguageSwitcher />);
+    const initialLanguage = i18n.language;
+    const toggleButton = screen.getByRole('button', {
+      name: /English|Español/i,
+    });
+    fireEvent.click(toggleButton);
+    const otherLanguageOption = screen.getByRole('button', {
+      name: initialLanguage === 'en' ? /Español/i : /English/i,
+    });
+    fireEvent.click(otherLanguageOption);
+    await waitFor(() => {
+      expect(screen.getAllByRole('button').length).toBe(1);
+    });
   });
 });

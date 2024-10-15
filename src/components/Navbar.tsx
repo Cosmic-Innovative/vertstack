@@ -2,14 +2,15 @@ import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from './LanguageSwitcher';
+import '../styles/Navbar.css';
 
 const Navbar: React.FC = () => {
   const { t } = useTranslation();
   const { lang } = useParams<{ lang: string }>();
 
   return (
-    <nav aria-label="Main navigation" role="navigation">
-      <ul>
+    <nav className="navbar" aria-label="Main navigation" role="navigation">
+      <ul className="navbar-links">
         <li>
           <Link to={`/${lang}`} aria-label={t('navbar.home')}>
             {t('navbar.home')}
@@ -31,7 +32,9 @@ const Navbar: React.FC = () => {
           </Link>
         </li>
       </ul>
-      <LanguageSwitcher />
+      <div className="navbar-language-switcher">
+        <LanguageSwitcher />
+      </div>
     </nav>
   );
 };
