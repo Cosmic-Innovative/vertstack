@@ -22,7 +22,7 @@ const supportedLanguages = ['en', 'es'];
 const LanguageRoute: React.FC<{ component: React.ComponentType }> = ({
   component: Component,
 }) => {
-  const { lang } = useParams<{ lang: string }>();
+  const { lang } = useParams() as { lang: string };
   const { i18n } = useTranslation();
 
   React.useEffect(() => {

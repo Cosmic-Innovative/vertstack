@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App.tsx';
+import App from './App';
 import './styles/index.css';
 import { registerPWA } from './pwa';
 import './i18n';

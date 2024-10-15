@@ -34,7 +34,7 @@ A web application development stack, prepared for a wide range of production sce
 - ♿ Comprehensive accessibility features with WCAG 2.1 compliance
 - 📱 Progressive Web App (PWA) support for enhanced mobile experience
 - 🗣️ Robust internationalization support with easy language switching
-- 🔍 Enhanced SEO with dynamic meta tags, structured data, and Open Graph support
+- 🔍 Enhanced multilingual SEO with dynamic meta tags, structured data, and Open Graph support
 
 ## Project Structure
 
@@ -262,18 +262,48 @@ Remember to update your environment files (`.env.*`) with the appropriate API UR
 
 ## Internationalization
 
-The VERT Stack Template comes with built-in internationalization support using react-i18next. Here are some key features:
+The VERT Stack Template comes with built-in internationalization support using react-i18next. This allows for easy localization of your application to multiple languages.
+
+### Key Features
 
 - Support for multiple languages (currently English and Spanish)
-- Easy language switching with the LanguageSwitcher component
+- Dynamic language switching with the LanguageSwitcher component
 - Route-based language selection (e.g., /en/about, /es/about)
-- Translations for navigation and page titles
+- Lazy loading of language resources for improved performance
+- Automatic language detection based on user's browser settings
 
-To add a new language:
+### Adding a New Language
 
 1. Create a new JSON file in the `src/locales` directory (e.g., `fr.json` for French)
-2. Add the new language to the `supportedLanguages` array in `src/App.tsx`
-3. Update the LanguageSwitcher component in `src/components/LanguageSwitcher.tsx` to include the new language
+2. Add translations for all keys present in `en.json`
+3. Update the `supportedLanguages` array in `src/i18n.ts`
+4. Add the new language option to the LanguageSwitcher component in `src/components/LanguageSwitcher.tsx`
+
+### Using Translations in Components
+
+To use translations in your components, import the `useTranslation` hook from react-i18next:
+
+```typescript
+import { useTranslation } from 'react-i18next';
+
+function MyComponent() {
+  const { t } = useTranslation();
+
+  return <h1>{t('myComponent.title')}</h1>;
+}
+```
+
+### SEO Considerations
+
+- The `TitleComponent` in `src/App.tsx` handles dynamic page titles and meta descriptions for different languages
+- Alternate language links are automatically generated for each page
+- Structured data (JSON-LD) is included for better search engine understanding
+
+### Performance Optimization
+
+Language resources are loaded dynamically to improve initial load time. Only the resources for the current language are loaded on page load, with other languages loaded on-demand when switched to.
+
+For more detailed information on using and extending the internationalization features, please refer to the [react-i18next documentation](https://react.i18next.com/).
 
 ## SEO
 
@@ -291,15 +321,28 @@ To customize SEO settings for a specific page:
 
 ## Testing
 
-This project uses Vitest for testing. Vitest is a Vite-native testing framework that's fast and efficient. It's compatible with Jest's API, making it easy to migrate existing tests.
+This project uses Vitest for testing. Vitest is a Vite-native testing framework that's fast and efficient. It's compatible with Jest's API, making it easy to migrate existing tests. Our testing strategy includes:
 
-To run tests:
+1. **Unit Tests**: For testing individual components and functions in isolation.
+2. **Integration Tests**: For testing how different parts of the application work together, such as routing and internationalization.
+
+### When to Write Tests
+
+In our development workflow, we aim to write tests:
+
+1. **During Feature Development**: Tests are written alongside the feature implementation, usually after the basic functionality is in place but before considering the feature complete.
+2. **For Bug Fixes**: When fixing a bug, we first write a test that reproduces the bug, then fix the code to make the test pass.
+3. **For Refactoring**: Before refactoring, we ensure good test coverage to catch any regressions.
+
+### Running Tests
+
+To run the test suite:
 
 ```bash
 pnpm test
 ```
 
-To run tests in watch mode:
+To run tests in watch mode during development:
 
 ```bash
 pnpm test:watch
@@ -316,6 +359,14 @@ To check related tests:
 ```bash
 pnpm test:related
 ```
+
+### Test File Location
+
+Test files are located next to the files they are testing with a `.test.ts` or `.test.tsx` extension. This makes it easy to find tests and maintains a clear relationship between test and source files.
+
+### Continuous Integration
+
+Our CI pipeline runs all tests for every pull request and push to the main branch, ensuring that all changes pass our test suite before being merged or deployed.
 
 ## Linting and Formatting
 
@@ -489,17 +540,7 @@ The VERT Stack Template includes advanced features that prepare it for a wide ra
 
 While these features address many common production requirements, users should still evaluate the template against their specific project needs, scale, and industry standards. The template provides a robust foundation that's closer to production-ready for many scenarios, but may require further customization for specific use cases or enterprise-level applications.
 
-Prioritized list for getting closer:
-
-1. **PWA Support (if required)**: Implement service workers and add a web app manifest for progressive web app capabilities.
-2. **SEO Optimization**: Add React Helmet for basic SEO setup. Important for applications needing to be discoverable through search engines.
-3. **Internationalization (i18n) (if required)**: Add support for multiple languages if required for your application.
-4. **Expanded Documentation**: Provide more comprehensive documentation on project structure, design decisions, and best practices. Create a landing page site for VERT stack for wider audience and better documentation.
-
-Nice to haves. Will get to them at some point:
-
-- **Authentication and authorization**: Basic authentication system
-
+The next major feature will be an App Wizard, allowing users to pick and choose features, along with speeding up some of the common set up.
 Feel free to submit a pull request. :)
 
 ## How to Proceed from Here
