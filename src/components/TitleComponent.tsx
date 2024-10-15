@@ -3,35 +3,44 @@ import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 
-const supportedLanguages = ['en', 'es']; // Make sure this matches your supported languages
+const supportedLanguages = ['en', 'es'];
 
 const TitleComponent: React.FC = () => {
   const { t, i18n } = useTranslation();
   const { pathname } = useLocation();
 
-  const getTitle = () => {
-    const path = pathname.split('/')[2] || ''; // Adjust for language prefix
+  const getPageInfo = () => {
+    const path = pathname.split('/')[2] || '';
     switch (path) {
       case '':
-        return t('home.title');
+        return { title: 'home.title', description: 'home.metaDescription' };
       case 'about':
-        return t('about.title');
+        return { title: 'about.title', description: 'about.metaDescription' };
       case 'contact':
-        return t('contact.title');
+        return {
+          title: 'contact.title',
+          description: 'contact.metaDescription',
+        };
       case 'api-example':
-        return t('apiExample.title');
+        return {
+          title: 'apiExample.title',
+          description: 'apiExample.metaDescription',
+        };
       default:
-        return t('general.appName');
+        return {
+          title: 'general.appName',
+          description: 'home.metaDescription',
+        };
     }
   };
 
-  const title = getTitle();
+  const pageInfo = getPageInfo();
+  const title = t(pageInfo.title);
+  const description = t(pageInfo.description);
   const appName = t('general.appName');
   const fullTitle = `${title} - ${appName}`;
-  const description = t('home.description');
   const url = `https://example.com${pathname}`;
 
-  // Generate alternate language links
   const alternateLinks = supportedLanguages.map((lang) => ({
     hrefLang: lang,
     href: `https://example.com/${lang}${pathname.substring(3)}`,

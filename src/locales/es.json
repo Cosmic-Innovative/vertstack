@@ -2,6 +2,7 @@
   "home": {
     "title": "Bienvenido a la Plantilla VERT Stack",
     "description": "Esta plantilla proporciona una base sólida para construir aplicaciones web modernas utilizando:",
+    "metaDescription": "Plantilla VERT Stack: Una base poderosa para aplicaciones web modernas usando Vite, ESLint, React y TypeScript. Construye aplicaciones rápidas, eficientes y escalables.",
     "features": {
       "vite": "Vite para un desarrollo rápido y una construcción eficiente",
       "eslint": "ESLint para una calidad de código consistente",
@@ -11,13 +12,19 @@
     "cta": "Ver Ejemplo de API"
   },
   "about": {
-    "title": "Acerca de"
+    "title": "Acerca de",
+    "description": "Esta es la página de información de nuestra aplicación VERT stack.",
+    "metaDescription": "Conoce la Plantilla VERT Stack: Nuestra misión, características y cómo puede acelerar tu proceso de desarrollo web."
   },
   "contact": {
-    "title": "Contacto"
+    "title": "Contacto",
+    "description": "Esta es la página de contacto de nuestra aplicación VERT stack.",
+    "metaDescription": "Ponte en contacto con el equipo de la Plantilla VERT Stack. Estamos aquí para responder tus preguntas y ayudarte a construir aplicaciones web increíbles."
   },
   "apiExample": {
-    "title": "Ejemplo de Integración de API"
+    "title": "Ejemplo de Integración de API",
+    "description": "Esta página demuestra cómo integrar una API externa utilizando el stack VERT. Muestra la obtención de datos, el manejo de estados de carga y error, y la visualización de los resultados.",
+    "metaDescription": "Explora nuestro ejemplo de integración de API usando el Stack VERT. Aprende cómo obtener y mostrar datos de manera eficiente en tus aplicaciones React."
   },
   "navbar": {
     "home": "Inicio",

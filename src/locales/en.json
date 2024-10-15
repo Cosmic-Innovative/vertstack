@@ -2,6 +2,7 @@
   "home": {
     "title": "Welcome to the VERT Stack Template",
     "description": "This template provides a solid foundation for building modern web applications using:",
+    "metaDescription": "VERT Stack Template: A powerful foundation for modern web apps using Vite, ESLint, React, and TypeScript. Build fast, efficient, and scalable applications.",
     "features": {
       "vite": "Vite for fast development and efficient building",
       "eslint": "ESLint for consistent code quality",
@@ -11,13 +12,19 @@
     "cta": "View API Example"
   },
   "about": {
-    "title": "About"
+    "title": "About",
+    "description": "This is the about page of our VERT stack application.",
+    "metaDescription": "Learn about the VERT Stack Template: Our mission, features, and how it can accelerate your web development process."
   },
   "contact": {
-    "title": "Contact"
+    "title": "Contact",
+    "description": "This is the contact page of our VERT stack application.",
+    "metaDescription": "Get in touch with the VERT Stack Template team. We're here to answer your questions and help you build amazing web applications."
   },
   "apiExample": {
-    "title": "API Integration Example"
+    "title": "API Integration Example",
+    "description": "This page demonstrates how to integrate an external API using the VERT stack. It showcases fetching data, handling loading and error states, and displaying the results.",
+    "metaDescription": "Explore our API integration example using the VERT Stack. Learn how to fetch and display data efficiently in your React applications."
   },
   "navbar": {
     "home": "Home",
