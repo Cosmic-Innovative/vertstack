@@ -11,21 +11,21 @@
     "cta": "View API Example"
   },
   "about": {
-    "title": "About",
-    "description": "This is the about page of our VERT stack application."
+    "title": "About"
   },
   "contact": {
-    "title": "Contact",
-    "description": "This is the contact page of our VERT stack application."
+    "title": "Contact"
   },
   "apiExample": {
-    "title": "API Integration Example",
-    "description": "This page demonstrates how to integrate an external API using the VERT stack. It showcases fetching data, handling loading and error states, and displaying the results."
+    "title": "API Integration Example"
   },
   "navbar": {
     "home": "Home",
     "about": "About",
     "contact": "Contact",
     "apiExample": "API Example"
+  },
+  "general": {
+    "appName": "VERT Stack Template"
   }
 }

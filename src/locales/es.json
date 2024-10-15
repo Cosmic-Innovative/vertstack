@@ -11,21 +11,21 @@
     "cta": "Ver Ejemplo de API"
   },
   "about": {
-    "title": "Acerca de",
-    "description": "Esta es la página de información de nuestra aplicación VERT stack."
+    "title": "Acerca de"
   },
   "contact": {
-    "title": "Contacto",
-    "description": "Esta es la página de contacto de nuestra aplicación VERT stack."
+    "title": "Contacto"
   },
   "apiExample": {
-    "title": "Ejemplo de Integración de API",
-    "description": "Esta página demuestra cómo integrar una API externa utilizando el stack VERT. Muestra la obtención de datos, el manejo de estados de carga y error, y la visualización de los resultados."
+    "title": "Ejemplo de Integración de API"
   },
   "navbar": {
     "home": "Inicio",
     "about": "Acerca de",
     "contact": "Contacto",
     "apiExample": "Ejemplo de API"
+  },
+  "general": {
+    "appName": "Plantilla VERT Stack"
   }
 }
