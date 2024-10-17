@@ -59,6 +59,7 @@ export default [
       ],
       'react/jsx-uses-react': 'off',
       'react/react-in-jsx-scope': 'off',
+      'react/prop-types': 'off',
       'security/detect-object-injection': 'error',
       'security/detect-non-literal-regexp': 'error',
       'security/detect-unsafe-regex': 'error',

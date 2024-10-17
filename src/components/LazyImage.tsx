@@ -14,23 +14,25 @@ const LazyImage: React.FC<LazyImageProps> = ({ src, alt, className }) => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          if (imgRef.current) {
-            imgRef.current.src = src;
+          const img = imgRef.current;
+          if (img) {
+            img.src = src;
             setIsLoaded(true);
-            observer.unobserve(imgRef.current);
+            observer.unobserve(img);
           }
         }
       },
       { rootMargin: '100px' },
     );
 
-    if (imgRef.current) {
-      observer.observe(imgRef.current);
+    const currentImg = imgRef.current;
+    if (currentImg) {
+      observer.observe(currentImg);
     }
 
     return () => {
-      if (imgRef.current) {
-        observer.unobserve(imgRef.current);
+      if (currentImg) {
+        observer.unobserve(currentImg);
       }
     };
   }, [src]);

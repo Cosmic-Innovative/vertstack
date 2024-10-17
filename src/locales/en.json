@@ -9,7 +9,9 @@
       "react": "React for building user interfaces",
       "typescript": "TypeScript for type safety"
     },
-    "cta": "View API Example"
+    "cta": "View API Example",
+    "logoAlt": "VERT Stack Logo",
+    "exploreMessage": "Explore the different pages to see examples of routing, component structure, and API integration."
   },
   "about": {
     "title": "About",
@@ -33,6 +35,28 @@
     "apiExample": "API Example"
   },
   "general": {
-    "appName": "VERT Stack Template"
+    "appName": "VERT Stack Template",
+    "skipToContent": "Skip to main content",
+    "loading": "Loading..."
+  },
+  "errors": {
+    "somethingWentWrong": "Something went wrong. Please try refreshing the page.",
+    "fetchError": "Error fetching user data: {{error}}"
+  },
+  "userList": {
+    "title": "API Integration Example: User List",
+    "description": "This component demonstrates how to fetch and display data from an external API using the VERT stack. We're using the JSONPlaceholder API to retrieve a list of users.",
+    "keyPoints": "Key points:",
+    "keyPoint1": "Data is fetched using the fetchData utility from src/utils/api.ts",
+    "keyPoint2": "React hooks (useState and useEffect) manage the component's state and side effects",
+    "keyPoint3": "Loading and error states are handled to improve user experience",
+    "apiDetails": "API Details:",
+    "apiEndpoint": "Endpoint: https://jsonplaceholder.typicode.com/users",
+    "apiDescription": "This free API provides mock data for testing and prototyping.",
+    "userData": "User Data:",
+    "name": "Name",
+    "email": "Email",
+    "company": "Company",
+    "noUsers": "No users found."
   }
 }

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { fetchData, sanitizeInput } from '../utils/api';
 
 interface User {
@@ -11,6 +12,7 @@ interface User {
 }
 
 function UserList() {
+  const { t } = useTranslation();
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -27,47 +29,37 @@ function UserList() {
       });
   }, []);
 
-  if (loading) return <div className="loading">Loading user data...</div>;
+  if (loading) return <div className="loading">{t('general.loading')}</div>;
   if (error)
     return (
       <div className="error">
-        Error fetching user data: {sanitizeInput(error)}
+        {t('errors.fetchError', { error: sanitizeInput(error) })}
       </div>
     );
 
   return (
     <div className="user-list-container">
-      <h2>API Integration Example: User List</h2>
-      <p>
-        This component demonstrates how to fetch and display data from an
-        external API using the VERT stack. We&apos;re using the JSONPlaceholder
-        API to retrieve a list of users.
-      </p>
-      <p>Key points:</p>
+      <h2>{t('userList.title')}</h2>
+      <p>{t('userList.description')}</p>
+      <p>{t('userList.keyPoints')}</p>
       <ul>
-        <li>
-          Data is fetched using the <code>fetchData</code> utility from{' '}
-          <code>src/utils/api.ts</code>
-        </li>
-        <li>
-          React hooks (<code>useState</code> and <code>useEffect</code>) manage
-          the component&apos;s state and side effects
-        </li>
-        <li>Loading and error states are handled to improve user experience</li>
+        <li>{t('userList.keyPoint1')}</li>
+        <li>{t('userList.keyPoint2')}</li>
+        <li>{t('userList.keyPoint3')}</li>
       </ul>
       <div className="api-info">
-        <h3>API Details:</h3>
-        <p>Endpoint: https://jsonplaceholder.typicode.com/users</p>
-        <p>This free API provides mock data for testing and prototyping.</p>
+        <h3>{t('userList.apiDetails')}</h3>
+        <p>{t('userList.apiEndpoint')}</p>
+        <p>{t('userList.apiDescription')}</p>
       </div>
-      <h3>User Data:</h3>
+      <h3>{t('userList.userData')}</h3>
       {users.length > 0 ? (
         <table className="user-table">
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Company</th>
+              <th>{t('userList.name')}</th>
+              <th>{t('userList.email')}</th>
+              <th>{t('userList.company')}</th>
             </tr>
           </thead>
           <tbody>
@@ -81,7 +73,7 @@ function UserList() {
           </tbody>
         </table>
       ) : (
-        <p>No users found.</p>
+        <p>{t('userList.noUsers')}</p>
       )}
     </div>
   );

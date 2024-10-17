@@ -1,16 +1,17 @@
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import vertStackLogo from '/vertstack.svg';
 import { useTranslation } from 'react-i18next';
 
 function Home() {
   const { t } = useTranslation();
+  const { lang } = useParams<{ lang: string }>();
 
   return (
     <main className="home-container">
       <div className="title-container">
         <img
           src={vertStackLogo}
-          alt="VERT Stack Logo"
+          alt={t('home.logoAlt')}
           className="inline-logo"
         />
         <h1>{t('home.title')}</h1>
@@ -34,12 +35,9 @@ function Home() {
           {t('home.features.typescript')}
         </li>
       </ul>
-      <p>
-        Explore the different pages to see examples of routing, component
-        structure, and API integration.
-      </p>
+      <p>{t('home.exploreMessage')}</p>
       <div className="cta-container">
-        <Link to="/api-example" className="button-link">
+        <Link to={`/${lang}/api-example`} className="button-link">
           {t('home.cta')}
         </Link>
       </div>

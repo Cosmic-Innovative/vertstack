@@ -25,7 +25,7 @@ vi.mock('./components/ErrorBoundary', () => ({
 
 describe('App', () => {
   it('renders navigation and home page', async () => {
-    render(<App useRouter={false} />);
+    render(<App useRouter={false} />, { route: '/en' });
 
     await waitFor(() => {
       expect(screen.getByText('Home')).toBeInTheDocument();
@@ -34,11 +34,11 @@ describe('App', () => {
       expect(screen.getByText('API Example')).toBeInTheDocument();
     });
 
-    expect(await screen.findByText('Home Page')).toBeInTheDocument();
+    expect(screen.getByText('Home Page')).toBeInTheDocument();
   });
 
   it('renders the navbar', async () => {
-    render(<App useRouter={false} />);
+    render(<App useRouter={false} />, { route: '/en' });
 
     await waitFor(() => {
       const navElement = screen.getByRole('navigation');
@@ -47,7 +47,7 @@ describe('App', () => {
   });
 
   it('renders the main container', async () => {
-    render(<App useRouter={false} />);
+    render(<App useRouter={false} />, { route: '/en' });
 
     await waitFor(() => {
       const mainContainer = screen.getByRole('main');

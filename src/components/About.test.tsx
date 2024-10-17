@@ -1,31 +1,56 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, expectTranslated, act } from '../test-utils';
 import { describe, it, expect } from 'vitest';
 import About from './About';
-import { I18nextProvider } from 'react-i18next';
-import i18n from '../i18n.mock';
-
-const renderWithI18n = (component: React.ReactElement) => {
-  return render(<I18nextProvider i18n={i18n}>{component}</I18nextProvider>);
-};
 
 describe('About', () => {
-  it('renders without crashing', () => {
-    renderWithI18n(<About />);
-    expect(screen.getByRole('heading', { level: 1 })).toBeInTheDocument();
+  it('renders in English by default', () => {
+    render(<About />, { route: '/en/about' });
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+      expectTranslated('about.title', 'en'),
+    );
+    expect(
+      screen.getByText(expectTranslated('about.description', 'en')),
+    ).toBeInTheDocument();
+  });
+
+  it('renders in Spanish when specified', async () => {
+    await act(async () => {
+      render(<About />, { route: '/es/about' });
+    });
+    await screen.findByRole('heading', { level: 1 });
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+      expectTranslated('about.title', 'es'),
+    );
+  });
+
+  it('changes language dynamically', async () => {
+    const { changeLanguage } = render(<About />, { route: '/en/about' });
+
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+      expectTranslated('about.title', 'en'),
+    );
+
+    await act(async () => {
+      await changeLanguage('es');
+    });
+
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+      expectTranslated('about.title', 'es'),
+    );
   });
 
   it('has proper heading structure', () => {
-    renderWithI18n(<About />);
+    render(<About />, { route: '/en/about' });
     const heading = screen.getByRole('heading', { level: 1 });
     expect(heading).toBeInTheDocument();
     expect(heading.tagName).toBe('H1');
   });
 
   it('contains informative content', () => {
-    renderWithI18n(<About />);
+    render(<About />, { route: '/en/about' });
     expect(
-      screen.getByText('This is the about page of our VERT stack application.'),
+      screen.getByText(expectTranslated('about.description', 'en')),
     ).toBeInTheDocument();
   });
 });

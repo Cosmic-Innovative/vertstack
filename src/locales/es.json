@@ -9,7 +9,9 @@
       "react": "React para construir interfaces de usuario",
       "typescript": "TypeScript para seguridad de tipos"
     },
-    "cta": "Ver Ejemplo de API"
+    "cta": "Ver Ejemplo de API",
+    "logoAlt": "Logo de VERT Stack",
+    "exploreMessage": "Explora las diferentes páginas para ver ejemplos de enrutamiento, estructura de componentes e integración de API."
   },
   "about": {
     "title": "Acerca de",
@@ -33,6 +35,28 @@
     "apiExample": "Ejemplo de API"
   },
   "general": {
-    "appName": "Plantilla VERT Stack"
+    "appName": "Plantilla VERT Stack",
+    "skipToContent": "Saltar al contenido principal",
+    "loading": "Cargando..."
+  },
+  "errors": {
+    "somethingWentWrong": "Algo salió mal. Por favor, intenta refrescar la página.",
+    "fetchError": "Error al obtener datos de usuario: {{error}}"
+  },
+  "userList": {
+    "title": "Ejemplo de integración de API: Lista de usuarios",
+    "description": "Este componente demuestra cómo obtener y mostrar datos de una API externa utilizando el stack VERT. Estamos utilizando la API JSONPlaceholder para recuperar una lista de usuarios.",
+    "keyPoints": "Puntos clave:",
+    "keyPoint1": "Los datos se obtienen utilizando la utilidad fetchData de src/utils/api.ts",
+    "keyPoint2": "Los hooks de React (useState y useEffect) gestionan el estado del componente y los efectos secundarios",
+    "keyPoint3": "Los estados de carga y error se manejan para mejorar la experiencia del usuario",
+    "apiDetails": "Detalles de la API:",
+    "apiEndpoint": "Endpoint: https://jsonplaceholder.typicode.com/users",
+    "apiDescription": "Esta API gratuita proporciona datos simulados para pruebas y creación de prototipos.",
+    "userData": "Datos de usuario:",
+    "name": "Nombre",
+    "email": "Correo electrónico",
+    "company": "Empresa",
+    "noUsers": "No se encontraron usuarios."
   }
 }
