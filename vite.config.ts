@@ -83,9 +83,16 @@ export default defineConfig(({ mode }) => {
         output: {
           manualChunks: {
             vendor: ['react', 'react-dom', 'react-router-dom'],
+            i18n: ['i18next', 'react-i18next'],
+            utils: ['./src/utils/api.ts', './src/utils/sitemapGenerator.ts'],
+            components: [
+              './src/components/ErrorBoundary.tsx',
+              './src/components/TitleComponent.tsx',
+            ],
           },
         },
       },
+      chunkSizeWarningLimit: 1000,
     },
     test: {
       globals: true,
