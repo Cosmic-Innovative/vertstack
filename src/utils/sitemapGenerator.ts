@@ -1,5 +1,8 @@
-import { SitemapStream, streamToPromise } from 'sitemap';
-import { Readable } from 'stream';
+// Note: This client-side sitemap generation is a simplified approach.
+// For production applications, especially those with dynamic content,
+// it's recommended to generate sitemaps server-side. This ensures
+// that the sitemap always reflects the current state of your website
+// and can handle larger sites more efficiently.
 
 const baseUrl = 'http://localhost:5173'; // Update this to your production URL when deploying
 
@@ -13,44 +16,39 @@ const pages = [
 const languages = ['en', 'es']; // Add more languages as needed
 
 export async function generateSitemap(): Promise<string> {
-  console.log('Starting sitemap generation');
-
-  try {
-    const links = pages.flatMap((page) =>
-      languages.map((lang) => ({
-        url: `/${lang}${page.url}`,
-        changefreq: page.changefreq,
-        priority: page.priority,
-        links: languages.map((l) => ({
-          lang: l,
-          url: `${baseUrl}/${l}${page.url}`,
-        })),
+  const links = pages.flatMap((page) =>
+    languages.map((lang) => ({
+      loc: `${baseUrl}/${lang}${page.url}`,
+      changefreq: page.changefreq,
+      priority: page.priority,
+      'xhtml:link': languages.map((l) => ({
+        rel: 'alternate',
+        hreflang: l,
+        href: `${baseUrl}/${l}${page.url}`,
       })),
-    );
+    })),
+  );
 
-    // Add root URL that redirects to default language
-    links.push({
-      url: '/',
-      changefreq: 'daily',
-      priority: 1,
-    });
+  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  ${links
+    .map(
+      (link) => `
+  <url>
+    <loc>${link.loc}</loc>
+    <changefreq>${link.changefreq}</changefreq>
+    <priority>${link.priority}</priority>
+    ${link['xhtml:link']
+      .map(
+        (alt) => `
+    <xhtml:link rel="${alt.rel}" hreflang="${alt.hreflang}" href="${alt.href}"/>`,
+      )
+      .join('')}
+  </url>`,
+    )
+    .join('')}
+</urlset>`;
 
-    console.log('Links generated:', JSON.stringify(links, null, 2));
-
-    const stream = new SitemapStream({ hostname: baseUrl });
-    console.log('SitemapStream created');
-
-    const sitemap = await streamToPromise(
-      Readable.from(links).pipe(stream),
-    ).then((data) => {
-      console.log('Sitemap generated successfully');
-      return data.toString();
-    });
-
-    console.log('Sitemap content:', sitemap);
-    return sitemap;
-  } catch (error) {
-    console.error('Error in generateSitemap:', error);
-    return '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"></urlset>';
-  }
+  return sitemap;
 }

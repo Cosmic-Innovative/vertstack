@@ -71,6 +71,46 @@ To add support for a new language:
 4. Add the new language option to `LanguageSwitcher.tsx`.
 5. Update any relevant tests to include the new language.
 
+## Performance and Quality Standards
+
+We use Lighthouse CI to maintain high standards of performance, accessibility, best practices, SEO, and PWA features. Before submitting a pull request, please ensure your changes meet our Lighthouse audit standards.
+
+### Running Lighthouse Locally
+
+To run Lighthouse audits locally:
+
+1. Make sure you have the latest changes and your feature branch is up to date.
+2. Build your changes:
+   ```
+   pnpm build
+   ```
+3. Run the Lighthouse audit:
+   ```
+   pnpm lighthouse
+   ```
+
+This command will run Lighthouse CI against your built files, using the same configuration as our CI process.
+
+4. Review the results in the console output. Pay special attention to any failed audits or metrics that don't meet our thresholds.
+5. Make necessary improvements to address any issues flagged by Lighthouse.
+6. Re-run the Lighthouse audit to confirm your changes have resolved the issues.
+
+### Lighthouse Thresholds
+
+Our current Lighthouse score thresholds are:
+
+- Performance: 90
+- Accessibility: 90
+- Best Practices: 90
+- SEO: 90
+- PWA: 90
+
+While we strive for high scores in all categories, accessibility is particularly important. Pull requests that lower the accessibility score below 90 will not be accepted without a compelling reason and a plan to address the issues.
+
+### Note on Mobile Audits
+
+Currently, our Lighthouse CI is configured to run desktop audits. However, we plan to implement mobile audits in the future. When working on responsive features, please consider how your changes might impact mobile performance and usability.
+
 ## Additional Notes
 
 ### Issue and Pull Request Labels

@@ -44,13 +44,16 @@ vert-stack-template/
 ├── .github/
 │   └── workflows/
 │       ├── pr_checks.yml
-│       └── deploy.yml
+│       ├── deploy.yml
+│       └── lighthouse.yml
 │
 ├── .husky/
 │   └── pre-commit
 │
 ├── public/
-│   └── vertstack.svg
+│   ├── vertstack.svg
+│   ├── pwa-192x192.png
+│   └── pwa-512x512.png
 │
 ├── src/
 │   ├── components/
@@ -99,6 +102,7 @@ vert-stack-template/
 ├── .prettierrc.json
 ├── eslint.config.js
 ├── index.html
+├── lighthouserc.json
 ├── package.json
 ├── pnpm-lock.yaml
 ├── README.md
@@ -112,11 +116,12 @@ vert-stack-template/
 ### Key Directories and Files
 
 - `/.github/workflows/`: Contains GitHub Actions workflow files for CI/CD.
-  - `pr_checks.yml`: Defines checks to run on pull requests.
+  - `pr_checks.yml`: Defines checks to run on pull requests, including linting, type checking, testing, and building.
   - `deploy.yml`: Defines the deployment process for different environments.
+  - `lighthouse.yml`: Runs Lighthouse CI for performance, accessibility, best practices, SEO, and PWA audits.
 - `/.husky/`: Contains Git hooks for the project.
   - `pre-commit`: Script that runs before each commit to ensure code quality.
-- `/public/`: Stores static assets that are publicly accessible.
+- `/public/`: Stores static assets that are publicly accessible, including PWA icons.
   - `vertstack.svg`: The VERT Stack logo, used as a favicon.
 - `/src/`: The main source directory for the application code.
   - `/components/`: React components used in the application.
@@ -146,6 +151,7 @@ vert-stack-template/
 - `.prettierrc.json`: Configuration file for Prettier code formatter.
 - `eslint.config.js`: Configuration file for ESLint.
 - `index.html`: The main HTML file for the VERT stack application.
+- `lighthouserc.json`: Configuration file for Lighthouse CI.
 - `package.json`: Project metadata and dependencies.
 - `pnpm-lock.yaml`: Lock file for pnpm dependencies.
 - `README.md`: Project documentation and overview (this file).
@@ -176,6 +182,7 @@ While easily customizable, the VERT stack is opinionated. Use pnpm.
 - `pnpm test:watch`: Run Vitest in watch mode
 - `pnpm test:coverage`: Run Vitest with coverage report
 - `pnpm test:related`: Run Vitest related to quickly check if changes have broken any related tests
+- `pnpm lighthouse`: Run Lighthouse CI locally to check performance, accessibility, best practices, SEO, and PWA audits
 
 ## PWA Support
 
@@ -413,6 +420,20 @@ The GitHub Actions workflow files can be found in the `.github/workflows/` direc
 
 - `pr_checks.yml`: Runs checks on all pull requests
 - `deploy.yml`: Handles deployment to all environments
+- `lighthouse.yml`: Runs Lighthouse CI for performance, accessibility, best practices, SEO, and PWA audits
+
+### Lighthouse CI
+
+The project includes Lighthouse CI integration, which automatically runs performance, accessibility, best practices, SEO, and PWA audits on each pull request and push to main branches. This helps maintain high standards of web quality and catch potential issues early in the development process.
+
+Key features of our Lighthouse CI setup:
+
+- Runs on desktop preset (mobile audits planned for future implementation)
+- Sets performance budgets for key metrics
+- Fails the CI process if critical thresholds are not met
+- Provides detailed reports for each run, allowing tracking of improvements over time
+
+The Lighthouse CI configuration can be found in the `lighthouserc.json` file in the project root.
 
 ### Workflow Overview
 
@@ -420,8 +441,13 @@ On Pull Request to any branch (`pr_checks.yml`):
 
 1. Install dependencies
 2. Run linter
-3. Run tests
-4. Build the project (to ensure it compiles successfully)
+3. Perform type checking
+4. Run tests
+5. Build the project (to ensure it compiles successfully)
+6. Run Lighthouse CI
+   - Performs audits for performance, accessibility, best practices, SEO, and PWA features
+   - Checks against defined thresholds in `lighthouserc.json`
+   - Uploads results to temporary public storage for easy viewing
 
 On Push to main, development, or staging branches (`deploy.yml`):
 
@@ -430,8 +456,21 @@ On Push to main, development, or staging branches (`deploy.yml`):
 3. Run linter
 4. Run tests
 5. Build the project using the appropriate .env file
-6. Deploy to the corresponding environment
-7. Run health checks
+6. Run Lighthouse CI
+   - Performs audits as described above
+   - Ensures the production build meets quality standards before deployment
+7. Deploy to the corresponding environment
+8. Run health checks
+
+Lighthouse CI (`lighthouse.yml`):
+
+1. Triggered on push to main and develop branches, and on pull requests to these branches
+2. Builds the project
+3. Runs Lighthouse audits against the built files
+4. Compares results against defined thresholds
+5. Uploads detailed reports for each run
+
+This workflow ensures that all code changes are thoroughly checked for quality, performance, and best practices before they are merged or deployed.
 
 ### Environment-Specific Considerations
 
@@ -543,6 +582,35 @@ The appropriate environment file will be used based on the branch being deployed
 
 Ensure your CI/CD pipeline is configured to use the correct environment file based on the branch being deployed.
 
+### Running Lighthouse Locally
+
+To run Lighthouse audits locally before pushing your changes or creating a pull request, use the following command:
+
+```bash
+pnpm lighthouse
+```
+
+This will build your project and run Lighthouse CI against the built files. It uses the same configuration as the CI process (`lighthouserc.json`), allowing you to catch and fix any issues before pushing your code.
+
+Note: Make sure you have a production build of your application when running this command, as Lighthouse should be run against optimized, production-ready code for the most accurate results.
+
+## Sitemap Generation
+
+This template includes a basic client-side sitemap generation utility. While this approach works for simple, static websites, it has limitations:
+
+1. It doesn't automatically update when you add new pages or change your site structure.
+2. It may not be suitable for large, dynamic websites.
+
+For production applications, especially those with dynamic content, it's recommended to implement server-side sitemap generation. This ensures that your sitemap always reflects the current state of your website and can handle larger sites more efficiently.
+
+If you decide to implement server-side sitemap generation, you'll need to:
+
+1. Create a server-side script to generate the sitemap.
+2. Set up a route on your server to serve the generated sitemap.
+3. Update your robots.txt file to point to the new sitemap location.
+
+Remember to adjust the sitemap generation logic to match your specific needs and site structure.
+
 ## Future Considerations
 
 The VERT Stack Template aims to be a solid foundation for modern web applications. To make the most of it:
@@ -569,3 +637,15 @@ Contributions are welcome! Please see the [CONTRIBUTING.md](CONTRIBUTING.md) fil
 ## License
 
 This project is licensed under the MIT License.
+
+## Known Issues
+
+### React Helmet Async Warnings
+
+When building the project, you may see warnings related to react-helmet-async:
+
+```
+node_modules/.pnpm/react-helmet-async@1.3.0_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/react-helmet-async/lib/index.module.js (1:7186): A comment "/*#__PURE__*/" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+```
+
+These warnings are coming from the react-helmet-async library and do not affect the functionality of your application. They indicate that the library might not be fully optimized for our build process. We're monitoring this issue and will update the template if a solution becomes available.

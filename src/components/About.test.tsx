@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen, expectTranslated, act } from '../test-utils';
 import { describe, it, expect } from 'vitest';
 import About from './About';

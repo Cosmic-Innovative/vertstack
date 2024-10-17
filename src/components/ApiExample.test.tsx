@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen, expectTranslated, waitFor, act } from '../test-utils';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import ApiExample from './ApiExample';
@@ -99,7 +98,7 @@ describe('ApiExample', () => {
       },
     ];
 
-    let resolvePromise;
+    let resolvePromise: (value: unknown) => void;
     const promise = new Promise((resolve) => {
       resolvePromise = resolve;
     });

@@ -57,6 +57,7 @@ export default [
         'error',
         { argsIgnorePattern: '^_' },
       ],
+      '@typescript-eslint/no-explicit-any': 'error',
       'react/jsx-uses-react': 'off',
       'react/react-in-jsx-scope': 'off',
       'react/prop-types': 'off',

@@ -16,7 +16,9 @@
     "test": "vitest run",
     "test:watch": "vitest --watch",
     "test:coverage": "vitest run --coverage",
-    "test:related": "vitest related"
+    "test:related": "vitest related",
+    "type-check": "tsc --noEmit",
+    "lighthouse": "pnpm build && pnpm dlx @lhci/cli@0.11.x autorun"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
