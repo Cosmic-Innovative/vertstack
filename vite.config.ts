@@ -79,6 +79,8 @@ export default defineConfig(({ mode }) => {
       port: 5173,
     },
     build: {
+      outDir: 'dist',
+      emptyOutDir: true,
       rollupOptions: {
         output: {
           manualChunks: {

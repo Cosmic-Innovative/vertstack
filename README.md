@@ -34,7 +34,7 @@ A web application development stack, prepared for a wide range of production sce
 - ♿ Comprehensive accessibility features with WCAG 2.1 compliance
 - 📱 Progressive Web App (PWA) support for enhanced mobile experience
 - 🔍 Enhanced multilingual SEO with dynamic meta tags, structured data, and Open Graph support
-- 🏗️ Basic CI/CD setup with GitHub Actions, ready for customization
+- 🏗️ Enhanced CI/CD setup with GitHub Actions, including Lighthouse CI for automated performance and quality checks
 
 ## Project Structure
 
