@@ -12,11 +12,13 @@ import ErrorBoundary from './components/ErrorBoundary';
 import Navbar from './components/Navbar';
 import TitleComponent from './components/TitleComponent';
 
+// Lazy load route components for better performance
 const Home = lazy(() => import('./components/Home'));
 const About = lazy(() => import('./components/About'));
 const Contact = lazy(() => import('./components/Contact'));
 const ApiExample = lazy(() => import('./components/ApiExample'));
 
+// List of supported languages
 const supportedLanguages = ['en', 'es'];
 
 interface LanguageRouteProps {
@@ -31,12 +33,14 @@ const LanguageRoute: React.FC<LanguageRouteProps> = ({
   const { lang } = useParams<{ lang: string }>();
   const { i18n } = useTranslation();
 
+  // Change language based on route parameter
   React.useEffect(() => {
     if (useRouter && lang && supportedLanguages.includes(lang)) {
       i18n.changeLanguage(lang);
     }
   }, [lang, i18n, useRouter]);
 
+  // Redirect to default language if no language is specified in the URL
   if (!useRouter || !lang || !supportedLanguages.includes(lang)) {
     return <Navigate to={`/${i18n.language}`} replace />;
   }
@@ -121,7 +125,9 @@ const App: React.FC<AppProps> = ({ useRouter = true }) => {
       >
         {useRouter ? (
           <Routes>
+            {/* Route for language-prefixed paths */}
             <Route path="/:lang/*" element={<AppContent useRouter={true} />} />
+            {/* Redirect root to default language */}
             <Route path="/" element={<Navigate to="/en" replace />} />
           </Routes>
         ) : (

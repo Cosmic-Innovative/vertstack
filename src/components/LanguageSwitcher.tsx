@@ -9,6 +9,7 @@ interface Language {
   flag: string;
 }
 
+// Define supported languages with their codes, names, and flag emojis
 const languages: Language[] = [
   { code: 'en', name: 'English', flag: '🇺🇸' },
   { code: 'es', name: 'Español', flag: '🇲🇽' },
@@ -21,16 +22,20 @@ const LanguageSwitcher: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
+  // Function to change the language and update the URL
   const changeLanguage = (lang: string) => {
     i18n.changeLanguage(lang);
+    // Update the URL to reflect the new language
     const newPath = location.pathname.replace(`/${i18n.language}`, `/${lang}`);
     navigate(newPath);
     setIsOpen(false);
   };
 
+  // Get the current language object
   const currentLanguage =
     languages.find((lang) => lang.code === i18n.language) || languages[0];
 
+  // Close the dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -49,6 +54,7 @@ const LanguageSwitcher: React.FC = () => {
 
   return (
     <div className="language-switcher-dropdown" ref={dropdownRef}>
+      {/* Language switcher button */}
       <button
         className="language-dropdown-toggle"
         onClick={() => setIsOpen(!isOpen)}
@@ -60,6 +66,7 @@ const LanguageSwitcher: React.FC = () => {
         </span>
         <span className="language-name">{currentLanguage.name}</span>
       </button>
+      {/* Dropdown menu for language selection */}
       {isOpen && (
         <div className="language-dropdown-menu">
           {languages.map((lang) => (
