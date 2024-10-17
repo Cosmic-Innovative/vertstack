@@ -17,24 +17,24 @@ A web application development stack, prepared for a wide range of production sce
 ## Features
 
 - ⚡️ Vite for lightning fast development and building
-- 🏗 TypeScript for enhanced type safety and developer experience
+- 🔷 TypeScript for enhanced type safety and developer experience
 - ⚛️ React 18 for building interactive UIs
-- 📏 ESLint for code linting with modern configuration (eslint.config.js)
+- 🗣️ Robust internationalization support with dynamic language switching and SEO optimization
+- 🧹 ESLint with custom configuration for strict code quality control
 - 💖 Prettier for code formatting
-- 🐶 Husky for Git hooks
+- 🐕 Husky for Git hooks
 - 🚫 lint-staged for running linters on Git staged files
 - 🧪 Vitest for fast and efficient testing
 - 🛡️ Error Boundaries for graceful error handling in production
-- 🚀 Flexible CI/CD pipeline with GitHub Actions, supporting multiple environments
+- 🚀 Advanced performance optimization with dynamic imports and granular code splitting
 - 🌍 Environment-specific configuration support for development, staging, and production
 - 🧭 React Router for seamless navigation between pages
 - 🌐 Fetch API integration for efficient data fetching
 - 🔒 Enhanced security measures and best practices
-- 🚄 Optimized performance with code splitting and lazy loading
 - ♿ Comprehensive accessibility features with WCAG 2.1 compliance
 - 📱 Progressive Web App (PWA) support for enhanced mobile experience
-- 🗣️ Robust internationalization support with easy language switching
 - 🔍 Enhanced multilingual SEO with dynamic meta tags, structured data, and Open Graph support
+- 🏗️ Basic CI/CD setup with GitHub Actions, ready for customization
 
 ## Project Structure
 
@@ -62,20 +62,33 @@ vert-stack-template/
 │   │   ├── ErrorBoundary.tsx
 │   │   ├── Home.tsx
 │   │   ├── Home.test.tsx
+│   │   ├── LanguageSwitcher.tsx
+│   │   ├── LanguageSwitcher.test.tsx
 │   │   ├── Navbar.tsx
+│   │   ├── TitleComponent.tsx
 │   │   ├── UserList.tsx
 │   │   └── UserList.test.tsx
 │   │
 │   ├── styles/
-│   │   └── index.css
+│   │   ├── index.css
+│   │   ├── Navbar.css
+│   │   └── LanguageSwitcher.css
 │   │
 │   ├── utils/
-│   │   └── api.ts
+│   │   ├── api.ts
+│   │   ├── languageDetection.ts
+│   │   └── sitemapGenerator.ts
+│   │
+│   ├── locales/
+│   │   ├── en.json
+│   │   └── es.json
 │   │
 │   ├── App.tsx
 │   ├── App.test.tsx
-│   ├── pwa.ts
+│   ├── i18n.ts
+│   ├── i18n.test.tsx
 │   ├── main.tsx
+│   ├── pwa.ts
 │   └── vite-env.d.ts
 │
 ├── .env
@@ -104,17 +117,27 @@ vert-stack-template/
 - `/.husky/`: Contains Git hooks for the project.
   - `pre-commit`: Script that runs before each commit to ensure code quality.
 - `/public/`: Stores static assets that are publicly accessible.
-  - `vertstack.svg`: The Vertstack logo, used as a favicon.
+  - `vertstack.svg`: The VERT Stack logo, used as a favicon.
 - `/src/`: The main source directory for the application code.
   - `/components/`: React components used in the application.
   - `/styles/`: Styles used in the application.
     - `index.css`: Global styles for the application.
-  - `/utils/`: Utility functions, including API handling.
+    - `Navbar.css`: Styles specific to the Navbar component.
+    - `LanguageSwitcher.css`: Styles for the language switcher component.
+  - `/utils/`: Utility functions and helpers.
     - `api.ts`: Contains functions for making API calls.
+    - `languageDetection.ts`: Utility for detecting user's preferred language.
+    - `sitemapGenerator.ts`: Function to generate dynamic sitemap.
+  - `/locales/`: Contains language files for internationalization.
+    - `en.json`: English translations.
+    - `es.json`: Spanish translations.
   - `App.tsx`: The main application component with routing setup.
   - `App.test.tsx`: Tests for the main App component.
+  - `i18n.ts`: Internationalization setup and configuration.
+  - `i18n.test.tsx`: Tests for internationalization functionality.
   - `main.tsx`: The entry point of the application.
-  - `vite-env.d.ts`: TypeScript declaration file for Vite-specific types and environment variables. Contains PWA worker registration type definitions to ensure proper TypeScript support for PWA functionality.
+  - `pwa.ts`: Progressive Web App registration and setup.
+  - `vite-env.d.ts`: TypeScript declaration file for Vite-specific types and environment variables.
 - `.env`: Default environment variables.
 - `.env.development`: Environment variables for development.
 - `.env.production`: Environment variables for production.
@@ -122,33 +145,19 @@ vert-stack-template/
 - `.gitignore`: Specifies files and directories that Git should ignore.
 - `.prettierrc.json`: Configuration file for Prettier code formatter.
 - `eslint.config.js`: Configuration file for ESLint.
-- `index.html`: The main HTML file for the Vert stack application.
+- `index.html`: The main HTML file for the VERT stack application.
 - `package.json`: Project metadata and dependencies.
 - `pnpm-lock.yaml`: Lock file for pnpm dependencies.
-- `README.md`: Project documentation and overview.
+- `README.md`: Project documentation and overview (this file).
+- `CONTRIBUTING.md`: Guidelines for contributing to the project.
 - `tsconfig.json`: Main TypeScript configuration for the project.
-- `tsconfig.eslint.json`: TypeScript configuration specific to ESLint.
 - `tsconfig.node.json`: TypeScript configuration for Node.js environment.
 - `vite.config.ts`: Configuration file for Vite.
 - `vitest.setup.ts`: Setup file for Vitest testing framework.
 
-## Performance Optimization
-
-This template includes several performance optimizations:
-
-1. **Code Splitting**: The application uses React's `lazy` and `Suspense` features to implement code splitting. This means that each route is loaded only when it's needed, reducing the initial bundle size and improving load times.
-
-2. **Lazy Loading**: Route components are lazy-loaded, which means they're only fetched when the user navigates to that route. This improves the initial load time of the application.
-
-3. **Manual Chunk Splitting**: The Vite configuration includes manual chunk splitting for vendor libraries. This helps in better caching and can significantly reduce load times for returning visitors.
-
-4. **Preload Hints**: The `index.html` file includes preload hints for critical resources, allowing the browser to start loading these resources earlier in the page load process.
-
-These optimizations help to improve the overall performance and user experience of the application. Remember to analyze and optimize your specific application as it grows, as performance needs can vary based on the complexity and structure of your project.
-
 ## Getting Started
 
-While easily customizable, the vert stack is opinionated. Use pnpm.
+While easily customizable, the VERT stack is opinionated. Use pnpm.
 
 1. Clone this repository
 2. Run `pnpm install` to install dependencies
@@ -170,7 +179,7 @@ While easily customizable, the vert stack is opinionated. Use pnpm.
 
 ## PWA Support
 
-This template now includes Progressive Web App (PWA) support, allowing users to install the app on their devices and use it offline.
+This template includes Progressive Web App (PWA) support, allowing users to install the app on their devices and use it offline.
 
 ### PWA Features:
 
@@ -186,7 +195,7 @@ This template now includes Progressive Web App (PWA) support, allowing users to 
 
 Remember to rebuild and redeploy your app after making changes to PWA configuration.
 
-### Local Development with HTTPS ( Required to test PWA locally )
+### Local Development with HTTPS (Required to test PWA locally)
 
 For local development with HTTPS:
 
@@ -428,9 +437,9 @@ On Push to main, development, or staging branches (`deploy.yml`):
 
 The workflow automatically detects which environment to deploy to based on the branch:
 
-main branch deploys to production
-staging branch deploys to staging (if used)
-development branch deploys to development (if used)
+- main branch deploys to production
+- staging branch deploys to staging (if used)
+- development branch deploys to development (if used)
 
 Each environment can have its own set of secrets and environment variables configured in GitHub Actions.
 Sensitive information like API keys and database credentials should be stored as GitHub Secrets and injected during the build process.
@@ -439,9 +448,9 @@ Sensitive information like API keys and database credentials should be stored as
 
 This CI/CD configuration is designed to be flexible:
 
-For a simple setup, you can use just the main branch for production deployments.
-For a more complex setup, you can use all three branches: development, staging, and main (production).
-You can easily add or remove environments by modifying the deploy.yml file and adding or removing the corresponding .env files.
+- For a simple setup, you can use just the main branch for production deployments.
+- For a more complex setup, you can use all three branches: development, staging, and main (production).
+- You can easily add or remove environments by modifying the deploy.yml file and adding or removing the corresponding .env files.
 
 ### Deployment Strategy
 
@@ -455,10 +464,10 @@ Implement proper health checks and rollback procedures based on your specific ap
 
 To use this setup:
 
-Ensure your repository has the necessary secrets set up in GitHub Actions.
-Modify the deploy.yml file to include your actual deployment steps.
-Implement proper health checks for your application.
-Optionally, add manual approval steps for sensitive environments like production.
+1. Ensure your repository has the necessary secrets set up in GitHub Actions.
+2. Modify the deploy.yml file to include your actual deployment steps.
+3. Implement proper health checks for your application.
+4. Optionally, add manual approval steps for sensitive environments like production.
 
 For detailed information on the CI/CD setup, please refer to the workflow files in the .github/workflows/ directory.
 
@@ -534,71 +543,28 @@ The appropriate environment file will be used based on the branch being deployed
 
 Ensure your CI/CD pipeline is configured to use the correct environment file based on the branch being deployed.
 
-## Future Roadmap
+## Future Considerations
 
-The VERT Stack Template includes advanced features that prepare it for a wide range of production scenarios.
+The VERT Stack Template aims to be a solid foundation for modern web applications. To make the most of it:
 
-While these features address many common production requirements, users should still evaluate the template against their specific project needs, scale, and industry standards. The template provides a robust foundation that's closer to production-ready for many scenarios, but may require further customization for specific use cases or enterprise-level applications.
+- Stay updated with the latest versions of the core technologies (Vite, React, TypeScript)
+- Regularly review and update dependencies
+- Keep an eye on emerging best practices in web development
 
-The next major feature will be an App Wizard, allowing users to pick and choose features, along with speeding up some of the common set up.
-Feel free to submit a pull request. :)
+## Next Steps
 
-## How to Proceed from Here
+After setting up your project with the VERT Stack Template, consider the following:
 
-### Adding a UI Component Library
+1. Review and customize the ESLint and Prettier configurations to match your team's coding standards
+2. Set up your preferred state management solution if needed (e.g., Redux, MobX, Recoil)
+3. Implement your authentication and authorization system
+4. Configure your production deployment pipeline
 
-To enhance your development process and ensure UI consistency, you might want to add a UI component library. Here are some popular options:
-
-1. **Ant Design (Recommended)**
-
-   Ant Design is a comprehensive UI library with a wide range of components and built-in support for animations via Ant Motion.
-
-   To add Ant Design to your project:
-
-   ```bash
-   pnpm add antd @ant-design/icons
-   ```
-
-   To use Ant Motion for animations:
-
-   ```bash
-   pnpm add rc-tween-one @ant-design/react-slick
-   ```
-
-   [Ant Design Documentation](https://ant.design/)
-   [Ant Motion Documentation](https://motion.ant.design/)
-
-2. **Material-UI (MUI)**
-
-   A popular React UI framework implementing Google's Material Design.
-
-   ```bash
-   pnpm add @mui/material @emotion/react @emotion/styled
-   ```
-
-   [MUI Documentation](https://mui.com/)
-
-3. **Chakra UI**
-
-   A simple, modular, and accessible component library for React applications.
-
-   ```bash
-   pnpm add @chakra-ui/react @emotion/react @emotion/styled framer-motion
-   ```
-
-   [Chakra UI Documentation](https://chakra-ui.com/)
-
-After adding your chosen UI library, you may need to set up theme providers or import styles. Refer to the respective documentation for detailed setup instructions.
-
-### Next Steps
-
-1. **Build Something Amazing**: The VERT stack sets you up for success! Take the remaining steps.
-
-2. **Let Us Know About It**: We love seeing what others build! Browse the gallery and add yours.
+This template is a starting point. Modify and extend it to best suit your project's specific requirements.
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Contributions are welcome! Please see the [CONTRIBUTING.md](CONTRIBUTING.md) file for guidelines on how to contribute to this project.
 
 ## License
 

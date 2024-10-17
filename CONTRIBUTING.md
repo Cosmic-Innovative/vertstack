@@ -4,7 +4,7 @@ First off, thank you for considering contributing to the VERT Stack Template! It
 
 ## Code of Conduct
 
-By participating in this project, you are expected to uphold our Code of Conduct. Please report unacceptable behavior to [YOUR EMAIL].
+By participating in this project, you are expected to uphold our Code of Conduct. Please report unacceptable behavior.
 
 ## How Can I Contribute?
 
@@ -50,15 +50,37 @@ All JavaScript must adhere to [JavaScript Standard Style](https://standardjs.com
 
 All TypeScript must adhere to [TypeScript Standard Style](https://github.com/standard/ts-standard).
 
+## Internationalization Guidelines
+
+When contributing to the internationalization (i18n) features of the VERT Stack Template, please follow these guidelines:
+
+1. Use the `useTranslation` hook from react-i18next for accessing translations in components.
+2. Add new translation keys to all language files in the `src/locales` directory.
+3. Use meaningful and hierarchical keys for translations (e.g., `home.title`, `about.description`).
+4. Avoid hardcoding text in components. Instead, use translation keys.
+5. When adding new features, ensure they support multiple languages from the start.
+6. Test your changes with all supported languages to ensure proper rendering and functionality.
+
+### Adding a New Language
+
+To add support for a new language:
+
+1. Create a new JSON file in `src/locales` (e.g., `fr.json` for French).
+2. Copy all keys from `en.json` and translate the values to the new language.
+3. Update the `supportedLanguages` array in `src/i18n.ts`.
+4. Add the new language option to `LanguageSwitcher.tsx`.
+5. Update any relevant tests to include the new language.
+
 ## Additional Notes
 
 ### Issue and Pull Request Labels
 
 This section lists the labels we use to help us track and manage issues and pull requests.
 
+- `chore` - Quick updates and maintenance.
+- `feature` - Feature requests.
 - `bug` - Issues that are bugs.
-- `enhancement` - Issues that are feature requests.
-- `documentation` - Issues or pull requests related to documentation.
-- `good first issue` - Good for newcomers.
+- `enhancement` - Issues related to feature requests.
+- `docs` - Issues or pull requests related to documentation.
 
 Thank you for contributing!
