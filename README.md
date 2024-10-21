@@ -35,6 +35,7 @@ A web application development stack, prepared for a wide range of production sce
 - 📱 Progressive Web App (PWA) support for enhanced mobile experience
 - 🔍 Enhanced multilingual SEO with dynamic meta tags, structured data, and Open Graph support
 - 🏗️ Enhanced CI/CD setup with GitHub Actions, including Lighthouse CI for automated performance and quality checks
+- 📊 Centralized logging mechanism for client-side errors
 
 ## Project Structure
 
@@ -278,7 +279,7 @@ Remember to update your environment files (`.env.*`) with the appropriate API UR
 
 ## Internationalization
 
-The VERT Stack Template comes with built-in internationalization support using react-i18next. This allows for easy localization of your application to multiple languages.
+The VERT Stack Template comes with built-in internationalization support using react-i18next. It supports multiple languages, dynamic language switching, and SEO optimization for multilingual content.
 
 ### Key Features
 
@@ -315,10 +316,6 @@ function MyComponent() {
 - Alternate language links are automatically generated for each page
 - Structured data (JSON-LD) is included for better search engine understanding
 
-### Performance Optimization
-
-Language resources are loaded dynamically to improve initial load time. Only the resources for the current language are loaded on page load, with other languages loaded on-demand when switched to.
-
 For more detailed information on using and extending the internationalization features, please refer to the [react-i18next documentation](https://react.i18next.com/).
 
 ## SEO
@@ -335,12 +332,40 @@ To customize SEO settings for a specific page:
 1. Update the `getTitle` function in the `TitleComponent` in `src/App.tsx`
 2. Modify the meta tags and structured data as needed for your specific content
 
+## Performance Optimization
+
+- Code splitting for language resources
+- Lazy loading of images and components
+- Preloading of critical assets
+
+## Accessibility
+
+The template includes various accessibility enhancements, including:
+
+- Proper heading structure
+- ARIA labels
+- Keyboard navigation support
+- High contrast mode support
+
+## Security
+
+- Enhanced Content Security Policy (CSP)
+- Implementation of additional HTTP security headers
+- Input sanitization to prevent XSS attacks
+
+## Error Handling and Logging
+
+- Robust error boundary system with fallback UI
+- Centralized logging mechanism for client-side errors
+
 ## Testing
 
-This project uses Vitest for testing. Vitest is a Vite-native testing framework that's fast and efficient. It's compatible with Jest's API, making it easy to migrate existing tests. Our testing strategy includes:
+The template uses Vitest for testing. It's compatible with Jest's API, making it easy to migrate existing tests. Our testing strategy includes:
 
 1. **Unit Tests**: For testing individual components and functions in isolation.
 2. **Integration Tests**: For testing how different parts of the application work together, such as routing and internationalization.
+
+with a goal of >80% test coverage.
 
 ### When to Write Tests
 

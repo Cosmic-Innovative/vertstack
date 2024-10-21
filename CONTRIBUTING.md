@@ -50,77 +50,53 @@ All JavaScript must adhere to [JavaScript Standard Style](https://standardjs.com
 
 All TypeScript must adhere to [TypeScript Standard Style](https://github.com/standard/ts-standard).
 
-## Internationalization Guidelines
+## Development Process
 
-When contributing to the internationalization (i18n) features of the VERT Stack Template, please follow these guidelines:
+1. Fork the repository and create your branch from `main`.
+2. Install dependencies with `pnpm install`.
+3. Make your changes and ensure the code lints with `pnpm lint`.
+4. Run the tests with `pnpm test` and ensure they all pass.
+5. If you've added code that should be tested, add tests.
+6. If you've changed APIs, update the documentation.
+7. Ensure the test coverage is maintained or improved with `pnpm test:coverage`.
+8. Make sure your code lints and formatting is correct with `pnpm lint` and `pnpm format`.
 
-1. Use the `useTranslation` hook from react-i18next for accessing translations in components.
-2. Add new translation keys to all language files in the `src/locales` directory.
-3. Use meaningful and hierarchical keys for translations (e.g., `home.title`, `about.description`).
-4. Avoid hardcoding text in components. Instead, use translation keys.
-5. When adding new features, ensure they support multiple languages from the start.
-6. Test your changes with all supported languages to ensure proper rendering and functionality.
+## Running Tests
 
-### Adding a New Language
+- Run `pnpm test` to run all tests.
+- Use `pnpm test:watch` for development to run tests in watch mode.
+- Check test coverage with `pnpm test:coverage`.
 
-To add support for a new language:
+## Accessibility Guidelines
 
-1. Create a new JSON file in `src/locales` (e.g., `fr.json` for French).
-2. Copy all keys from `en.json` and translate the values to the new language.
-3. Update the `supportedLanguages` array in `src/i18n.ts`.
-4. Add the new language option to `LanguageSwitcher.tsx`.
-5. Update any relevant tests to include the new language.
+When contributing, please ensure your changes maintain or improve accessibility:
 
-## Performance and Quality Standards
+1. Use semantic HTML elements.
+2. Ensure proper ARIA attributes are used where necessary.
+3. Maintain keyboard navigation functionality.
+4. Ensure color contrast ratios meet WCAG 2.1 AA standards.
+5. Test with screen readers if making significant UI changes.
 
-We use Lighthouse CI to maintain high standards of performance, accessibility, best practices, SEO, and PWA features. Before submitting a pull request, please ensure your changes meet our Lighthouse audit standards.
+## Performance Considerations
 
-### Running Lighthouse Locally
+1. Avoid unnecessary re-renders in React components.
+2. Use lazy loading for images and components when appropriate.
+3. Optimize asset sizes, especially images.
+4. Be mindful of bundle size when adding new dependencies.
 
-To run Lighthouse audits locally:
+## Security Best Practices
 
-1. Make sure you have the latest changes and your feature branch is up to date.
-2. Build your changes:
-   ```
-   pnpm build
-   ```
-3. Run the Lighthouse audit:
-   ```
-   pnpm lighthouse
-   ```
+1. Sanitize all user inputs to prevent XSS attacks.
+2. Use HTTPS for all external requests.
+3. Avoid storing sensitive information in local storage or cookies.
+4. Follow the principle of least privilege in your code.
 
-This command will run Lighthouse CI against your built files, using the same configuration as our CI process.
+## Internationalization (i18n)
 
-4. Review the results in the console output. Pay special attention to any failed audits or metrics that don't meet our thresholds.
-5. Make necessary improvements to address any issues flagged by Lighthouse.
-6. Re-run the Lighthouse audit to confirm your changes have resolved the issues.
+When adding new text content:
 
-### Lighthouse Thresholds
+1. Use the `useTranslation` hook from react-i18next.
+2. Add new translation keys to all language files in `src/locales`.
+3. Use meaningful and hierarchical keys for translations.
 
-Our current Lighthouse score thresholds are:
-
-- Performance: 90
-- Accessibility: 90
-- Best Practices: 90
-- SEO: 90
-- PWA: 90
-
-While we strive for high scores in all categories, accessibility is particularly important. Pull requests that lower the accessibility score below 90 will not be accepted without a compelling reason and a plan to address the issues.
-
-### Note on Mobile Audits
-
-Currently, our Lighthouse CI is configured to run desktop audits. However, we plan to implement mobile audits in the future. When working on responsive features, please consider how your changes might impact mobile performance and usability.
-
-## Additional Notes
-
-### Issue and Pull Request Labels
-
-This section lists the labels we use to help us track and manage issues and pull requests.
-
-- `chore` - Quick updates and maintenance.
-- `feature` - Feature requests.
-- `bug` - Issues that are bugs.
-- `enhancement` - Issues related to feature requests.
-- `docs` - Issues or pull requests related to documentation.
-
-Thank you for contributing!
+Thank you for contributing to the VERT Stack Template!
