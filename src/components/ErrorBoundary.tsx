@@ -1,35 +1,57 @@
 import { Component, ErrorInfo, ReactNode } from 'react';
+import { withTranslation, WithTranslation } from 'react-i18next';
+import { logger } from '../utils/logger';
 
-interface Props {
-  children?: ReactNode;
+interface Props extends WithTranslation {
+  children: ReactNode;
   fallback?: ReactNode;
 }
 
 interface State {
   hasError: boolean;
+  error: Error | null;
 }
 
 class ErrorBoundary extends Component<Props, State> {
   public state: State = {
     hasError: false,
+    error: null,
   };
 
-  public static getDerivedStateFromError(_: Error): State {
-    // Update state so the next render will show the fallback UI.
-    return { hasError: true };
+  public static getDerivedStateFromError(error: Error): State {
+    return { hasError: true, error };
   }
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error('Uncaught error:', error, errorInfo);
+    logger.error('Uncaught error:', { error, errorInfo });
   }
 
   public render() {
+    const { t, fallback } = this.props;
+
     if (this.state.hasError) {
-      return this.props.fallback || <h1>Sorry.. there was an error</h1>;
+      if (fallback) {
+        return fallback;
+      }
+      return (
+        <div className="error-boundary">
+          <h1>{t('errors.somethingWentWrong')}</h1>
+          <p>{t('errors.errorBoundaryMessage')}</p>
+          {this.state.error && (
+            <details>
+              <summary>{t('errors.errorDetails')}</summary>
+              <pre>{this.state.error.toString()}</pre>
+            </details>
+          )}
+          <button onClick={() => window.location.reload()}>
+            {t('errors.refreshPage')}
+          </button>
+        </div>
+      );
     }
 
     return this.props.children;
   }
 }
 
-export default ErrorBoundary;
+export default withTranslation()(ErrorBoundary);

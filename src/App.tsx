@@ -118,11 +118,13 @@ interface AppProps {
 const App: React.FC<AppProps> = ({ useRouter = true }) => {
   const { t } = useTranslation();
 
+  const errorFallback = (
+    <div role="alert">{t('errors.somethingWentWrong')}</div>
+  );
+
   const content = (
     <HelmetProvider>
-      <ErrorBoundary
-        fallback={<div role="alert">{t('errors.somethingWentWrong')}</div>}
-      >
+      <ErrorBoundary fallback={errorFallback}>
         {useRouter ? (
           <Routes>
             {/* Route for language-prefixed paths */}
