@@ -1,6 +1,21 @@
 import { render, screen, expectTranslated, act } from '../test-utils';
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import Home from './Home';
+
+// Mock the LazyImage component
+vi.mock('./LazyImage', () => ({
+  default: ({
+    src,
+    alt,
+    className,
+  }: {
+    src: string;
+    alt: string;
+    className: string;
+  }) => (
+    <img src={src} alt={alt} className={className} data-testid="lazy-image" />
+  ),
+}));
 
 describe('Home', () => {
   it('renders in English by default', () => {
@@ -46,12 +61,16 @@ describe('Home', () => {
     expect(heading.tagName).toBe('H1');
   });
 
-  it('has accessible images', () => {
+  it('renders LazyImage component with correct props', () => {
     render(<Home />, { route: '/en' });
-    const images = screen.getAllByRole('img');
-    images.forEach((img) => {
-      expect(img).toHaveAttribute('alt');
-    });
+    const lazyImage = screen.getByTestId('lazy-image');
+    expect(lazyImage).toBeInTheDocument();
+    expect(lazyImage).toHaveAttribute('src', '/vertstack.svg');
+    expect(lazyImage).toHaveAttribute(
+      'alt',
+      expectTranslated('home.logoAlt', 'en'),
+    );
+    expect(lazyImage).toHaveClass('inline-logo');
   });
 
   it('has accessible links', () => {

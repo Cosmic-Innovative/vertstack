@@ -6,18 +6,13 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 const loadLocale = (lang: string) => import(`./locales/${lang}.json`);
 
 i18n
-  // Use language detector plugin for automatic language detection
   .use(LanguageDetector)
-  // Pass the i18n instance to react-i18next
   .use(initReactI18next)
   .init({
-    // Set fallback language if the detected or selected language is not available
     fallbackLng: 'en',
-    // Disable escaping of HTML entities in translation values
     interpolation: {
       escapeValue: false,
     },
-    // Configure language detection order
     detection: {
       order: ['path', 'navigator'],
     },
@@ -26,9 +21,10 @@ i18n
 // List of supported languages in the application
 const supportedLanguages = ['en', 'es'];
 
-// Dynamically load and add language resources for each supported language
-supportedLanguages.forEach((lang) => {
-  loadLocale(lang).then((translations) => {
+// Function to load language resources
+const loadLanguageResources = async (lang: string) => {
+  if (!i18n.hasResourceBundle(lang, 'translation')) {
+    const translations = await loadLocale(lang);
     i18n.addResourceBundle(
       lang,
       'translation',
@@ -36,7 +32,18 @@ supportedLanguages.forEach((lang) => {
       true,
       true,
     );
-  });
-});
+  }
+};
+
+// Load default language (English) immediately
+loadLanguageResources('en');
+
+// Function to change language
+export const changeLanguage = async (lang: string) => {
+  if (supportedLanguages.includes(lang)) {
+    await loadLanguageResources(lang);
+    await i18n.changeLanguage(lang);
+  }
+};
 
 export default i18n;

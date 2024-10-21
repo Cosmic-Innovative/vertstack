@@ -1,6 +1,6 @@
 import { Link, useParams } from 'react-router-dom';
-import vertStackLogo from '/vertstack.svg';
 import { useTranslation } from 'react-i18next';
+import LazyImage from './LazyImage';
 
 function Home() {
   const { t } = useTranslation();
@@ -9,8 +9,8 @@ function Home() {
   return (
     <main className="home-container">
       <div className="title-container">
-        <img
-          src={vertStackLogo}
+        <LazyImage
+          src="/vertstack.svg"
           alt={t('home.logoAlt')}
           className="inline-logo"
         />
