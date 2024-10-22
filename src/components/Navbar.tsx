@@ -7,12 +7,19 @@ interface NavbarProps {
   alignment?: 'left' | 'center' | 'right';
 }
 
-const Navbar: React.FC<NavbarProps> = ({ alignment = 'left' }) => {
+const Navbar: React.FC<NavbarProps> = ({ alignment = 'right' }) => {
   const { t } = useTranslation();
   const { lang } = useParams<{ lang: string }>();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+    if (!isMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+  };
 
   return (
     <nav className="navbar" aria-label="Main navigation">

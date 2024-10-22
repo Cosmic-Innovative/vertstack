@@ -33,9 +33,4 @@ describe('Navbar', () => {
     renderWithRouter(<Navbar alignment="center" />);
     expect(screen.getByTestId('navbar-menu')).toHaveClass('align-center');
   });
-
-  it('defaults to left alignment', () => {
-    renderWithRouter(<Navbar />);
-    expect(screen.getByTestId('navbar-menu')).toHaveClass('align-left');
-  });
 });

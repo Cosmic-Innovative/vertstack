@@ -29,7 +29,7 @@
     "metaDescription": "Explore our API integration example using the VERT Stack. Learn how to fetch and display data efficiently in your React applications."
   },
   "navbar": {
-    "brand": "VERT Stack Reference App",
+    "brand": "VERT App",
     "home": "Home",
     "about": "About",
     "contact": "Contact",

@@ -29,7 +29,7 @@
     "metaDescription": "Explora nuestro ejemplo de integración de API usando el Stack VERT. Aprende cómo obtener y mostrar datos de manera eficiente en tus aplicaciones React."
   },
   "navbar": {
-    "brand": "VERT Stack Aplicación de referencia",
+    "brand": "VERT Aplicación",
     "home": "Inicio",
     "about": "Acerca de",
     "contact": "Contacto",

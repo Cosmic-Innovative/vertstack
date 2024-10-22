@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { changeLanguage } from '../i18n';
 import '../styles/LanguageSwitcher.css';
 
 interface Language {
@@ -37,18 +38,19 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   const handleLanguageChange = useCallback(
-    (languageCode: string) => {
+    async (languageCode: string) => {
       const pathParts = location.pathname.split('/');
       pathParts[1] = languageCode;
       const newPath = pathParts.join('/');
 
-      i18n.changeLanguage(languageCode).then(() => {
+      const success = await changeLanguage(languageCode);
+      if (success) {
         navigate(newPath);
         setIsOpen(false);
-        buttonRef.current?.focus();
-      });
+        document.documentElement.lang = languageCode;
+      }
     },
-    [i18n, navigate, location.pathname],
+    [navigate, location.pathname],
   );
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
