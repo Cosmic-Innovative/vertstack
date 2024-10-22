@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next';
 import ErrorBoundary from './components/ErrorBoundary';
 import Navbar from './components/Navbar';
 import TitleComponent from './components/TitleComponent';
+import Footer from './components/Footer';
 
 // Lazy load route components for better performance
 const Home = lazy(() => import('./components/Home'));
@@ -105,6 +106,7 @@ const AppContent: React.FC<AppContentProps> = React.memo(({ useRouter }) => {
           <Routes>{routeElements}</Routes>
         </Suspense>
       </main>
+      <Footer />
     </>
   );
 });

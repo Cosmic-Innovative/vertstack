@@ -1,0 +1,163 @@
+.footer {
+  background-color: #f8f9fa;
+  border-top: 1px solid #e9ecef;
+  padding: 2rem 0;
+  margin-top: auto;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.footer-language-selector {
+  position: relative;
+}
+
+.language-display {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  cursor: pointer;
+  background-color: white;
+  transition: all 0.2s ease;
+}
+
+.language-display:hover {
+  border-color: #aaa;
+}
+
+.language-flag {
+  font-size: 1.2em;
+}
+
+.language-name {
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.language-dropdown-arrow {
+  color: #666;
+  margin-left: 0.5rem;
+  display: inline-block;
+  transform: rotate(180deg); /* Flip the arrow to point up */
+}
+
+.language-options {
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  max-height: 300px;
+  overflow-y: auto;
+  padding-bottom: 8px; /* Add padding to extend hover area */
+}
+
+/* Create an invisible bridge between selector and options */
+.footer-language-selector::after {
+  content: '';
+  position: absolute;
+  height: 8px; /* Match the gap size */
+  bottom: 100%;
+  left: 0;
+  right: 0;
+  background: transparent;
+}
+
+/* Show options when hovering over selector or the options themselves */
+.footer-language-selector:hover .language-options,
+.language-options:hover {
+  display: block;
+}
+
+.language-option.active {
+  background-color: #e9ecef;
+}
+
+.footer-attribution {
+  text-align: right;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.footer-attribution a {
+  color: #0056b3;
+  text-decoration: none;
+}
+
+.footer-attribution a:hover {
+  text-decoration: underline;
+}
+
+.footer-copyright {
+  margin-left: 0.5rem;
+  color: #999;
+}
+
+@media (max-width: 768px) {
+  .footer-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  .footer-language-selector {
+    width: 100%;
+  }
+
+  .language-display {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .language-options {
+    width: 100%;
+  }
+
+  .footer-attribution {
+    width: 100%;
+    text-align: center;
+  }
+
+  /* Ensure the popup has enough room on mobile */
+  .footer-language-selector {
+    margin-top: 150px; /* Add space above the selector for the popup */
+  }
+}
+
+/* Add smooth scrollbar for webkit browsers */
+.language-options::-webkit-scrollbar {
+  width: 8px;
+}
+
+.language-options::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.language-options::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.language-options::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

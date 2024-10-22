@@ -1,5 +1,11 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+  act,
+} from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '../i18n.mock';
@@ -14,51 +20,123 @@ const renderWithRouter = (ui: React.ReactElement, { route = '/' } = {}) => {
 };
 
 describe('LanguageSwitcher', () => {
-  it('renders language dropdown', () => {
-    renderWithRouter(<LanguageSwitcher />);
-    expect(
-      screen.getByRole('button', { name: /English|Español/i }),
-    ).toBeInTheDocument();
-  });
-
-  it('opens dropdown when clicked', () => {
-    renderWithRouter(<LanguageSwitcher />);
-    const toggleButton = screen.getByRole('button', {
-      name: /English|Español/i,
+  beforeEach(() => {
+    // Reset i18n language before each test
+    act(() => {
+      i18n.changeLanguage('en');
     });
-    fireEvent.click(toggleButton);
-    expect(screen.getAllByRole('button').length).toBeGreaterThan(1);
   });
 
-  it('changes language when option is clicked', async () => {
+  it('renders current language', () => {
+    renderWithRouter(<LanguageSwitcher />);
+    const button = screen.getByRole('button', { name: /select language/i });
+    expect(button).toHaveTextContent('English');
+  });
+
+  it('displays language options when clicked', async () => {
+    renderWithRouter(<LanguageSwitcher />);
+
+    await act(async () => {
+      const button = screen.getByRole('button', { name: /select language/i });
+      fireEvent.click(button);
+    });
+
+    const spanishOption = screen.getByRole('option', { name: /español/i });
+    expect(spanishOption).toBeInTheDocument();
+  });
+
+  it('changes language when a different language is selected', async () => {
     renderWithRouter(<LanguageSwitcher />);
     const initialLanguage = i18n.language;
-    const toggleButton = screen.getByRole('button', {
-      name: /English|Español/i,
+
+    // Open the menu
+    await act(async () => {
+      const button = screen.getByRole('button', { name: /select language/i });
+      fireEvent.click(button);
     });
-    fireEvent.click(toggleButton);
-    const otherLanguageOption = screen.getByRole('button', {
-      name: initialLanguage === 'en' ? /Español/i : /English/i,
+
+    // Select Spanish
+    await act(async () => {
+      const spanishOption = screen.getByRole('option', { name: /español/i });
+      fireEvent.click(spanishOption);
     });
-    fireEvent.click(otherLanguageOption);
+
+    // Wait for language change to complete
     await waitFor(() => {
-      expect(i18n.language).toBe(initialLanguage === 'en' ? 'es' : 'en');
+      expect(i18n.language).toBe('es');
     });
+
+    expect(i18n.language).not.toBe(initialLanguage);
   });
 
-  it('closes dropdown after language change', async () => {
+  it('applies popup direction class correctly', () => {
+    renderWithRouter(<LanguageSwitcher popupDirection="up" />);
+    const switcher = screen.getByTestId('language-switcher');
+    expect(switcher).toHaveClass('popup-up');
+  });
+
+  it('applies custom className when provided', () => {
+    renderWithRouter(<LanguageSwitcher className="custom-class" />);
+    const switcher = screen.getByTestId('language-switcher');
+    expect(switcher).toHaveClass('custom-class');
+  });
+
+  it('supports keyboard navigation', async () => {
     renderWithRouter(<LanguageSwitcher />);
-    const initialLanguage = i18n.language;
-    const toggleButton = screen.getByRole('button', {
-      name: /English|Español/i,
+    const button = screen.getByRole('button', { name: /select language/i });
+
+    // Open menu with Enter key
+    await act(async () => {
+      fireEvent.keyDown(button, { key: 'Enter' });
     });
-    fireEvent.click(toggleButton);
-    const otherLanguageOption = screen.getByRole('button', {
-      name: initialLanguage === 'en' ? /Español/i : /English/i,
+
+    expect(screen.getByRole('listbox')).toBeInTheDocument();
+
+    // Close menu with Escape key
+    await act(async () => {
+      fireEvent.keyDown(button, { key: 'Escape' });
     });
-    fireEvent.click(otherLanguageOption);
-    await waitFor(() => {
-      expect(screen.getAllByRole('button').length).toBe(1);
+
+    expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
+  });
+
+  it('closes menu when clicking outside', async () => {
+    renderWithRouter(<LanguageSwitcher />);
+
+    // Open the menu
+    await act(async () => {
+      const button = screen.getByRole('button', { name: /select language/i });
+      fireEvent.click(button);
     });
+
+    expect(screen.getByRole('listbox')).toBeInTheDocument();
+
+    // Click outside
+    await act(async () => {
+      fireEvent.mouseDown(document.body);
+    });
+
+    expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
+  });
+
+  it('maintains aria-expanded state', async () => {
+    renderWithRouter(<LanguageSwitcher />);
+    const button = screen.getByRole('button', { name: /select language/i });
+
+    expect(button).toHaveAttribute('aria-expanded', 'false');
+
+    // Open menu
+    await act(async () => {
+      fireEvent.click(button);
+    });
+
+    expect(button).toHaveAttribute('aria-expanded', 'true');
+
+    // Close menu
+    await act(async () => {
+      fireEvent.click(button);
+    });
+
+    expect(button).toHaveAttribute('aria-expanded', 'false');
   });
 });

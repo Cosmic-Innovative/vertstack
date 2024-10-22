@@ -1,50 +1,30 @@
-.language-switcher-dropdown {
+.language-switcher {
   position: relative;
-  display: inline-block;
+  min-width: 200px;
 }
 
-.language-dropdown-toggle {
+.language-display {
   display: flex;
   align-items: center;
-  gap: 5px;
-  padding: 5px 10px;
-  border: none;
-  background-color: transparent;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
   cursor: pointer;
-  font-size: 14px;
-  color: white;
-}
-
-.language-dropdown-menu {
-  position: absolute;
-  top: 100%;
-  right: 0;
   background-color: white;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  padding: 5px 0;
-  margin-top: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-  display: flex;
-  flex-direction: column;
-  min-width: 120px;
-}
-
-.language-option {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  padding: 8px 12px;
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
+  transition: all 0.2s ease;
   width: 100%;
-  text-align: left;
+  justify-content: space-between;
 }
 
-.language-option:hover {
-  background-color: #f0f0f0;
+.language-display:hover {
+  border-color: #aaa;
+}
+
+.language-display:focus {
+  outline: none;
+  border-color: var(--focus-color);
+  box-shadow: 0 0 0 2px rgba(0, 86, 179, 0.2);
 }
 
 .language-flag {
@@ -52,15 +32,69 @@
 }
 
 .language-name {
-  font-weight: bold;
+  flex-grow: 1;
+  text-align: left;
+}
+
+.language-dropdown-arrow {
+  color: #666;
+  margin-left: 0.5rem;
+  transition: transform 0.2s ease;
+}
+
+.language-switcher.is-open .language-dropdown-arrow {
+  transform: rotate(180deg);
+}
+
+.language-options {
+  position: absolute;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  width: 100%;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.popup-up .language-options {
+  bottom: calc(100% + 8px);
+}
+
+.popup-down .language-options {
+  top: calc(100% + 8px);
+}
+
+.language-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 0.2s ease;
+}
+
+.language-option:hover {
+  background-color: #f8f9fa;
+}
+
+.language-option:focus {
+  outline: none;
+  background-color: #e9ecef;
+  box-shadow: 0 0 0 2px var(--focus-color);
+}
+
+.language-option.active {
+  background-color: #e9ecef;
 }
 
 @media (max-width: 768px) {
-  .language-dropdown-toggle .language-name {
-    display: none;
-  }
-
-  .language-dropdown-toggle {
-    padding: 5px;
+  .language-switcher {
+    width: 100%;
   }
 }
