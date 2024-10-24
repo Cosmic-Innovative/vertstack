@@ -1,6 +1,6 @@
 import React from 'react';
-import { screen, waitFor } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest';
+import { screen } from '@testing-library/react';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import App from './App';
 import { render } from './test-utils';
 
@@ -24,35 +24,41 @@ vi.mock('./components/ErrorBoundary', () => ({
 }));
 
 describe('App', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
   it('renders navigation and home page', async () => {
     render(<App useRouter={false} />, { route: '/en' });
 
-    await waitFor(() => {
-      expect(screen.getByText('Home')).toBeInTheDocument();
-      expect(screen.getByText('About')).toBeInTheDocument();
-      expect(screen.getByText('Contact')).toBeInTheDocument();
-      expect(screen.getByText('API Example')).toBeInTheDocument();
-    });
+    // Use findBy instead of getBy for async elements
+    const homeLink = await screen.findByText('Home');
+    const aboutLink = await screen.findByText('About');
+    const contactLink = await screen.findByText('Contact');
+    const apiLink = await screen.findByText('API Example');
+    const homePage = await screen.findByText('Home Page');
 
-    expect(screen.getByText('Home Page')).toBeInTheDocument();
+    expect(homeLink).toBeInTheDocument();
+    expect(aboutLink).toBeInTheDocument();
+    expect(contactLink).toBeInTheDocument();
+    expect(apiLink).toBeInTheDocument();
+    expect(homePage).toBeInTheDocument();
   });
 
   it('renders the navbar', async () => {
     render(<App useRouter={false} />, { route: '/en' });
 
-    await waitFor(() => {
-      const navElement = screen.getByRole('navigation');
-      expect(navElement).toBeInTheDocument();
-    });
+    // Use findByRole for async elements and don't require the name match
+    const navElement = await screen.findByRole('navigation');
+    expect(navElement).toBeInTheDocument();
   });
 
   it('renders the main container', async () => {
     render(<App useRouter={false} />, { route: '/en' });
 
-    await waitFor(() => {
-      const mainContainer = screen.getByRole('main');
-      expect(mainContainer).toBeInTheDocument();
-      expect(mainContainer).toHaveClass('container');
-    });
+    // Use findByRole for async elements and don't require the name match
+    const mainContainer = await screen.findByRole('main');
+    expect(mainContainer).toBeInTheDocument();
+    expect(mainContainer).toHaveClass('container');
   });
 });

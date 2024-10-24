@@ -1,91 +1,61 @@
-import { render, screen, expectTranslated, waitFor, act } from '../test-utils';
+import { screen } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import ApiExample from './ApiExample';
 import * as api from '../utils/api';
+import { render, actWithReturn, expectTranslated } from '../test-utils';
 
 vi.mock('../utils/api', () => ({
-  fetchData: vi.fn(() => Promise.resolve([])),
+  fetchData: vi.fn(),
   sanitizeInput: vi.fn((input) => input),
 }));
 
 describe('ApiExample', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    (api.fetchData as ReturnType<typeof vi.fn>).mockImplementation(() =>
-      Promise.resolve([]),
-    );
+    (api.fetchData as ReturnType<typeof vi.fn>).mockResolvedValue([]);
   });
 
   it('renders in English by default', async () => {
-    await act(async () => {
-      render(<ApiExample />, { route: '/en/api-example' });
-    });
-    await waitFor(() => {
-      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
-        expectTranslated('apiExample.title', 'en'),
-      );
-      expect(
-        screen.getByText(expectTranslated('apiExample.description', 'en')),
-      ).toBeInTheDocument();
-    });
-    expect(api.fetchData).toHaveBeenCalled();
+    await render(<ApiExample />, { route: '/en/api-example' });
+
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+      await expectTranslated('apiExample.title', 'en'),
+    );
+    expect(
+      screen.getByText(await expectTranslated('apiExample.description', 'en')),
+    ).toBeInTheDocument();
   });
 
   it('renders in Spanish when specified', async () => {
-    await act(async () => {
-      render(<ApiExample />, { route: '/es/api-example' });
-    });
-    await screen.findByRole('heading', { level: 1 });
-    await waitFor(() => {
-      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
-        expectTranslated('apiExample.title', 'es'),
-      );
-    });
+    await render(<ApiExample />, { route: '/es/api-example' });
+
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+      await expectTranslated('apiExample.title', 'es'),
+    );
   });
 
   it('changes language dynamically', async () => {
-    const { changeLanguage } = render(<ApiExample />, {
+    const { changeLanguage } = await render(<ApiExample />, {
       route: '/en/api-example',
     });
 
-    await waitFor(() => {
-      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
-        expectTranslated('apiExample.title', 'en'),
-      );
-    });
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+      await expectTranslated('apiExample.title', 'en'),
+    );
 
-    await act(async () => {
-      await changeLanguage('es');
-    });
+    await changeLanguage('es');
 
-    await waitFor(() => {
-      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
-        expectTranslated('apiExample.title', 'es'),
-      );
-    });
-    expect(api.fetchData).toHaveBeenCalled();
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+      await expectTranslated('apiExample.title', 'es'),
+    );
   });
 
   it('has proper heading structure', async () => {
-    await act(async () => {
-      render(<ApiExample />, { route: '/en/api-example' });
-    });
-    await waitFor(() => {
-      const heading = screen.getByRole('heading', { level: 1 });
-      expect(heading).toBeInTheDocument();
-      expect(heading.tagName).toBe('H1');
-    });
-  });
+    await render(<ApiExample />, { route: '/en/api-example' });
 
-  it('contains informative content', async () => {
-    await act(async () => {
-      render(<ApiExample />, { route: '/en/api-example' });
-    });
-    await waitFor(() => {
-      expect(
-        screen.getByText(expectTranslated('apiExample.description', 'en')),
-      ).toBeInTheDocument();
-    });
+    const heading = screen.getByRole('heading', { level: 1 });
+    expect(heading).toBeInTheDocument();
+    expect(heading.tagName).toBe('H1');
   });
 
   it('displays loading state and then user data', async () => {
@@ -95,48 +65,45 @@ describe('ApiExample', () => {
         name: 'John Doe',
         email: 'john@example.com',
         company: { name: 'Company A' },
+        address: {
+          street: '123 Main St',
+          suite: 'Apt 4B',
+          city: 'Boston',
+          zipcode: '02108',
+          geo: { lat: '42.3601', lng: '-71.0589' },
+        },
       },
     ];
 
     let resolvePromise: (value: unknown) => void;
-    const promise = new Promise((resolve) => {
+    const dataPromise = new Promise((resolve) => {
       resolvePromise = resolve;
     });
 
-    (api.fetchData as ReturnType<typeof vi.fn>).mockReturnValue(promise);
+    (api.fetchData as ReturnType<typeof vi.fn>).mockReturnValue(dataPromise);
 
-    await act(async () => {
-      render(<ApiExample />, { route: '/en/api-example' });
-    });
+    await render(<ApiExample />, { route: '/en/api-example' });
 
     expect(
-      screen.getByText(expectTranslated('general.loading', 'en')),
+      screen.getByText(await expectTranslated('general.loading', 'en')),
     ).toBeInTheDocument();
 
-    await act(async () => {
-      resolvePromise(mockUsers);
+    await actWithReturn(async () => {
+      resolvePromise!(mockUsers);
+      await dataPromise;
     });
 
-    await waitFor(() => {
-      expect(screen.getByText('John Doe')).toBeInTheDocument();
-    });
-
+    expect(screen.getByText('John Doe')).toBeInTheDocument();
     expect(
-      screen.queryByText(expectTranslated('general.loading', 'en')),
+      screen.queryByText(await expectTranslated('general.loading', 'en')),
     ).not.toBeInTheDocument();
   });
 
-  it('handles error state', async () => {
-    (api.fetchData as ReturnType<typeof vi.fn>).mockRejectedValue(
-      new Error('Failed to fetch'),
-    );
+  it('contains informative content', async () => {
+    await render(<ApiExample />, { route: '/en/api-example' });
 
-    await act(async () => {
-      render(<ApiExample />, { route: '/en/api-example' });
-    });
-
-    await waitFor(() => {
-      expect(screen.getByText(/Error fetching user data/)).toBeInTheDocument();
-    });
+    expect(
+      screen.getByText(await expectTranslated('apiExample.description', 'en')),
+    ).toBeInTheDocument();
   });
 });

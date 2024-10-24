@@ -30,12 +30,13 @@ A web application development stack, prepared for a wide range of production sce
 - 🌍 Environment-specific configuration support for development, staging, and production
 - 🧭 React Router for seamless navigation between pages
 - 🌐 Fetch API integration for efficient data fetching
-- 🔒 Enhanced security measures and best practices
+- 🔒 Enhanced security measures and best practices with comprehensive security event logging
 - ♿ Comprehensive accessibility features with WCAG 2.1 compliance
 - 📱 Progressive Web App (PWA) support for enhanced mobile experience
 - 🔍 Enhanced multilingual SEO with dynamic meta tags, structured data, and Open Graph support
 - 🏗️ Enhanced CI/CD setup with GitHub Actions, including Lighthouse CI for automated performance and quality checks
-- 📊 Centralized logging mechanism for client-side errors
+- 📊 Production-grade logging system with performance tracking and offline resilience
+- 🐛 Advanced debugging capabilities with type-safe error tracking, request/response tracing and performance threshold monitoring
 
 ## Project Structure
 
@@ -80,7 +81,11 @@ vert-stack-template/
 │   │
 │   ├── utils/
 │   │   ├── api.ts
+│   │   ├── i18n-datetime-utils.ts
+│   │   ├── i18n-number-utils.ts
+│   │   ├── i18n-utils.ts
 │   │   ├── languageDetection.ts
+│   │   ├── logger.ts
 │   │   └── sitemapGenerator.ts
 │   │
 │   ├── locales/
@@ -132,7 +137,11 @@ vert-stack-template/
     - `LanguageSwitcher.css`: Styles for the language switcher component.
   - `/utils/`: Utility functions and helpers.
     - `api.ts`: Contains functions for making API calls.
+    - `i18n-datetime-utils.ts`: Locale-specific date and time formatting.
+    - `i18n-number-utils.ts`: Locale-specific number, currency, percentages, and pluralization rules.
+    - `i18n-utils.ts`: Provides a consistent API for internationalization features.
     - `languageDetection.ts`: Utility for detecting user's preferred language.
+    - `logger.ts`: A centralized application-wide logging system.
     - `sitemapGenerator.ts`: Function to generate dynamic sitemap.
   - `/locales/`: Contains language files for internationalization.
     - `en.json`: English translations.
@@ -279,7 +288,7 @@ Remember to update your environment files (`.env.*`) with the appropriate API UR
 
 ## Internationalization
 
-The VERT Stack Template comes with built-in internationalization support using react-i18next. It supports multiple languages, dynamic language switching, and SEO optimization for multilingual content.
+The VERT Stack Template includes comprehensive internationalization support.
 
 ### Key Features
 
@@ -308,6 +317,38 @@ function MyComponent() {
 
   return <h1>{t('myComponent.title')}</h1>;
 }
+```
+
+### Number Formatting
+
+```typescript
+import { formatNumber, formatCurrency, formatPercentage } from '../utils/i18n';
+
+// Format numbers
+formatNumber(1234.56, 'en-US'); // "1,234.56"
+formatNumber(1234.56, 'es'); // "1.234,56"
+
+// Format currency
+formatCurrency(1234.56, 'en-US', 'USD'); // "$1,234.56"
+formatCurrency(1234.56, 'es', 'EUR'); // "1.234,56 €"
+```
+
+### Date and Time Formatting
+
+```typescript
+import { formatDate, formatRelativeTime } from '../utils/i18n';
+
+formatDate(new Date(), 'en-US');
+formatRelativeTime(pastDate, 'es');
+```
+
+### List Formatting
+
+```typescript
+import { formatList } from '../utils/i18n';
+
+formatList(['apple', 'banana', 'orange'], 'en-US');
+// "apple, banana, and orange"
 ```
 
 ### SEO Considerations
@@ -356,7 +397,37 @@ The template includes various accessibility enhancements, including:
 ## Error Handling and Logging
 
 - Robust error boundary system with fallback UI
-- Centralized logging mechanism for client-side errors
+
+## Advanced Logging
+
+The VERT Stack includes a comprehensive, type-safe logging system designed for production applications. It features structured logging, performance tracking, and robust error handling with offline capabilities.
+
+### Basic Logging
+
+```typescript
+import { logger } from '../utils/logger';
+
+// Simple logging
+logger.info('Application started');
+
+// Structured logging with details
+logger.info('User action', {
+  userId: 123,
+  action: 'login',
+  category: 'Authentication',
+});
+
+// Error logging
+try {
+  // ... some operation
+} catch (error) {
+  logger.error('Operation failed', {
+    error,
+    category: 'Database',
+    operation: 'insert',
+  });
+}
+```
 
 ## Testing
 

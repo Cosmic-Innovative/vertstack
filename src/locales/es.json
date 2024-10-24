@@ -33,7 +33,8 @@
     "home": "Inicio",
     "about": "Acerca de",
     "contact": "Contacto",
-    "apiExample": "Ejemplo de API"
+    "apiExample": "Ejemplo de API",
+    "i18nExamples": "Ejemplos de I18n"
   },
   "general": {
     "appName": "Plantilla VERT Stack",
@@ -45,23 +46,66 @@
     "fetchError": "Error al obtener datos de usuario: {{error}}"
   },
   "userList": {
-    "title": "Ejemplo de integración de API: Lista de usuarios",
-    "description": "Este componente demuestra cómo obtener y mostrar datos de una API externa utilizando el stack VERT. Estamos utilizando la API JSONPlaceholder para recuperar una lista de usuarios.",
-    "keyPoints": "Puntos clave:",
-    "keyPoint1": "Los datos se obtienen utilizando la utilidad fetchData de src/utils/api.ts",
-    "keyPoint2": "Los hooks de React (useState y useEffect) gestionan el estado del componente y los efectos secundarios",
-    "keyPoint3": "Los estados de carga y error se manejan para mejorar la experiencia del usuario",
-    "apiDetails": "Detalles de la API:",
-    "apiEndpoint": "Endpoint: https://jsonplaceholder.typicode.com/users",
-    "apiDescription": "Esta API gratuita proporciona datos simulados para pruebas y creación de prototipos.",
-    "userData": "Datos de usuario:",
+    "title": "Ejemplo de Integración de API: Directorio de Usuarios",
+    "description": "Este componente demuestra cómo obtener y mostrar datos de una API externa utilizando el stack VERT, con soporte de internacionalización para el formato de direcciones, números y listas.",
     "name": "Nombre",
     "email": "Correo electrónico",
     "company": "Empresa",
-    "noUsers": "No se encontraron usuarios."
+    "location": "Ubicación",
+    "contact": "Información de contacto",
+    "noUsers": "No se encontraron usuarios.",
+    "totalUsers": "Total de Usuarios: {{formatted}}",
+    "companiesRepresented": "Empresas Representadas: {{formatted}}",
+    "keyPoints": "Puntos clave:",
+    "keyPoint1": "Los datos se obtienen utilizando la utilidad fetchData de src/utils/api.ts",
+    "keyPoint2": "Formato internacionalizado para direcciones y listas",
+    "keyPoint3": "Los estados de carga y error se manejan para mejorar la experiencia del usuario",
+    "apiDetails": "Detalles de la API:",
+    "apiEndpoint": "Punto de acceso: https://jsonplaceholder.typicode.com/users",
+    "apiDescription": "Esta API gratuita proporciona datos simulados de usuarios para pruebas y creación de prototipos."
   },
   "footer": {
     "createdWith": "Creado con",
     "by": "por"
+  },
+  "i18nExamples": {
+    "title": "Ejemplos de Internacionalización",
+    "description": "Ejemplos comunes de formato para números, monedas, fechas y más.",
+
+    "prices": {
+      "title": "Precios y Monedas",
+      "product": "Precio del Producto",
+      "discount": "Precio con Descuento",
+      "off": "de descuento"
+    },
+
+    "units": {
+      "title": "Unidades y Medidas",
+      "temperature": "Temperatura",
+      "fileSize": "Tamaño del Archivo",
+      "distance": "Distancia"
+    },
+
+    "stats": {
+      "title": "Estadísticas y Métricas",
+      "progress": "Progreso",
+      "engagement": "Interacción",
+      "views": "{{formatted}} visualizaciones"
+    },
+
+    "dates": {
+      "title": "Fechas y Horarios",
+      "event": "Programación del Evento",
+      "upcoming": "próximo",
+      "past": "pasado"
+    },
+
+    "lists": {
+      "title": "Listas y Opciones",
+      "options": "Opciones Disponibles",
+      "option1": "Plan Básico",
+      "option2": "Plan Premium",
+      "option3": "Plan Empresarial"
+    }
   }
 }

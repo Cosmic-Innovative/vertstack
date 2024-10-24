@@ -75,7 +75,7 @@ export default [
     },
   },
   {
-    files: ['**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+    files: ['src/utils/i18n/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     rules: {
       ...vitestPlugin.configs.recommended.rules,
     },

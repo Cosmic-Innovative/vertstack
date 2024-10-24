@@ -26,6 +26,12 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true
   },
-  "include": ["src", "**/*.test.ts", "**/*.test.tsx", "src/vite-env.d.ts"],
+  "include": [
+    "src",
+    "src/utils/i18n/**/*",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "src/vite-env.d.ts"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

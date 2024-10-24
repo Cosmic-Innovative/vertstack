@@ -22,7 +22,7 @@ const Navbar: React.FC<NavbarProps> = ({ alignment = 'right' }) => {
   };
 
   return (
-    <nav className="navbar" aria-label="Main navigation">
+    <nav className="navbar" role="navigation" aria-label="Main navigation">
       <div className="navbar-container">
         <Link to={`/${lang}`} className="navbar-brand">
           {t('navbar.brand')}

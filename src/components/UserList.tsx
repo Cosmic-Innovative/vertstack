@@ -1,14 +1,34 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { fetchData, sanitizeInput } from '../utils/api';
+import { formatNumber, formatList } from '../utils/i18n';
+
+interface UserAddress {
+  street: string;
+  suite: string;
+  city: string;
+  zipcode: string;
+  geo: {
+    lat: string;
+    lng: string;
+  };
+}
+
+interface UserCompany {
+  name: string;
+  catchPhrase: string;
+  bs: string;
+}
 
 interface User {
   id: number;
   name: string;
+  username: string;
   email: string;
-  company: {
-    name: string;
-  };
+  address?: UserAddress;
+  phone: string;
+  website: string;
+  company: UserCompany;
 }
 
 function UserList() {
@@ -37,22 +57,22 @@ function UserList() {
       </div>
     );
 
+  const formatAddress = (address?: UserAddress): string => {
+    if (!address) return '-';
+    const parts = [
+      address.street,
+      address.suite,
+      address.city,
+      address.zipcode,
+    ].filter(Boolean);
+    return formatList(parts);
+  };
+
   return (
     <div className="user-list-container">
       <h2>{t('userList.title')}</h2>
       <p>{t('userList.description')}</p>
-      <p>{t('userList.keyPoints')}</p>
-      <ul>
-        <li>{t('userList.keyPoint1')}</li>
-        <li>{t('userList.keyPoint2')}</li>
-        <li>{t('userList.keyPoint3')}</li>
-      </ul>
-      <div className="api-info">
-        <h3>{t('userList.apiDetails')}</h3>
-        <p>{t('userList.apiEndpoint')}</p>
-        <p>{t('userList.apiDescription')}</p>
-      </div>
-      <h3>{t('userList.userData')}</h3>
+
       {users.length > 0 ? (
         <table className="user-table">
           <thead>
@@ -60,6 +80,8 @@ function UserList() {
               <th>{t('userList.name')}</th>
               <th>{t('userList.email')}</th>
               <th>{t('userList.company')}</th>
+              <th>{t('userList.location')}</th>
+              <th>{t('userList.contact')}</th>
             </tr>
           </thead>
           <tbody>
@@ -67,7 +89,21 @@ function UserList() {
               <tr key={user.id}>
                 <td>{sanitizeInput(user.name)}</td>
                 <td>{sanitizeInput(user.email)}</td>
-                <td>{sanitizeInput(user.company.name)}</td>
+                <td>
+                  <div>{sanitizeInput(user.company.name)}</div>
+                  <small>{sanitizeInput(user.company.catchPhrase)}</small>
+                </td>
+                <td>{formatAddress(user.address)}</td>
+                <td>
+                  <div>{sanitizeInput(user.phone)}</div>
+                  <a
+                    href={`https://${user.website}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {sanitizeInput(user.website)}
+                  </a>
+                </td>
               </tr>
             ))}
           </tbody>
@@ -75,6 +111,23 @@ function UserList() {
       ) : (
         <p>{t('userList.noUsers')}</p>
       )}
+
+      <div className="stats-summary">
+        <p>
+          {t('userList.totalUsers', {
+            count: users.length,
+            formatted: formatNumber(users.length),
+          })}
+        </p>
+        <p>
+          {t('userList.companiesRepresented', {
+            count: new Set(users.map((user) => user.company.name)).size,
+            formatted: formatNumber(
+              new Set(users.map((user) => user.company.name)).size,
+            ),
+          })}
+        </p>
+      </div>
     </div>
   );
 }

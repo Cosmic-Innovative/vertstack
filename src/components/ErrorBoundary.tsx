@@ -23,7 +23,11 @@ class ErrorBoundary extends Component<Props, State> {
   }
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    logger.error('Uncaught error:', { error, errorInfo });
+    logger.error('Uncaught error in component', {
+      error,
+      errorInfo,
+      componentStack: errorInfo.componentStack,
+    });
   }
 
   public render() {
@@ -33,8 +37,9 @@ class ErrorBoundary extends Component<Props, State> {
       if (fallback) {
         return fallback;
       }
+
       return (
-        <div className="error-boundary">
+        <div className="error-boundary" role="alert">
           <h1>{t('errors.somethingWentWrong')}</h1>
           <p>{t('errors.errorBoundaryMessage')}</p>
           {this.state.error && (
@@ -43,7 +48,10 @@ class ErrorBoundary extends Component<Props, State> {
               <pre>{this.state.error.toString()}</pre>
             </details>
           )}
-          <button onClick={() => window.location.reload()}>
+          <button
+            onClick={() => window.location.reload()}
+            className="error-boundary-refresh"
+          >
             {t('errors.refreshPage')}
           </button>
         </div>
