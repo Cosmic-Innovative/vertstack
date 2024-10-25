@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { formatDate, formatTime, formatRelativeTime } from './datetime-utils';
 
 describe('datetime-utils', () => {
@@ -27,7 +27,6 @@ describe('datetime-utils', () => {
     expect(result).toMatch(/\d{1,2}:\d{2}/);
   });
 
-  // Regular tests
   it('formats dates correctly', () => {
     expect(formatDate(testDate, 'en-US')).toMatch(/January 1, 2024/);
     expect(formatDate(testDate, 'es')).toMatch(/1 de enero de 2024/);
@@ -39,8 +38,26 @@ describe('datetime-utils', () => {
   });
 
   it('formats relative time correctly', () => {
-    const now = new Date();
-    const futureDate = new Date(now.getTime() + 24 * 60 * 60 * 1000);
-    expect(formatRelativeTime(futureDate, 'en-US')).toBe('tomorrow');
+    // Set a fixed system time
+    vi.setSystemTime(new Date('2024-01-01T12:00:00Z'));
+
+    // Test tomorrow
+    const tomorrow = new Date('2024-01-02T12:00:00Z');
+    expect(formatRelativeTime(tomorrow, 'en-US')).toBe('tomorrow');
+
+    // Test yesterday
+    const yesterday = new Date('2023-12-31T12:00:00Z');
+    expect(formatRelativeTime(yesterday, 'en-US')).toBe('yesterday');
+
+    // Test hours
+    const inThreeHours = new Date('2024-01-01T15:00:00Z');
+    expect(formatRelativeTime(inThreeHours, 'en-US')).toBe('in 3 hours');
+
+    // Test minutes
+    const inTenMinutes = new Date('2024-01-01T12:10:00Z');
+    expect(formatRelativeTime(inTenMinutes, 'en-US')).toBe('in 10 minutes');
+
+    // Cleanup
+    vi.useRealTimers();
   });
 });

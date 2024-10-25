@@ -36,7 +36,11 @@ export default defineConfig(({ mode }) => {
       react(),
       VitePWA({
         registerType: 'autoUpdate',
-        includeAssets: ['favicon.ico', 'apple-touch-icon.png'],
+        includeAssets: [
+          'favicon.ico',
+          'apple-touch-icon.png',
+          'masked-icon.svg',
+        ],
         manifest: {
           name: 'VERT Stack App',
           short_name: 'VERT App',
@@ -44,6 +48,7 @@ export default defineConfig(({ mode }) => {
           start_url: '/?source=pwa',
           display: 'standalone',
           theme_color: '#ffffff',
+          background_color: '#ffffff',
           icons: [
             {
               src: 'pwa-192x192.png',
@@ -62,9 +67,49 @@ export default defineConfig(({ mode }) => {
               purpose: 'any maskable',
             },
           ],
+          orientation: 'portrait',
+          categories: ['productivity', 'development'],
+          shortcuts: [
+            {
+              name: 'Home',
+              url: '/',
+              icons: [{ src: 'pwa-192x192.png', sizes: '192x192' }],
+            },
+          ],
         },
         workbox: {
           globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
+          runtimeCaching: [
+            {
+              urlPattern: /^https:\/\/jsonplaceholder\.typicode\.com/,
+              handler: 'NetworkFirst',
+              options: {
+                cacheName: 'api-cache',
+                expiration: {
+                  maxEntries: 50,
+                  maxAgeSeconds: 60 * 60 * 24, // 24 hours
+                },
+                cacheableResponse: {
+                  statuses: [0, 200],
+                },
+              },
+            },
+            {
+              urlPattern: /\.(png|jpg|jpeg|svg|gif)$/,
+              handler: 'CacheFirst',
+              options: {
+                cacheName: 'image-cache',
+                expiration: {
+                  maxEntries: 50,
+                  maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
+                },
+              },
+            },
+          ],
+          navigateFallback: '/index.html',
+          navigateFallbackDenylist: [/^\/api/],
+          skipWaiting: true,
+          clientsClaim: true,
         },
       }),
     ],
@@ -81,6 +126,7 @@ export default defineConfig(({ mode }) => {
     build: {
       outDir: 'dist',
       emptyOutDir: true,
+      target: ['es2020', 'edge88', 'firefox78', 'chrome87', 'safari14'],
       rollupOptions: {
         output: {
           manualChunks: {
@@ -92,9 +138,39 @@ export default defineConfig(({ mode }) => {
               './src/components/TitleComponent.tsx',
             ],
           },
+          chunkFileNames: (chunkInfo) => {
+            const facadeModuleId = chunkInfo.facadeModuleId || '';
+            if (facadeModuleId.includes('node_modules')) {
+              return 'vendor/[name].[hash].js';
+            }
+            return 'assets/[name].[hash].js';
+          },
+          assetFileNames: (assetInfo) => {
+            const { name } = assetInfo;
+            if (/\.(png|jpe?g|svg|gif|webp)$/.test(name ?? '')) {
+              return 'images/[name].[hash][extname]';
+            }
+            if (/\.css$/.test(name ?? '')) {
+              return 'styles/[name].[hash][extname]';
+            }
+            return 'assets/[name].[hash][extname]';
+          },
         },
       },
+      minify: 'terser',
+      terserOptions: {
+        compress: {
+          drop_console: process.env.NODE_ENV === 'production',
+          drop_debugger: process.env.NODE_ENV === 'production',
+          pure_funcs:
+            process.env.NODE_ENV === 'production'
+              ? ['console.log', 'console.info', 'console.debug']
+              : [],
+        },
+      },
+      reportCompressedSize: true,
       chunkSizeWarningLimit: 1000,
+      sourcemap: process.env.NODE_ENV === 'development',
     },
     test: {
       globals: true,
@@ -103,6 +179,27 @@ export default defineConfig(({ mode }) => {
       coverage: {
         provider: 'v8',
         reporter: ['text', 'json', 'html'],
+      },
+    },
+    optimizeDeps: {
+      include: [
+        'react',
+        'react-dom',
+        'react-router-dom',
+        'i18next',
+        'react-i18next',
+      ],
+      exclude: ['@vite/client', '@vite/env'],
+    },
+    experimental: {
+      renderBuiltUrl(filename: string) {
+        if (filename.endsWith('.css')) {
+          return { relative: true, preload: true };
+        }
+        if (filename.includes('vendor')) {
+          return { relative: true, preload: true };
+        }
+        return { relative: true };
       },
     },
     configureServer(server) {

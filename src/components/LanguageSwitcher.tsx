@@ -36,6 +36,14 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const [touchStart, setTouchStart] = useState<{ x: number; y: number } | null>(
+    null,
+  );
+  const [touchEnd, setTouchEnd] = useState<{ x: number; y: number } | null>(
+    null,
+  );
+
+  const minSwipeDistance = 50;
 
   const handleLanguageChange = useCallback(
     async (languageCode: string) => {
@@ -53,24 +61,77 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
     [navigate, location.pathname],
   );
 
-  const handleKeyDown = (event: React.KeyboardEvent) => {
-    switch (event.key) {
-      case 'Escape':
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && isOpen) {
         setIsOpen(false);
         buttonRef.current?.focus();
-        break;
-      case 'ArrowDown': {
-        if (isOpen) {
-          event.preventDefault();
-          const firstButton = menuRef.current?.querySelector('button');
-          if (firstButton instanceof HTMLElement) {
-            firstButton.focus();
-          }
-        }
-        break;
       }
-      case ' ':
+    };
+
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleEscape);
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside, {
+      passive: true,
+    });
+
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
+  }, [isOpen]);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStart({
+      x: e.touches[0].clientX,
+      y: e.touches[0].clientY,
+    });
+    setTouchEnd(null);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd({
+      x: e.touches[0].clientX,
+      y: e.touches[0].clientY,
+    });
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+
+    const xDistance = touchStart.x - touchEnd.x;
+    const yDistance = touchStart.y - touchEnd.y;
+    const isHorizontalSwipe = Math.abs(xDistance) > Math.abs(yDistance);
+
+    if (isHorizontalSwipe && Math.abs(xDistance) > minSwipeDistance) {
+      if (xDistance > 0) {
+        setIsOpen(false);
+      } else {
+        setIsOpen(true);
+      }
+    } else if (!isHorizontalSwipe && Math.abs(yDistance) > minSwipeDistance) {
+      if (
+        (popupDirection === 'up' && yDistance > 0) ||
+        (popupDirection === 'down' && yDistance < 0)
+      ) {
+        setIsOpen(true);
+      } else {
+        setIsOpen(false);
+      }
+    }
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    switch (event.key) {
       case 'Enter':
+      case ' ':
         event.preventDefault();
         setIsOpen(!isOpen);
         break;
@@ -92,9 +153,10 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
       case 'Enter':
       case ' ':
         event.preventDefault();
-        handleLanguageChange(languageCode);
+        void handleLanguageChange(languageCode);
         break;
       case 'Escape':
+        event.preventDefault();
         setIsOpen(false);
         buttonRef.current?.focus();
         break;
@@ -119,30 +181,19 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
     }
   };
 
-  // Close menu when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
-
   const currentLanguage =
     languages.find((l) => l.code === i18n.language) || languages[0];
 
   return (
     <div
       className={`language-switcher ${className} popup-${popupDirection} ${
-        isOpen ? 'is-open' : ''
+        isOpen ? 'is-active' : ''
       }`}
       data-testid="language-switcher"
       ref={menuRef}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
     >
       <button
         ref={buttonRef}
