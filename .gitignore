@@ -29,3 +29,4 @@ dist-ssr
 # Environment variables
 .env.local
 .cert
+.lighthouseci

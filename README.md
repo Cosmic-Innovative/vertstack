@@ -60,32 +60,47 @@ vert-stack-template/
 ├── src/
 │   ├── components/
 │   │   ├── About.tsx
+│   │   ├── About.test.tsx
 │   │   ├── ApiExample.tsx
 │   │   ├── ApiExample.test.tsx
 │   │   ├── Contact.tsx
 │   │   ├── Contact.test.tsx
 │   │   ├── ErrorBoundary.tsx
+│   │   ├── Footer.tsx
 │   │   ├── Home.tsx
 │   │   ├── Home.test.tsx
 │   │   ├── LanguageSwitcher.tsx
 │   │   ├── LanguageSwitcher.test.tsx
+│   │   ├── LazyImage.tsx
 │   │   ├── Navbar.tsx
+│   │   ├── Navbar.test.tsx
 │   │   ├── TitleComponent.tsx
 │   │   ├── UserList.tsx
 │   │   └── UserList.test.tsx
 │   │
 │   ├── styles/
 │   │   ├── index.css
-│   │   ├── Navbar.css
-│   │   └── LanguageSwitcher.css
+│   │   ├── Footer.css
+│   │   ├── LanguageSwitcher.css
+│   │   └── Navbar.css
 │   │
 │   ├── utils/
+│   │   ├── api.test.ts
 │   │   ├── api.ts
-│   │   ├── i18n-datetime-utils.ts
-│   │   ├── i18n-number-utils.ts
-│   │   ├── i18n-utils.ts
+│   │   ├── i18n/
+│   │   │   ├── datetime-utils.test.ts
+│   │   │   ├── datetime-utils.ts
+│   │   │   ├── index.ts
+│   │   │   ├── list-utils.test.ts
+│   │   │   ├── list-utils.ts
+│   │   │   ├── list-utils.types.ts
+│   │   │   ├── number-utils.test.ts
+│   │   │   ├── number-utils.ts
+│   │   │   └── types.ts
 │   │   ├── languageDetection.ts
+│   │   ├── logger.test.ts
 │   │   ├── logger.ts
+│   │   ├── performance-utils.ts
 │   │   └── sitemapGenerator.ts
 │   │
 │   ├── locales/
@@ -96,8 +111,10 @@ vert-stack-template/
 │   ├── App.test.tsx
 │   ├── i18n.ts
 │   ├── i18n.test.tsx
+│   ├── i18n.mock.ts
 │   ├── main.tsx
 │   ├── pwa.ts
+│   ├── test-utils.tsx
 │   └── vite-env.d.ts
 │
 ├── .env
@@ -112,6 +129,7 @@ vert-stack-template/
 ├── package.json
 ├── pnpm-lock.yaml
 ├── README.md
+├── CONTRIBUTING.md
 ├── tsconfig.json
 ├── tsconfig.eslint.json
 ├── tsconfig.node.json

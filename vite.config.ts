@@ -3,6 +3,7 @@
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react-swc';
 import { VitePWA } from 'vite-plugin-pwa';
+import { visualizer } from 'rollup-plugin-visualizer';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -18,6 +19,7 @@ const certFilePath = path.join(certPath, 'localhost.pem');
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
   const isHttps = env.VITE_USE_HTTPS === 'true';
+  const isProd = mode === 'production';
 
   let httpsConfig = false;
   if (isHttps && fs.existsSync(keyPath) && fs.existsSync(certFilePath)) {
@@ -112,6 +114,13 @@ export default defineConfig(({ mode }) => {
           clientsClaim: true,
         },
       }),
+      visualizer({
+        filename: 'dist/stats.html',
+        open: true,
+        gzipSize: true,
+        brotliSize: true,
+        template: 'treemap',
+      }),
     ],
     server: {
       https: httpsConfig,
@@ -124,18 +133,38 @@ export default defineConfig(({ mode }) => {
       port: 5173,
     },
     build: {
-      outDir: 'dist',
-      emptyOutDir: true,
-      target: ['es2020', 'edge88', 'firefox78', 'chrome87', 'safari14'],
       rollupOptions: {
         output: {
           manualChunks: {
-            vendor: ['react', 'react-dom', 'react-router-dom'],
-            i18n: ['i18next', 'react-i18next'],
-            utils: ['./src/utils/api.ts', './src/utils/sitemapGenerator.ts'],
-            components: [
+            'vendor-react': [
+              'react',
+              'react-dom',
+              'react-router-dom', // Keep react-router-dom only here
+            ],
+            'vendor-i18n': ['i18next', 'react-i18next'],
+            utils: [
+              './src/utils/api.ts',
+              './src/utils/logger.ts',
+              './src/utils/languageDetection.ts',
+              './src/utils/performance-utils.ts',
+              './src/utils/sitemapGenerator.ts',
+            ],
+            'utils-i18n': [
+              './src/utils/i18n/index.ts',
+              './src/utils/i18n/datetime-utils.ts',
+              './src/utils/i18n/number-utils.ts',
+              './src/utils/i18n/list-utils.ts',
+            ],
+            'components-core': [
               './src/components/ErrorBoundary.tsx',
               './src/components/TitleComponent.tsx',
+              './src/components/Navbar.tsx',
+              './src/components/Footer.tsx',
+            ],
+            'components-i18n': ['./src/components/LanguageSwitcher.tsx'],
+            'components-features': [
+              './src/components/UserList.tsx',
+              './src/components/ApiExample.tsx',
             ],
           },
           chunkFileNames: (chunkInfo) => {
@@ -157,28 +186,45 @@ export default defineConfig(({ mode }) => {
           },
         },
       },
+      modulePreload: {
+        polyfill: true,
+        resolveDependencies: (filename: string, deps: string[]) => {
+          if (filename.includes('vendor-react')) {
+            return deps;
+          }
+          return deps.slice(0, 3);
+        },
+      },
+      target: ['es2020', 'edge88', 'firefox78', 'chrome87', 'safari14'],
       minify: 'terser',
       terserOptions: {
         compress: {
-          drop_console: process.env.NODE_ENV === 'production',
-          drop_debugger: process.env.NODE_ENV === 'production',
-          pure_funcs:
-            process.env.NODE_ENV === 'production'
-              ? ['console.log', 'console.info', 'console.debug']
-              : [],
+          drop_console: isProd,
+          drop_debugger: isProd,
+          pure_funcs: isProd
+            ? ['console.log', 'console.info', 'console.debug']
+            : [],
         },
       },
       reportCompressedSize: true,
-      chunkSizeWarningLimit: 1000,
-      sourcemap: process.env.NODE_ENV === 'development',
+      chunkSizeWarningLimit: 500,
     },
     test: {
       globals: true,
       environment: 'jsdom',
-      setupFiles: ['./vitest.setup.ts'],
+      setupFiles: './vitest.setup.ts',
+      include: ['src/**/*.{test,spec}.{ts,tsx}'],
       coverage: {
         provider: 'v8',
         reporter: ['text', 'json', 'html'],
+        include: ['src/**/*.{ts,tsx}'],
+        exclude: [
+          'src/**/*.test.{ts,tsx}',
+          'src/**/*.spec.{ts,tsx}',
+          'src/test-utils.tsx',
+          'src/vite-env.d.ts',
+          'src/i18n.mock.ts',
+        ],
       },
     },
     optimizeDeps: {
