@@ -3,6 +3,8 @@ import { Logger } from './logger';
 
 describe('Logger', () => {
   beforeEach(() => {
+    // Set test environment
+    process.env.NODE_ENV = 'test';
     // Reset the singleton instance before each test
     // @ts-expect-error Accessing private static member for testing purposes
     Logger.instance = undefined;
@@ -32,9 +34,6 @@ describe('Logger', () => {
     logger.info('Info message');
     logger.warn('Warning message');
     logger.error('Error message');
-
-    // Process queue synchronously
-    logger.processQueueSync();
 
     expect(console.info).toHaveBeenCalledWith(
       expect.stringContaining('Info message'),

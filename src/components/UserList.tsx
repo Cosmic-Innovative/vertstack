@@ -32,7 +32,7 @@ interface User {
 }
 
 function UserList() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -65,7 +65,7 @@ function UserList() {
       address.city,
       address.zipcode,
     ].filter(Boolean);
-    return formatList(parts);
+    return formatList(parts, i18n.language);
   };
 
   return (
@@ -116,7 +116,7 @@ function UserList() {
         <p>
           {t('userList.totalUsers', {
             count: users.length,
-            formatted: formatNumber(users.length),
+            formatted: formatNumber(users.length, i18n.language),
           })}
         </p>
         <p>
@@ -124,6 +124,7 @@ function UserList() {
             count: new Set(users.map((user) => user.company.name)).size,
             formatted: formatNumber(
               new Set(users.map((user) => user.company.name)).size,
+              i18n.language,
             ),
           })}
         </p>

@@ -3,8 +3,16 @@ import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import enTranslations from './locales/en.json';
 
+// Define supported languages as a constant
+const SUPPORTED_LANGUAGES = ['en', 'es'] as const;
+type SupportedLanguage = (typeof SUPPORTED_LANGUAGES)[number];
+
+// Function to check if a language is supported
+const isSupportedLanguage = (lang: string): lang is SupportedLanguage =>
+  SUPPORTED_LANGUAGES.includes(lang as SupportedLanguage);
+
 // Function to dynamically import language files
-const loadLocale = async (lang: string) => {
+const loadLocale = async (lang: SupportedLanguage) => {
   try {
     return await import(`./locales/${lang}.json`);
   } catch (error) {
@@ -32,7 +40,7 @@ i18n
       lookupFromPathIndex: 0,
     },
     load: 'languageOnly',
-    supportedLngs: ['en', 'es'],
+    supportedLngs: SUPPORTED_LANGUAGES,
   });
 
 // Function to load language resources
@@ -40,6 +48,11 @@ export const loadLanguageAsync = async (lang: string): Promise<boolean> => {
   // Skip if language is already loaded
   if (i18n.hasResourceBundle(lang, 'translation')) {
     return true;
+  }
+
+  // Check if the language is supported
+  if (!isSupportedLanguage(lang)) {
+    return false;
   }
 
   try {
@@ -62,7 +75,7 @@ export const loadLanguageAsync = async (lang: string): Promise<boolean> => {
 
 // Function to change language
 export const changeLanguage = async (lang: string): Promise<boolean> => {
-  if (i18n.options.supportedLngs?.includes(lang)) {
+  if (isSupportedLanguage(lang)) {
     await loadLanguageAsync(lang);
     await i18n.changeLanguage(lang);
     return true;

@@ -9,6 +9,12 @@ import { I18nextProvider } from 'react-i18next';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import i18n from './i18n.mock';
 
+declare global {
+  var IS_REACT_ACT_ENVIRONMENT: boolean;
+}
+
+global.IS_REACT_ACT_ENVIRONMENT = true;
+
 // Configure the testing environment
 beforeAll(() => {
   // Enable React 18's concurrent features in tests
