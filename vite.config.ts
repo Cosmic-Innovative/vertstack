@@ -20,6 +20,7 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
   const isHttps = env.VITE_USE_HTTPS === 'true';
   const isProd = mode === 'production';
+  const analyzeBundle = process.env.ANALYZE === 'true';
 
   let httpsConfig = false;
   if (isHttps && fs.existsSync(keyPath) && fs.existsSync(certFilePath)) {
@@ -33,87 +34,86 @@ export default defineConfig(({ mode }) => {
     }
   }
 
-  return {
-    plugins: [
-      react(),
-      VitePWA({
-        registerType: 'autoUpdate',
-        includeAssets: [
-          'favicon.ico',
-          'apple-touch-icon.png',
-          'masked-icon.svg',
+  const plugins = [
+    react(),
+    VitePWA({
+      registerType: 'autoUpdate',
+      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
+      manifest: {
+        name: 'VERT Stack App',
+        short_name: 'VERT App',
+        description: 'VERT Stack Template Application',
+        start_url: '/?source=pwa',
+        display: 'standalone',
+        theme_color: '#ffffff',
+        background_color: '#ffffff',
+        icons: [
+          {
+            src: 'pwa-192x192.png',
+            sizes: '192x192',
+            type: 'image/png',
+          },
+          {
+            src: 'pwa-512x512.png',
+            sizes: '512x512',
+            type: 'image/png',
+          },
+          {
+            src: 'pwa-512x512.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'any maskable',
+          },
         ],
-        manifest: {
-          name: 'VERT Stack App',
-          short_name: 'VERT App',
-          description: 'VERT Stack Template Application',
-          start_url: '/?source=pwa',
-          display: 'standalone',
-          theme_color: '#ffffff',
-          background_color: '#ffffff',
-          icons: [
-            {
-              src: 'pwa-192x192.png',
-              sizes: '192x192',
-              type: 'image/png',
-            },
-            {
-              src: 'pwa-512x512.png',
-              sizes: '512x512',
-              type: 'image/png',
-            },
-            {
-              src: 'pwa-512x512.png',
-              sizes: '512x512',
-              type: 'image/png',
-              purpose: 'any maskable',
-            },
-          ],
-          orientation: 'portrait',
-          categories: ['productivity', 'development'],
-          shortcuts: [
-            {
-              name: 'Home',
-              url: '/',
-              icons: [{ src: 'pwa-192x192.png', sizes: '192x192' }],
-            },
-          ],
-        },
-        workbox: {
-          globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
-          runtimeCaching: [
-            {
-              urlPattern: /^https:\/\/jsonplaceholder\.typicode\.com/,
-              handler: 'NetworkFirst',
-              options: {
-                cacheName: 'api-cache',
-                expiration: {
-                  maxEntries: 50,
-                  maxAgeSeconds: 60 * 60 * 24, // 24 hours
-                },
-                cacheableResponse: {
-                  statuses: [0, 200],
-                },
+        orientation: 'portrait',
+        categories: ['productivity', 'development'],
+        shortcuts: [
+          {
+            name: 'Home',
+            url: '/',
+            icons: [{ src: 'pwa-192x192.png', sizes: '192x192' }],
+          },
+        ],
+      },
+      workbox: {
+        globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
+        runtimeCaching: [
+          {
+            urlPattern: /^https:\/\/jsonplaceholder\.typicode\.com/,
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'api-cache',
+              expiration: {
+                maxEntries: 50,
+                maxAgeSeconds: 60 * 60 * 24, // 24 hours
+              },
+              cacheableResponse: {
+                statuses: [0, 200],
               },
             },
-            {
-              urlPattern: /\.(png|jpg|jpeg|svg|gif)$/,
-              handler: 'CacheFirst',
-              options: {
-                cacheName: 'image-cache',
-                expiration: {
-                  maxEntries: 50,
-                  maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
-                },
+          },
+          {
+            urlPattern: /\.(png|jpg|jpeg|svg|gif)$/,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'image-cache',
+              expiration: {
+                maxEntries: 50,
+                maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
               },
             },
-          ],
-          navigateFallback: '/index.html',
-          navigateFallbackDenylist: [/^\/api/],
-          skipWaiting: true,
-          clientsClaim: true,
-        },
-      }),
+          },
+        ],
+        navigateFallback: '/index.html',
+        navigateFallbackDenylist: [/^\/api/],
+        skipWaiting: true,
+        clientsClaim: true,
+      },
+    }),
+  ];
+
+  if (analyzeBundle) {
+    plugins.push(
       visualizer({
         filename: 'dist/stats.html',
         open: true,
@@ -121,7 +121,11 @@ export default defineConfig(({ mode }) => {
         brotliSize: true,
         template: 'treemap',
       }),
-    ],
+    );
+  }
+
+  return {
+    plugins,
     server: {
       https: httpsConfig,
       host: true,
@@ -136,11 +140,7 @@ export default defineConfig(({ mode }) => {
       rollupOptions: {
         output: {
           manualChunks: {
-            'vendor-react': [
-              'react',
-              'react-dom',
-              'react-router-dom', // Keep react-router-dom only here
-            ],
+            'vendor-react': ['react', 'react-dom', 'react-router-dom'],
             'vendor-i18n': ['i18next', 'react-i18next'],
             utils: [
               './src/utils/api.ts',
