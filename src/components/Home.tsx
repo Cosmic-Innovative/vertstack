@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import OptimizedHeroImage from './OptimizedHeroImage';
 import LazyImage from './LazyImage';
 
 function Home() {
@@ -8,8 +9,6 @@ function Home() {
   const { lang } = useParams<{ lang: string }>();
   const [isLoading, setIsLoading] = useState(true);
 
-  // Simulate loading state for demo
-  // In real app, this would be based on actual data loading
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
@@ -18,96 +17,111 @@ function Home() {
   }, []);
 
   return (
-    <main className="home-container min-h-[600px] mx-auto max-w-4xl px-4">
-      {/* Title section with fixed height to prevent layout shift */}
-      <div className="title-container h-24 mb-8 flex items-center">
-        {isLoading ? (
-          <>
-            {/* Logo skeleton */}
-            <div className="inline-logo w-[50px] h-[50px] bg-gray-200 rounded animate-pulse" />
-            {/* Title skeleton */}
-            <div className="ml-4 h-8 w-64 bg-gray-200 rounded animate-pulse" />
-          </>
-        ) : (
-          <>
-            <LazyImage
-              src="/vertstack.svg"
-              alt={t('home.logoAlt')}
-              className="inline-logo"
-              width="50"
-              height="50"
-            />
-            <h1 className="ml-4">{t('home.title')}</h1>
-          </>
+    <>
+      <div className="hero-section">
+        {!isLoading && (
+          <OptimizedHeroImage
+            desktopSrc="/desktop-hero.svg"
+            alt={t('home.heroAlt')}
+            priority={true}
+            className="w-full h-full"
+          />
         )}
       </div>
 
-      {/* Description section with min-height */}
-      <div className="description-section min-h-[100px]">
-        {isLoading ? (
-          <div className="space-y-4">
-            <div className="h-4 bg-gray-200 rounded w-3/4 animate-pulse" />
-            <div className="h-4 bg-gray-200 rounded w-2/3 animate-pulse" />
+      <article className="content-section">
+        <div className="content-wrapper">
+          {/* Title section */}
+          <div className="title-container h-24 mb-8 flex items-center justify-center">
+            {isLoading ? (
+              <>
+                <div className="inline-logo w-[50px] h-[50px] bg-gray-200 rounded animate-pulse" />
+                <div className="ml-4 h-8 w-64 bg-gray-200 rounded animate-pulse" />
+              </>
+            ) : (
+              <>
+                <LazyImage
+                  src="/vertstack.svg"
+                  alt={t('home.logoAlt')}
+                  className="inline-logo"
+                  width="50"
+                  height="50"
+                />
+                <h1 className="ml-4">{t('home.title')}</h1>
+              </>
+            )}
           </div>
-        ) : (
-          <p>{t('home.description')}</p>
-        )}
-      </div>
 
-      {/* Features list with fixed height per item */}
-      <ul className="features-list min-h-[200px] my-8">
-        {isLoading ? (
-          // Skeleton loading for features
-          Array(4)
-            .fill(null)
-            .map((_, index) => (
-              <li key={index} className="flex items-center h-12 mb-4">
-                <div className="w-8 h-8 bg-gray-200 rounded animate-pulse" />
-                <div className="ml-4 h-4 bg-gray-200 rounded w-2/3 animate-pulse" />
-              </li>
-            ))
-        ) : (
-          <>
-            <li className="feature-item h-12">
-              <strong>V</strong>
-              {t('home.features.vite')}
-            </li>
-            <li className="feature-item h-12">
-              <strong>E</strong>
-              {t('home.features.eslint')}
-            </li>
-            <li className="feature-item h-12">
-              <strong>R</strong>
-              {t('home.features.react')}
-            </li>
-            <li className="feature-item h-12">
-              <strong>T</strong>
-              {t('home.features.typescript')}
-            </li>
-          </>
-        )}
-      </ul>
+          {/* Description section */}
+          <div className="description-section min-h-[100px] text-left">
+            {isLoading ? (
+              <div className="space-y-4">
+                <div className="h-4 bg-gray-200 rounded w-3/4 animate-pulse" />
+                <div className="h-4 bg-gray-200 rounded w-2/3 animate-pulse" />
+              </div>
+            ) : (
+              <p>{t('home.description')}</p>
+            )}
+          </div>
 
-      {/* Message section with fixed height */}
-      <div className="message-section h-20">
-        {isLoading ? (
-          <div className="h-4 bg-gray-200 rounded w-1/2 animate-pulse" />
-        ) : (
-          <p>{t('home.exploreMessage')}</p>
-        )}
-      </div>
+          {/* Features list */}
+          <ul className="text-center features-list min-h-[200px] my-8">
+            {isLoading ? (
+              Array(4)
+                .fill(null)
+                .map((_, index) => (
+                  <li
+                    key={index}
+                    className="flex items-center h-12 mb-4 justify-center"
+                  >
+                    <div className="w-8 h-8 bg-gray-200 rounded animate-pulse" />
+                    <div className="ml-4 h-4 bg-gray-200 rounded w-2/3 animate-pulse" />
+                  </li>
+                ))
+            ) : (
+              <>
+                <li className="feature-item justify-center">
+                  <strong>V</strong>
+                  <span className="ml-2">{t('home.features.vite')}</span>
+                </li>
+                <li className="feature-item justify-center">
+                  <strong>E</strong>
+                  <span className="ml-2">{t('home.features.eslint')}</span>
+                </li>
+                <li className="feature-item justify-center">
+                  <strong>R</strong>
+                  <span className="ml-2">{t('home.features.react')}</span>
+                </li>
+                <li className="feature-item justify-center">
+                  <strong>T</strong>
+                  <span className="ml-2">{t('home.features.typescript')}</span>
+                </li>
+              </>
+            )}
+          </ul>
 
-      {/* CTA section with fixed height */}
-      <div className="cta-container h-16 flex items-center justify-center">
-        {isLoading ? (
-          <div className="w-32 h-10 bg-gray-200 rounded animate-pulse" />
-        ) : (
-          <Link to={`/${lang}/api-example`} className="button-link">
-            {t('home.cta')}
-          </Link>
-        )}
-      </div>
-    </main>
+          {/* Message section */}
+          <div className="message-section h-20 text-left">
+            {isLoading ? (
+              <div className="h-4 bg-gray-200 rounded w-1/2 animate-pulse" />
+            ) : (
+              <p>{t('home.exploreMessage')}</p>
+            )}
+          </div>
+
+          {/* CTA section */}
+          <div className="cta-container h-16 flex items-center justify-center">
+            {isLoading ? (
+              <div className="w-32 h-10 bg-gray-200 rounded animate-pulse" />
+            ) : (
+              <Link to={`/${lang}/api-example`} className="button-link">
+                {t('home.cta')}
+              </Link>
+            )}
+          </div>
+        </div>
+      </article>
+    </>
   );
 }
 

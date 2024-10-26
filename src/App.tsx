@@ -99,13 +99,19 @@ const AppContent: React.FC<AppContentProps> = React.memo(({ useRouter }) => {
         {t('general.skipToContent')}
       </a>
       <Navbar />
-      <main id="main-content" className="container" role="main">
-        <Suspense
-          fallback={<div aria-live="polite">{t('general.loading')}</div>}
-        >
-          <Routes>{routeElements}</Routes>
-        </Suspense>
-      </main>
+      <div className="app-wrapper">
+        <main id="main-content" className="container" role="main">
+          <Suspense
+            fallback={
+              <div className="loading-container" aria-live="polite">
+                {t('general.loading')}
+              </div>
+            }
+          >
+            <Routes>{routeElements}</Routes>
+          </Suspense>
+        </main>
+      </div>
       <Footer />
     </>
   );

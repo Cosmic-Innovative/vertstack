@@ -1,6 +1,6 @@
 .navbar {
   background-color: var(--secondary-color);
-  padding: 1rem;
+  padding: 0.75rem;
   touch-action: pan-y pinch-zoom;
 }
 

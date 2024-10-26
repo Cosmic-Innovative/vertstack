@@ -61,18 +61,80 @@ img {
   height: auto;
 }
 
-/* Layout */
-.container {
+/* App Layout */
+.app-wrapper {
+  max-width: 100%;
+  margin: 0 auto;
+  min-height: calc(100vh - var(--navbar-height) - var(--footer-height));
+}
+
+main {
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Content Sections */
+.content-section {
+  width: 100%;
+  margin: 0 auto;
+  margin-bottom: 2rem;
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 20px;
+}
+
+.content-wrapper {
+  max-width: 64rem;
+  margin: 0 auto;
+  padding: 1.25rem;
+}
+
+/* Hero Section */
+.hero-section {
   width: 100%;
-  padding-right: 15px;
-  padding-left: 15px;
-  margin-right: auto;
-  margin-left: auto;
-  margin-bottom: 20px;
+  height: auto;
+  position: relative;
+  aspect-ratio: 16/9;
+  background-color: var(--background-color);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.hero-section.full-width {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  border-radius: 0;
+}
+
+/* Loading Container */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  width: 100%;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+/* Footer spacing */
+.footer {
+  margin-top: auto;
+  padding: 2rem 0;
+}
+
+/* Layout */
+.container {
+  width: 100%;
+  margin: 0 auto;
 }
 
 @media (min-width: 576px) {

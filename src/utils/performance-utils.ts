@@ -25,6 +25,22 @@ interface PerformanceEventTiming extends PerformanceEntry {
   target?: Node;
 }
 
+function initImageErrorTracking(): void {
+  window.addEventListener(
+    'error',
+    (event) => {
+      if (event.target instanceof HTMLImageElement) {
+        logger.error('Image Load Error', {
+          category: 'Performance',
+          src: event.target.src,
+          timestamp: new Date().toISOString(),
+        });
+      }
+    },
+    true,
+  );
+}
+
 export function initMobilePerformanceTracking(): void {
   // Track First Contentful Paint (FCP)
   const fcpObserver = new PerformanceObserver((entryList) => {
@@ -106,6 +122,9 @@ export function initMobilePerformanceTracking(): void {
   });
   longTaskObserver.observe({ entryTypes: ['longtask'] });
 
+  // Initialize image error tracking
+  initImageErrorTracking();
+
   // Disconnect observers when page is unloaded
   window.addEventListener('unload', () => {
     fcpObserver.disconnect();
@@ -117,7 +136,6 @@ export function initMobilePerformanceTracking(): void {
   });
 }
 
-// Add to main.tsx
 export function reportMobileVitals(): void {
   const navigator = window.navigator as NavigatorWithMemory;
 
