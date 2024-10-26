@@ -3,15 +3,16 @@ import { useTranslation } from 'react-i18next';
 
 function ApiExample() {
   const { t } = useTranslation();
-
   return (
-    <div className="api-example-container">
-      <h1>{t('apiExample.title')}</h1>
-      <p>{t('apiExample.description')}</p>
-      <div aria-live="polite" aria-atomic="true">
-        <UserList />
+    <article className="content-section">
+      <div className="content-wrapper">
+        <h1 className="text-center mb-8">{t('apiExample.title')}</h1>
+        <p className="text-left">{t('apiExample.description')}</p>
+        <div aria-live="polite" aria-atomic="true">
+          <UserList />
+        </div>
       </div>
-    </div>
+    </article>
   );
 }
 

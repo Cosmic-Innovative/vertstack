@@ -250,7 +250,7 @@ export default defineConfig(({ mode }) => {
     },
     configureServer(server) {
       server.middlewares.use((req, res, next) => {
-        // Set security headers
+        // Set security headers with development-friendly CSP
         res.setHeader(
           'Strict-Transport-Security',
           'max-age=31536000; includeSubDomains',
@@ -262,6 +262,53 @@ export default defineConfig(({ mode }) => {
           'Permissions-Policy',
           'geolocation=(), microphone=(), camera=()',
         );
+
+        // Enhanced CSP that allows for development needs
+        if (process.env.NODE_ENV === 'development') {
+          res.setHeader(
+            'Content-Security-Policy',
+            [
+              "default-src 'self'",
+              // Allow inline scripts and eval for development tools
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+              // Allow inline styles for development
+              "style-src 'self' 'unsafe-inline'",
+              // Allow data URLs for images and placeholder API
+              "img-src 'self' data: /api/placeholder/ blob:",
+              // Allow fonts
+              "font-src 'self' data:",
+              // Allow API connections
+              "connect-src 'self' ws: wss: https://jsonplaceholder.typicode.com",
+              // Allow workers for development
+              "worker-src 'self' blob:",
+              // Basic security restrictions
+              "frame-src 'none'",
+              "object-src 'none'",
+              "base-uri 'self'",
+              "form-action 'self'",
+            ].join('; '),
+          );
+        } else {
+          // Stricter CSP for production
+          res.setHeader(
+            'Content-Security-Policy',
+            [
+              "default-src 'self'",
+              // More restrictive script handling for production
+              "script-src 'self' 'unsafe-inline'",
+              "style-src 'self' 'unsafe-inline'",
+              "img-src 'self' data: /api/placeholder/",
+              "font-src 'self' data:",
+              "connect-src 'self' https://jsonplaceholder.typicode.com",
+              "worker-src 'self' blob:",
+              "frame-src 'none'",
+              "object-src 'none'",
+              "base-uri 'self'",
+              "form-action 'self'",
+              'upgrade-insecure-requests',
+            ].join('; '),
+          );
+        }
 
         const url = req.url ?? '/';
         console.log(`Request received: ${url}`);

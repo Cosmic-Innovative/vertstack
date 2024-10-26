@@ -2,12 +2,13 @@ import { useTranslation } from 'react-i18next';
 
 function About() {
   const { t } = useTranslation();
-
   return (
-    <div>
-      <h1>{t('about.title')}</h1>
-      <p>{t('about.description')}</p>
-    </div>
+    <article className="content-section">
+      <div className="content-wrapper">
+        <h1 className="text-center mb-8">{t('about.title')}</h1>
+        <p className="text-left">{t('about.description')}</p>
+      </div>
+    </article>
   );
 }
 

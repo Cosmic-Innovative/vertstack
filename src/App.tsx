@@ -95,7 +95,7 @@ const AppContent: React.FC<AppContentProps> = React.memo(({ useRouter }) => {
   return (
     <>
       <TitleComponent />
-      <a href="#main-content" className="skip-link">
+      <a href="#main-content" className="skip-to-main">
         {t('general.skipToContent')}
       </a>
       <Navbar />
