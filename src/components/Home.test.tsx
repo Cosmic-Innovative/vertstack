@@ -19,8 +19,19 @@ vi.mock('./LazyImage', () => ({
 }));
 
 describe('Home', () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   it('renders in English by default', async () => {
     await render(<Home />, { route: '/en' });
+
+    // Fast-forward past loading state
+    await vi.runAllTimersAsync();
 
     const title = await expectTranslated('home.title', 'en');
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(title);
@@ -32,12 +43,18 @@ describe('Home', () => {
   it('renders in Spanish when specified', async () => {
     await render(<Home />, { route: '/es' });
 
+    // Fast-forward past loading state
+    await vi.runAllTimersAsync();
+
     const title = await expectTranslated('home.title', 'es');
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(title);
   });
 
   it('changes language dynamically', async () => {
     const { changeLanguage } = await render(<Home />, { route: '/en' });
+
+    // Fast-forward past loading state
+    await vi.runAllTimersAsync();
 
     const enTitle = await expectTranslated('home.title', 'en');
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
@@ -55,6 +72,9 @@ describe('Home', () => {
   it('has proper heading structure', async () => {
     await render(<Home />, { route: '/en' });
 
+    // Fast-forward past loading state
+    await vi.runAllTimersAsync();
+
     const heading = screen.getByRole('heading', { level: 1 });
     expect(heading).toBeInTheDocument();
     expect(heading.tagName).toBe('H1');
@@ -62,6 +82,9 @@ describe('Home', () => {
 
   it('renders LazyImage component with correct props', async () => {
     await render(<Home />, { route: '/en' });
+
+    // Fast-forward past loading state
+    await vi.runAllTimersAsync();
 
     const lazyImage = screen.getByTestId('lazy-image');
     expect(lazyImage).toBeInTheDocument();
@@ -75,6 +98,9 @@ describe('Home', () => {
   it('has accessible links', async () => {
     await render(<Home />, { route: '/en' });
 
+    // Fast-forward past loading state
+    await vi.runAllTimersAsync();
+
     const ctaText = await expectTranslated('home.cta', 'en');
     const link = screen.getByText(ctaText);
     expect(link).toHaveAttribute('href', '/en/api-example');
@@ -83,6 +109,9 @@ describe('Home', () => {
 
   it('contains informative content', async () => {
     await render(<Home />, { route: '/en' });
+
+    // Fast-forward past loading state
+    await vi.runAllTimersAsync();
 
     const description = await expectTranslated('home.description', 'en');
     expect(screen.getByText(description)).toBeInTheDocument();

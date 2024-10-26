@@ -410,6 +410,65 @@ button,
   }
 }
 
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Prevent layout shift for feature items */
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 0;
+}
+
+/* Ensure consistent button dimensions */
+.button-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 120px;
+  min-height: 40px;
+  padding: 0.5rem 1rem;
+}
+
+/* Container styles for consistent spacing */
+.home-container {
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 1rem;
+  width: 100%;
+  max-width: 64rem;
+  margin: 0 auto;
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+/* Title container for consistent height */
+.title-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  height: 6rem;
+  margin-bottom: 2rem;
+}
+
+/* Ensure images maintain aspect ratio */
+.inline-logo {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+}
+
+/* Add font display swap to prevent FOIT */
+@font-face {
+  font-family: 'Your-Font-Name';
+  font-display: swap;
+  /* Add your font sources here */
+}
+Last edited 1 hour ago
+
 /* Improved table responsiveness */
 @media (max-width: 768px) {
   table {
