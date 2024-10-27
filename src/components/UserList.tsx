@@ -49,14 +49,6 @@ function UserList() {
       });
   }, []);
 
-  if (loading) return <div className="loading">{t('general.loading')}</div>;
-  if (error)
-    return (
-      <div className="error">
-        {t('errors.fetchError', { error: sanitizeInput(error) })}
-      </div>
-    );
-
   const formatAddress = (address?: UserAddress): string => {
     if (!address) return '-';
     const parts = [
@@ -69,66 +61,113 @@ function UserList() {
   };
 
   return (
-    <div className="user-list-container">
-      <h2>{t('userList.title')}</h2>
-      <p>{t('userList.description')}</p>
+    <div
+      className="user-list-container"
+      role="region"
+      aria-label={t('userList.title')}
+    >
+      <h2 id="user-list-title">{t('userList.title')}</h2>
+      <p id="user-list-description">{t('userList.description')}</p>
 
-      {users.length > 0 ? (
-        <table className="user-table">
-          <thead>
-            <tr>
-              <th>{t('userList.name')}</th>
-              <th>{t('userList.email')}</th>
-              <th>{t('userList.company')}</th>
-              <th>{t('userList.location')}</th>
-              <th>{t('userList.contact')}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((user) => (
-              <tr key={user.id}>
-                <td>{sanitizeInput(user.name)}</td>
-                <td>{sanitizeInput(user.email)}</td>
-                <td>
-                  <div>{sanitizeInput(user.company.name)}</div>
-                  <small>{sanitizeInput(user.company.catchPhrase)}</small>
-                </td>
-                <td>{formatAddress(user.address)}</td>
-                <td>
-                  <div>{sanitizeInput(user.phone)}</div>
-                  <a
-                    href={`https://${user.website}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {sanitizeInput(user.website)}
-                  </a>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      ) : (
-        <p>{t('userList.noUsers')}</p>
-      )}
-
-      <div className="stats-summary">
-        <p>
-          {t('userList.totalUsers', {
-            count: users.length,
-            formatted: formatNumber(users.length, i18n.language),
-          })}
-        </p>
-        <p>
-          {t('userList.companiesRepresented', {
-            count: new Set(users.map((user) => user.company.name)).size,
-            formatted: formatNumber(
-              new Set(users.map((user) => user.company.name)).size,
-              i18n.language,
-            ),
-          })}
-        </p>
+      {/* Single status region for loading/error/empty states */}
+      <div
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+        className={loading ? 'loading' : undefined}
+      >
+        {loading ? (
+          t('general.loading')
+        ) : error ? (
+          <div role="alert">
+            {t('errors.fetchError', { error: sanitizeInput(error) })}
+          </div>
+        ) : users.length === 0 ? (
+          t('userList.noUsers')
+        ) : null}
       </div>
+
+      {!loading && !error && users.length > 0 && (
+        <div aria-busy={loading}>
+          <table
+            aria-labelledby="user-list-title"
+            aria-describedby="user-list-description"
+            className="user-table"
+          >
+            <thead>
+              <tr>
+                <th scope="col" id="header-name">
+                  {t('userList.name')}
+                </th>
+                <th scope="col" id="header-email">
+                  {t('userList.email')}
+                </th>
+                <th scope="col" id="header-company">
+                  {t('userList.company')}
+                </th>
+                <th scope="col" id="header-location">
+                  {t('userList.location')}
+                </th>
+                <th scope="col" id="header-contact">
+                  {t('userList.contact')}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {users.map((user) => (
+                <tr key={user.id}>
+                  <th scope="row" headers="header-name">
+                    {sanitizeInput(user.name)}
+                  </th>
+                  <td headers="header-email">{sanitizeInput(user.email)}</td>
+                  <td headers="header-company">
+                    <div>{sanitizeInput(user.company.name)}</div>
+                    <small>{sanitizeInput(user.company.catchPhrase)}</small>
+                  </td>
+                  <td headers="header-location">
+                    {formatAddress(user.address)}
+                  </td>
+                  <td headers="header-contact">
+                    <div>{sanitizeInput(user.phone)}</div>
+                    <a
+                      href={`https://${user.website}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={t('userList.visitWebsite', {
+                        website: user.website,
+                      })}
+                    >
+                      {sanitizeInput(user.website)}
+                    </a>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          <div
+            className="stats-summary"
+            role="complementary"
+            aria-label={t('userList.statisticsSummary')}
+          >
+            <div>
+              {t('userList.totalUsers', {
+                count: users.length,
+                formatted: formatNumber(users.length, i18n.language),
+              })}
+            </div>
+            <div>
+              {t('userList.companiesRepresented', {
+                count: new Set(users.map((user) => user.company.name)).size,
+                formatted: formatNumber(
+                  new Set(users.map((user) => user.company.name)).size,
+                  i18n.language,
+                ),
+              })}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
