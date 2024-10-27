@@ -5,6 +5,22 @@ import { I18nextProvider } from 'react-i18next';
 import i18n from '../i18n.mock';
 import Navbar from './Navbar';
 
+// Mock translations for our accessibility keys
+i18n.addResourceBundle('en', 'translation', {
+  accessibility: {
+    menuOpen: 'Open menu',
+    menuClose: 'Close menu',
+    mainNavigation: 'Main navigation',
+  },
+  navbar: {
+    brand: 'VERT App',
+    home: 'Home',
+    about: 'About',
+    contact: 'Contact',
+    apiExample: 'API Example',
+  },
+});
+
 const renderWithRouter = (ui: React.ReactElement, { route = '/' } = {}) => {
   return render(
     <MemoryRouter initialEntries={[route]}>
@@ -32,5 +48,21 @@ describe('Navbar', () => {
   it('applies correct alignment class', () => {
     renderWithRouter(<Navbar alignment="center" />);
     expect(screen.getByTestId('navbar-menu')).toHaveClass('align-center');
+  });
+
+  // New test for accessibility features
+  it('has correct accessibility attributes', () => {
+    renderWithRouter(<Navbar />);
+    expect(screen.getByRole('navigation')).toHaveAttribute(
+      'aria-label',
+      'Main navigation',
+    );
+
+    const menuButton = screen.getByRole('button', { name: /open menu/i });
+    expect(menuButton).toHaveAttribute('aria-expanded', 'false');
+
+    fireEvent.click(menuButton);
+    expect(menuButton).toHaveAttribute('aria-expanded', 'true');
+    expect(menuButton).toHaveAttribute('aria-label', 'Close menu');
   });
 });

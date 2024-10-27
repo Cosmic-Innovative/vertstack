@@ -46,23 +46,21 @@
     "fetchError": "Error fetching user data: {{error}}"
   },
   "userList": {
-    "title": "API Integration Example: User Directory",
+    "title": "User Directory",
     "description": "This component demonstrates how to fetch and display data from an external API using the VERT stack, with internationalization support for formatting addresses, numbers, and lists.",
     "name": "Name",
     "email": "Email",
     "company": "Company",
     "location": "Location",
     "contact": "Contact Information",
-    "noUsers": "No users found.",
+    "noUsers": "No users found",
     "totalUsers": "Total Users: {{formatted}}",
     "companiesRepresented": "Companies Represented: {{formatted}}",
-    "keyPoints": "Key points:",
-    "keyPoint1": "Data is fetched using the fetchData utility from src/utils/api.ts",
-    "keyPoint2": "Internationalized formatting for addresses and lists",
-    "keyPoint3": "Loading and error states are handled to improve user experience",
-    "apiDetails": "API Details:",
-    "apiEndpoint": "Endpoint: https://jsonplaceholder.typicode.com/users",
-    "apiDescription": "This free API provides mock user data for testing and prototyping."
+    "loadingError": "Error loading users: {{error}}",
+    "retryButton": "Retry loading users",
+    "sortAscending": "Sort ascending",
+    "sortDescending": "Sort descending",
+    "clearSort": "Clear sort"
   },
   "footer": {
     "createdWith": "Created with",
@@ -107,5 +105,18 @@
       "option2": "Premium Plan",
       "option3": "Enterprise Plan"
     }
+  },
+  "accessibility": {
+    "sortBy": "Sort {column} ({direction})",
+    "ascending": "ascending",
+    "descending": "descending",
+    "none": "not sorted",
+    "emailUser": "Email {name}",
+    "callUser": "Call {name}",
+    "visitWebsite": "Visit {name}'s website",
+    "companyCatchphrase": "{company} catchphrase",
+    "userStatistics": "User statistics",
+    "totalUsers": "Total number of users",
+    "companiesRepresented": "Number of companies represented"
   }
 }

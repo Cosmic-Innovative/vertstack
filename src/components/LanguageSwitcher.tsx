@@ -36,6 +36,7 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const [announcement, setAnnouncement] = useState<string>('');
   const [touchStart, setTouchStart] = useState<{ x: number; y: number } | null>(
     null,
   );
@@ -44,6 +45,17 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
   );
 
   const minSwipeDistance = 50;
+
+  const currentLanguage =
+    languages.find((l) => l.code === i18n.language) || languages[0];
+
+  // Announcement handling
+  useEffect(() => {
+    if (announcement) {
+      const timer = setTimeout(() => setAnnouncement(''), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [announcement]);
 
   const handleLanguageChange = useCallback(
     async (languageCode: string) => {
@@ -56,37 +68,12 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
         navigate(newPath);
         setIsOpen(false);
         document.documentElement.lang = languageCode;
+        const selectedLanguage = languages.find((l) => l.code === languageCode);
+        setAnnouncement(`Selected language: ${selectedLanguage?.nativeName}`);
       }
     },
     [navigate, location.pathname],
   );
-
-  useEffect(() => {
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && isOpen) {
-        setIsOpen(false);
-        buttonRef.current?.focus();
-      }
-    };
-
-    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
-      }
-    };
-
-    document.addEventListener('keydown', handleEscape);
-    document.addEventListener('mousedown', handleClickOutside);
-    document.addEventListener('touchstart', handleClickOutside, {
-      passive: true,
-    });
-
-    return () => {
-      document.removeEventListener('keydown', handleEscape);
-      document.removeEventListener('mousedown', handleClickOutside);
-      document.removeEventListener('touchstart', handleClickOutside);
-    };
-  }, [isOpen]);
 
   const handleTouchStart = (e: React.TouchEvent) => {
     setTouchStart({
@@ -128,8 +115,38 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
     }
   };
 
+  // Update the keyboard event handling in the component:
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && isOpen) {
+        setIsOpen(false);
+        buttonRef.current?.focus();
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('keydown', handleEscape);
+      return () => document.removeEventListener('keydown', handleEscape);
+    }
+  }, [isOpen]);
+
+  // And update the handleKeyDown function:
   const handleKeyDown = (event: React.KeyboardEvent) => {
     switch (event.key) {
+      case 'Escape':
+        if (isOpen) {
+          event.preventDefault();
+          setIsOpen(false);
+          buttonRef.current?.focus();
+        }
+        break;
+      case 'ArrowDown':
+      case 'ArrowUp':
+        if (!isOpen) {
+          event.preventDefault();
+          setIsOpen(true);
+        }
+        break;
       case 'Enter':
       case ' ':
         event.preventDefault();
@@ -140,106 +157,89 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
     }
   };
 
-  const handleOptionKeyDown = (
-    event: React.KeyboardEvent,
-    languageCode: string,
-  ) => {
-    const buttons = Array.from(
-      menuRef.current?.querySelectorAll('button') || [],
-    );
-    const currentIndex = buttons.indexOf(event.target as HTMLButtonElement);
-
-    switch (event.key) {
-      case 'Enter':
-      case ' ':
-        event.preventDefault();
-        void handleLanguageChange(languageCode);
-        break;
-      case 'Escape':
-        event.preventDefault();
+  // Click outside handling
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         setIsOpen(false);
-        buttonRef.current?.focus();
-        break;
-      case 'ArrowUp': {
-        event.preventDefault();
-        if (currentIndex > 0) {
-          (buttons[currentIndex - 1] as HTMLElement).focus();
-        } else {
-          buttonRef.current?.focus();
-        }
-        break;
       }
-      case 'ArrowDown': {
-        event.preventDefault();
-        if (currentIndex < buttons.length - 1) {
-          (buttons[currentIndex + 1] as HTMLElement).focus();
-        }
-        break;
-      }
-      default:
-        break;
-    }
-  };
+    };
 
-  const currentLanguage =
-    languages.find((l) => l.code === i18n.language) || languages[0];
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside, {
+      passive: true,
+    });
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
+  }, []);
 
   return (
-    <div
-      className={`language-switcher ${className} popup-${popupDirection} ${
-        isOpen ? 'is-active' : ''
-      }`}
-      data-testid="language-switcher"
-      ref={menuRef}
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
-    >
-      <button
-        ref={buttonRef}
-        className="language-display"
-        onClick={() => setIsOpen(!isOpen)}
-        onKeyDown={handleKeyDown}
-        aria-expanded={isOpen}
-        aria-haspopup="listbox"
-        aria-label="Select language"
+    <>
+      {/* Announcements for screen readers */}
+      <div role="status" aria-live="polite" className="sr-only">
+        {announcement}
+      </div>
+
+      <div
+        className={`language-switcher ${className} popup-${popupDirection} ${
+          isOpen ? 'is-active' : ''
+        }`}
+        data-testid="language-switcher"
+        ref={menuRef}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
       >
-        <span className="language-flag" aria-hidden="true">
-          {currentLanguage.flag}
-        </span>
-        <span className="language-name">{currentLanguage.nativeName}</span>
-        <span className="language-dropdown-arrow" aria-hidden="true">
-          ▾
-        </span>
-      </button>
-      {isOpen && (
-        <div
-          className="language-options"
-          role="listbox"
+        <button
+          ref={buttonRef}
+          className="language-display"
+          onClick={() => setIsOpen(!isOpen)}
+          onKeyDown={handleKeyDown}
+          aria-expanded={isOpen}
+          aria-haspopup="listbox"
           aria-label="Select language"
-          tabIndex={-1}
+          type="button"
         >
-          {languages.map((language) => (
-            <button
-              key={language.code}
-              className={`language-option ${
-                language.code === i18n.language ? 'active' : ''
-              }`}
-              onClick={() => handleLanguageChange(language.code)}
-              onKeyDown={(e) => handleOptionKeyDown(e, language.code)}
-              role="option"
-              aria-selected={language.code === i18n.language}
-              tabIndex={0}
-            >
-              <span className="language-flag" aria-hidden="true">
-                {language.flag}
-              </span>
-              <span className="language-name">{language.nativeName}</span>
-            </button>
-          ))}
-        </div>
-      )}
-    </div>
+          <span className="language-flag" aria-hidden="true">
+            {currentLanguage.flag}
+          </span>
+          <span className="language-name">{currentLanguage.nativeName}</span>
+          <span className="language-dropdown-arrow" aria-hidden="true">
+            ▾
+          </span>
+        </button>
+
+        {isOpen && (
+          <div
+            className="language-options"
+            role="listbox"
+            aria-label="Select language"
+            tabIndex={-1}
+          >
+            {languages.map((language) => (
+              <button
+                key={language.code}
+                className={`language-option ${
+                  language.code === i18n.language ? 'active' : ''
+                }`}
+                onClick={() => handleLanguageChange(language.code)}
+                role="option"
+                aria-selected={language.code === i18n.language}
+                type="button"
+              >
+                <span className="language-flag" aria-hidden="true">
+                  {language.flag}
+                </span>
+                <span className="language-name">{language.nativeName}</span>
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 
