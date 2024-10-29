@@ -43,7 +43,19 @@
   },
   "errors": {
     "somethingWentWrong": "Something went wrong. Please try refreshing the page.",
-    "fetchError": "Error fetching user data: {{error}}"
+    "fetchError": "Error fetching user data: {{error}}",
+    "boundary": {
+      "title": "Something went wrong",
+      "message": "We apologize, but something went wrong with this part of the application.",
+      "showDetails": "Show technical details",
+      "hideDetails": "Hide technical details",
+      "errorInfo": "Error Information",
+      "actions": "Error Recovery Actions",
+      "retry": "Try Again",
+      "retryLabel": "Try loading this component again",
+      "refresh": "Refresh Page",
+      "refreshLabel": "Reload the entire page"
+    }
   },
   "userList": {
     "title": "User Directory",

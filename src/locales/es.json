@@ -43,7 +43,19 @@
   },
   "errors": {
     "somethingWentWrong": "Algo salió mal. Por favor, intenta refrescar la página.",
-    "fetchError": "Error al obtener datos de usuario: {{error}}"
+    "fetchError": "Error al obtener datos de usuario: {{error}}",
+    "boundary": {
+      "title": "Algo salió mal",
+      "message": "Nos disculpamos, pero algo salió mal con esta parte de la aplicación.",
+      "showDetails": "Mostrar detalles técnicos",
+      "hideDetails": "Ocultar detalles técnicos",
+      "errorInfo": "Información del Error",
+      "actions": "Acciones de Recuperación de Error",
+      "retry": "Intentar de Nuevo",
+      "retryLabel": "Intentar cargar este componente nuevamente",
+      "refresh": "Actualizar Página",
+      "refreshLabel": "Recargar la página completa"
+    }
   },
   "userList": {
     "title": "Directorio de Usuarios",
