@@ -4,13 +4,23 @@
     "description": "Esta plantilla proporciona una base sólida para construir aplicaciones web modernas utilizando:",
     "metaDescription": "Plantilla VERT Stack: Una base poderosa para aplicaciones web modernas usando Vite, ESLint, React y TypeScript. Construye aplicaciones rápidas, eficientes y escalables.",
     "features": {
+      "title": "Características de VERT Stack",
+      "listLabel": "Lista de características principales",
       "vite": "Vite para un desarrollo rápido y una construcción eficiente",
       "eslint": "ESLint para una calidad de código consistente",
       "react": "React para construir interfaces de usuario",
       "typescript": "TypeScript para seguridad de tipos"
     },
+    "sections": {
+      "description": "Descripción",
+      "features": "Características",
+      "message": "Mensaje",
+      "cta": "Llamada a la acción"
+    },
     "cta": "Ver Ejemplo de API",
+    "ctaAriaLabel": "Ver ejemplo de integración de API",
     "logoAlt": "Logo de VERT Stack",
+    "heroAlt": "Ilustración de VERT Stack",
     "exploreMessage": "Explora las diferentes páginas para ver ejemplos de enrutamiento, estructura de componentes e integración de API."
   },
   "about": {

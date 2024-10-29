@@ -4,13 +4,23 @@
     "description": "This template provides a solid foundation for building modern web applications using:",
     "metaDescription": "VERT Stack Template: A powerful foundation for modern web apps using Vite, ESLint, React, and TypeScript. Build fast, efficient, and scalable applications.",
     "features": {
+      "title": "VERT Stack Features",
+      "listLabel": "Core features list",
       "vite": "Vite for fast development and efficient building",
       "eslint": "ESLint for consistent code quality",
       "react": "React for building user interfaces",
       "typescript": "TypeScript for type safety"
     },
+    "sections": {
+      "description": "Description",
+      "features": "Features",
+      "message": "Message",
+      "cta": "Call to Action"
+    },
     "cta": "View API Example",
+    "ctaAriaLabel": "View API integration example",
     "logoAlt": "VERT Stack Logo",
+    "heroAlt": "VERT Stack illustration",
     "exploreMessage": "Explore the different pages to see examples of routing, component structure, and API integration."
   },
   "about": {
