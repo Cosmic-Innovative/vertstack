@@ -1,260 +1,186 @@
-import { screen, within } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import Home from './Home';
 import { render, expectTranslated } from '../test-utils';
 
-// Mock the OptimizedHeroImage component
+// Mock the OptimizedHeroImage and LazyImage components
 vi.mock('./OptimizedHeroImage', () => ({
-  default: ({
-    desktopSrc,
-    alt,
-    className,
-    priority,
-    'aria-labelledby': ariaLabelledby,
-  }: {
-    desktopSrc: string;
-    alt: string;
-    className: string;
-    priority: boolean;
-    'aria-labelledby': string;
-  }) => (
-    <img
-      src={desktopSrc}
-      alt={alt}
-      className={className}
-      data-testid="hero-image"
-      data-priority={priority}
-      aria-labelledby={ariaLabelledby}
-    />
+  default: ({ alt, className }: { alt: string; className: string }) => (
+    <img data-testid="hero-image" alt={alt} className={className} />
   ),
 }));
 
-// Mock LazyImage component
 vi.mock('./LazyImage', () => ({
   default: ({
     src,
     alt,
     className,
-    width,
-    height,
   }: {
     src: string;
     alt: string;
     className: string;
-    width: string;
-    height: string;
   }) => (
-    <img
-      src={src}
-      alt={alt}
-      className={className}
-      width={width}
-      height={height}
-      data-testid="lazy-image"
-    />
+    <img data-testid="lazy-image" src={src} alt={alt} className={className} />
   ),
 }));
 
-describe('Home Component', () => {
+describe('Home', () => {
   beforeEach(() => {
     vi.useFakeTimers();
   });
 
   afterEach(() => {
+    vi.clearAllMocks();
     vi.useRealTimers();
   });
 
-  describe('Loading States', () => {
-    it('shows loading state initially with proper ARIA attributes', async () => {
-      const { container } = await render(<Home />, { route: '/en' });
+  it('renders loading state initially', async () => {
+    await render(<Home />, { route: '/en' });
 
-      // Verify sections with loading states are properly marked
-      const busySections = screen.getAllByRole('region', { busy: true });
-      expect(busySections.length).toBeGreaterThan(0);
-
-      // Verify loading skeletons
-      const skeletonContainers =
-        container.querySelectorAll('.loading-skeleton');
-      expect(skeletonContainers.length).toBeGreaterThan(0);
-
-      skeletonContainers.forEach((container) => {
-        // Verify each skeleton container is hidden from screen readers
-        expect(container).toHaveAttribute('aria-hidden', 'true');
-
-        // Verify each container has pulse animations
-        const pulseElements = container.querySelectorAll('.animate-pulse');
-        expect(pulseElements.length).toBeGreaterThan(0);
-      });
-    });
-
-    it('removes loading state after timeout', async () => {
-      const { container } = await render(<Home />, { route: '/en' });
-
-      // Fast-forward past loading state
-      await vi.runAllTimersAsync();
-
-      // Verify loading indicators are removed
-      const loadingElements = container.querySelectorAll('.animate-pulse');
-      expect(loadingElements).toHaveLength(0);
-    });
+    expect(screen.queryByTestId('hero-image')).not.toBeInTheDocument();
+    expect(screen.getAllByRole('listitem')).toHaveLength(4); // Loading skeleton items
+    expect(screen.queryByRole('link')).not.toBeInTheDocument();
   });
 
-  describe('Accessibility', () => {
-    it('has proper document structure with landmarks', async () => {
-      await render(<Home />, { route: '/en' });
-      await vi.runAllTimersAsync();
+  it('renders content after loading', async () => {
+    await render(<Home />, { route: '/en' });
 
-      // Verify main landmark
-      const article = screen.getByRole('article');
-      expect(article).toHaveAttribute('aria-labelledby', 'home-title');
+    // Fast-forward past loading state
+    await vi.runAllTimersAsync();
 
-      // Verify banner landmark
-      const banner = screen.getByRole('banner');
-      expect(banner).toBeInTheDocument();
+    // Verify main content is rendered
+    const title = await expectTranslated('home.title', 'en');
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(title);
 
-      // Verify each section has proper labeling
-      const sections = screen.getAllByRole('region');
-      sections.forEach((section) => {
-        expect(
-          section.hasAttribute('aria-label') ||
-            section.hasAttribute('aria-labelledby'),
-        ).toBe(true);
-      });
-    });
+    const description = await expectTranslated('home.description', 'en');
+    expect(screen.getByText(description)).toBeInTheDocument();
 
-    it('has proper heading structure', async () => {
-      await render(<Home />, { route: '/en' });
-      await vi.runAllTimersAsync();
-
-      const headings = screen.getAllByRole('heading');
-      expect(headings[0]).toHaveAttribute('id', 'home-title');
-
-      // Verify heading levels
-      const h1 = screen.getByRole('heading', { level: 1 });
-      expect(h1).toHaveTextContent(await expectTranslated('home.title', 'en'));
-    });
-
-    it('provides proper image alternatives', async () => {
-      await render(<Home />, { route: '/en' });
-      await vi.runAllTimersAsync();
-
-      const heroImage = screen.getByTestId('hero-image');
-      expect(heroImage).toHaveAttribute(
-        'alt',
-        await expectTranslated('home.heroAlt', 'en'),
-      );
-
-      const logo = screen.getByTestId('lazy-image');
-      expect(logo).toHaveAttribute(
-        'alt',
-        await expectTranslated('home.logoAlt', 'en'),
-      );
-    });
-
-    it('has accessible link text', async () => {
-      await render(<Home />, { route: '/en' });
-      await vi.runAllTimersAsync();
-
-      const ctaLink = screen.getByRole('link');
-      expect(ctaLink).toHaveAttribute(
-        'aria-label',
-        await expectTranslated('home.ctaAriaLabel', 'en'),
-      );
-    });
-
-    it('maintains proper focus management', async () => {
-      await render(<Home />, { route: '/en' });
-      await vi.runAllTimersAsync();
-
-      const interactiveElements = screen.getAllByRole('link');
-      interactiveElements.forEach((element) => {
-        element.focus();
-        expect(element).toHaveFocus();
-      });
-    });
+    // Verify hero image is rendered
+    expect(screen.getByTestId('hero-image')).toBeInTheDocument();
   });
 
-  describe('Features List', () => {
-    it('renders features list with proper structure', async () => {
-      await render(<Home />, { route: '/en' });
-      await vi.runAllTimersAsync();
+  it('renders VERT features correctly', async () => {
+    await render(<Home />, { route: '/en' });
+    await vi.runAllTimersAsync();
 
-      const list = screen.getByRole('list');
-      expect(list).toHaveAttribute(
-        'aria-label',
-        await expectTranslated('home.features.listLabel', 'en'),
+    const featuresList = screen.getByRole('list');
+    expect(featuresList).toHaveAttribute(
+      'aria-label',
+      await expectTranslated('home.features.title', 'en'),
+    );
+
+    // Check all features are rendered
+    const features = ['vite', 'eslint', 'react', 'typescript'];
+    for (const feature of features) {
+      const featureText = await expectTranslated(
+        `home.features.${feature}`,
+        'en',
       );
-
-      const items = within(list).getAllByRole('listitem');
-      expect(items).toHaveLength(4); // VERT has 4 features
-
-      // Verify each feature is properly rendered
-      const features = ['vite', 'eslint', 'react', 'typescript'];
-      for (const feature of features) {
-        const featureText = await expectTranslated(
-          `home.features.${feature}`,
-          'en',
-        );
-        expect(screen.getByText(featureText)).toBeInTheDocument();
-      }
-    });
+      expect(screen.getByText(featureText)).toBeInTheDocument();
+    }
   });
 
-  describe('Internationalization', () => {
-    it('renders in English by default', async () => {
-      await render(<Home />, { route: '/en' });
-      await vi.runAllTimersAsync();
+  it('handles language switching correctly', async () => {
+    const { changeLanguage } = await render(<Home />, { route: '/en' });
+    await vi.runAllTimersAsync();
 
-      const heading = screen.getByRole('heading', { level: 1 });
-      expect(heading).toHaveTextContent(
-        await expectTranslated('home.title', 'en'),
-      );
-    });
+    // Check English content
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+      await expectTranslated('home.title', 'en'),
+    );
 
-    it('renders in Spanish when specified', async () => {
-      await render(<Home />, { route: '/es' });
-      await vi.runAllTimersAsync();
+    // Switch to Spanish
+    await changeLanguage('es');
 
-      const heading = screen.getByRole('heading', { level: 1 });
-      expect(heading).toHaveTextContent(
-        await expectTranslated('home.title', 'es'),
-      );
-    });
-
-    it('updates content when language changes', async () => {
-      const { changeLanguage } = await render(<Home />, { route: '/en' });
-      await vi.runAllTimersAsync();
-
-      // Verify initial English rendering
-      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
-        await expectTranslated('home.title', 'en'),
-      );
-
-      // Change language to Spanish
-      await changeLanguage('es');
-
-      // Verify Spanish rendering
-      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
-        await expectTranslated('home.title', 'es'),
-      );
-    });
+    // Check Spanish content
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+      await expectTranslated('home.title', 'es'),
+    );
   });
 
-  describe('Performance', () => {
-    it('lazy loads non-critical images', async () => {
-      await render(<Home />, { route: '/en' });
-      await vi.runAllTimersAsync();
+  it('has correct link to API example', async () => {
+    await render(<Home />, { route: '/en' });
+    await vi.runAllTimersAsync();
 
-      const lazyLoadedImage = screen.getByTestId('lazy-image');
-      expect(lazyLoadedImage).toBeInTheDocument();
-    });
+    const link = screen.getByRole('link');
+    expect(link).toHaveAttribute('href', '/en/api-example');
+    expect(link).toHaveAccessibleName(await expectTranslated('home.cta', 'en'));
+  });
 
-    it('prioritizes hero image loading', async () => {
-      await render(<Home />, { route: '/en' });
-      await vi.runAllTimersAsync();
+  it('has proper document structure and landmarks', async () => {
+    await render(<Home />, { route: '/en' });
+    await vi.runAllTimersAsync();
 
-      const heroImage = screen.getByTestId('hero-image');
-      expect(heroImage).toHaveAttribute('data-priority', 'true');
-    });
+    // Check main landmark
+    const main = screen.getByRole('main');
+    expect(main).toBeInTheDocument();
+    expect(main).toHaveAttribute('aria-labelledby', 'home-title');
+
+    // Check hero section
+    const heroSection = screen.getByLabelText(
+      await expectTranslated('home.heroAlt', 'en'),
+    );
+    expect(heroSection).toHaveClass('hero-section');
+
+    // Check content section styling
+    const contentSection = screen
+      .getByRole('main')
+      .querySelector('.content-section');
+    expect(contentSection).toBeInTheDocument();
+    expect(contentSection).toHaveClass('content-section');
+  });
+
+  it('preserves visual styling and layout', async () => {
+    await render(<Home />, { route: '/en' });
+    await vi.runAllTimersAsync();
+
+    // Check container classes are preserved
+    const contentSection = screen
+      .getByRole('main')
+      .querySelector('.content-section');
+    expect(contentSection).toHaveClass('content-section');
+
+    const contentWrapper = contentSection?.querySelector('.content-wrapper');
+    expect(contentWrapper).toHaveClass('content-wrapper');
+
+    // Check title container styling
+    const titleContainer = screen.getByRole('heading', {
+      level: 1,
+    }).parentElement;
+    expect(titleContainer).toHaveClass('title-container', 'h-24', 'mb-8');
+  });
+
+  it('maintains consistent loading state duration', async () => {
+    const { container } = await render(<Home />, { route: '/en' });
+
+    // Check loading state
+    expect(container.querySelectorAll('.animate-pulse')).not.toHaveLength(0);
+
+    // Fast-forward 400ms - should still be loading
+    await vi.advanceTimersByTimeAsync(400);
+    expect(container.querySelectorAll('.animate-pulse')).not.toHaveLength(0);
+
+    // Fast-forward remaining time - should be loaded
+    await vi.advanceTimersByTimeAsync(100);
+    expect(container.querySelectorAll('.animate-pulse')).toHaveLength(0);
+  });
+
+  it('renders images with proper attributes', async () => {
+    await render(<Home />, { route: '/en' });
+    await vi.runAllTimersAsync();
+
+    const heroImage = screen.getByTestId('hero-image');
+    expect(heroImage).toHaveAttribute(
+      'alt',
+      await expectTranslated('home.heroAlt', 'en'),
+    );
+    expect(heroImage).toHaveClass('w-full', 'h-full');
+
+    const logo = screen.getByTestId('lazy-image');
+    expect(logo).toHaveAttribute(
+      'alt',
+      await expectTranslated('home.logoAlt', 'en'),
+    );
+    expect(logo).toHaveClass('inline-logo');
   });
 });

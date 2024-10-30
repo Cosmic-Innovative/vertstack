@@ -46,10 +46,12 @@ describe('App', () => {
   });
 
   it('renders the navbar', async () => {
-    render(<App useRouter={false} />, { route: '/en' });
+    render(<App useRouter={false} />);
 
-    // Use findByRole for async elements and don't require the name match
-    const navElement = await screen.findByRole('navigation');
+    // Be specific about which navigation we want
+    const navElement = await screen.findByRole('navigation', {
+      name: 'accessibility.mainNavigation',
+    });
     expect(navElement).toBeInTheDocument();
   });
 

@@ -30,8 +30,21 @@
   },
   "contact": {
     "title": "Contacto",
-    "description": "Esta es la página de contacto de nuestra aplicación VERT stack.",
-    "metaDescription": "Ponte en contacto con el equipo de la Plantilla VERT Stack. Estamos aquí para responder tus preguntas y ayudarte a construir aplicaciones web increíbles."
+    "description": "Ponte en contacto con el equipo de VERT Stack. Estamos aquí para ayudarte con tus preguntas y comentarios.",
+    "info": {
+      "title": "Información de Contacto",
+      "email": "Correo electrónico",
+      "emailLabel": "Envíanos un correo electrónico",
+      "phone": "Teléfono",
+      "phoneLabel": "Llama a nuestro equipo de soporte",
+      "address": "Dirección"
+    },
+    "hours": {
+      "title": "Horario de Atención",
+      "weekdays": "Lunes - Viernes",
+      "weekends": "Sábado - Domingo",
+      "closed": "Cerrado"
+    }
   },
   "apiExample": {
     "title": "Ejemplo de Integración de API",
@@ -85,8 +98,18 @@
     "clearSort": "Limpiar ordenamiento"
   },
   "footer": {
+    "ariaLabel": "Pie de página del sitio web",
+    "languageSelectorLabel": "Seleccionar idioma",
+    "attributionLabel": "Atribución del sitio web",
+    "navigationLabel": "Navegación del pie de página",
     "createdWith": "Creado con",
-    "by": "por"
+    "heartEmoji": "Corazón",
+    "by": "por",
+    "companyLinkLabel": "Visitar el sitio web de Cosmic Innovative",
+    "copyrightLabel": "Aviso de derechos de autor",
+    "privacy": "Política de Privacidad",
+    "terms": "Términos de Servicio",
+    "sitemap": "Mapa del sitio"
   },
   "i18nExamples": {
     "title": "Ejemplos de Internacionalización",

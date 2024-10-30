@@ -30,8 +30,21 @@
   },
   "contact": {
     "title": "Contact",
-    "description": "This is the contact page of our VERT stack application.",
-    "metaDescription": "Get in touch with the VERT Stack Template team. We're here to answer your questions and help you build amazing web applications."
+    "description": "Get in touch with the VERT Stack team. We're here to help with your questions and feedback.",
+    "info": {
+      "title": "Contact Information",
+      "email": "Email",
+      "emailLabel": "Send us an email",
+      "phone": "Phone",
+      "phoneLabel": "Call our support team",
+      "address": "Address"
+    },
+    "hours": {
+      "title": "Business Hours",
+      "weekdays": "Monday - Friday",
+      "weekends": "Saturday - Sunday",
+      "closed": "Closed"
+    }
   },
   "apiExample": {
     "title": "API Integration Example",
@@ -85,8 +98,18 @@
     "clearSort": "Clear sort"
   },
   "footer": {
+    "ariaLabel": "Website footer",
+    "languageSelectorLabel": "Select language",
+    "attributionLabel": "Website attribution",
+    "navigationLabel": "Footer navigation",
     "createdWith": "Created with",
-    "by": "by"
+    "heartEmoji": "Heart",
+    "by": "by",
+    "companyLinkLabel": "Visit Cosmic Innovative website",
+    "copyrightLabel": "Copyright notice",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "sitemap": "Sitemap"
   },
   "i18nExamples": {
     "title": "Internationalization Examples",

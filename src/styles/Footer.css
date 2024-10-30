@@ -1,8 +1,8 @@
+/* Base footer styles */
 .footer {
   background-color: #f8f9fa;
   border-top: 1px solid #e9ecef;
-  padding: 2rem 0;
-  margin-top: auto;
+  padding: 1rem 0;
 }
 
 .footer-container {
@@ -13,12 +13,94 @@
 
 .footer-content {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 1rem;
+  justify-content: space-between;
+  gap: 2rem;
 }
 
+/* Language Switcher */
+.footer-language-selector {
+  flex-shrink: 0;
+}
+
+/* Navigation Links */
+.footer-links {
+  display: flex;
+  gap: 2rem;
+  margin: 0 auto; /* Center the links */
+  background-color: transparent;
+}
+
+.footer-link {
+  color: #666;
+  font-size: 0.875rem;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer-link:hover {
+  color: #333;
+  text-decoration: underline;
+}
+
+/* Attribution */
+.footer-attribution {
+  color: #666;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.footer-attribution a {
+  color: #0056b3;
+  text-decoration: none;
+}
+
+.footer-attribution a:hover {
+  text-decoration: underline;
+}
+
+.footer-copyright {
+  margin-left: 0.5rem;
+  color: #999;
+}
+
+/* Footer Navigation */
+.footer-navigation {
+  text-align: center;
+  padding: 0.75rem 0;
+  margin-top: 20px;
+  border-top: 1px solid #e9ecef;
+  background-color: #f8f9fa;
+}
+
+.footer-navigation ul {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  flex-wrap: nowrap; /* Prevent wrapping */
+  white-space: nowrap; /* Prevent text wrapping */
+}
+
+.footer-navigation a {
+  color: #666;
+  font-size: 0.75rem; /* Slightly smaller font for mobile compatibility */
+  text-decoration: none;
+  transition: color 0.2s ease;
+  padding: 0.25rem 0;
+  display: inline-block;
+}
+
+.footer-navigation a:hover {
+  color: #333;
+  text-decoration: underline;
+}
+
+/* Language Selector Styles */
 .footer-language-selector {
   position: relative;
 }
@@ -52,7 +134,7 @@
   color: #666;
   margin-left: 0.5rem;
   display: inline-block;
-  transform: rotate(180deg); /* Flip the arrow to point up */
+  transform: rotate(180deg);
 }
 
 .language-options {
@@ -68,14 +150,14 @@
   z-index: 1000;
   max-height: 300px;
   overflow-y: auto;
-  padding-bottom: 8px; /* Add padding to extend hover area */
+  padding-bottom: 8px;
 }
 
 /* Create an invisible bridge between selector and options */
 .footer-language-selector::after {
   content: '';
   position: absolute;
-  height: 8px; /* Match the gap size */
+  height: 8px;
   bottom: 100%;
   left: 0;
   right: 0;
@@ -92,35 +174,42 @@
   background-color: #e9ecef;
 }
 
-.footer-attribution {
-  text-align: right;
-  color: #666;
-  font-size: 0.9rem;
-}
-
-.footer-attribution a {
-  color: #0056b3;
-  text-decoration: none;
-}
-
-.footer-attribution a:hover {
-  text-decoration: underline;
-}
-
-.footer-copyright {
-  margin-left: 0.5rem;
-  color: #999;
-}
-
+/* Mobile Styles */
 @media (max-width: 768px) {
+  .footer {
+    padding: 1.5rem 0;
+  }
+
   .footer-content {
     flex-direction: column;
-    align-items: flex-start;
     gap: 1.5rem;
+    text-align: center;
   }
 
   .footer-language-selector {
     width: 100%;
+    max-width: 200px;
+  }
+
+  .footer-links {
+    width: 100%;
+    justify-content: center;
+    gap: 1.5rem;
+  }
+
+  .footer-attribution {
+    width: 100%;
+    font-size: 0.875rem;
+  }
+
+  .footer-navigation ul {
+    gap: 1.5rem; /* Slightly reduced gap on mobile */
+    padding: 0 1rem; /* Add side padding for smaller screens */
+  }
+
+  /* Keep the navigation items from wrapping or getting too close on mobile */
+  .footer-navigation a {
+    padding: 0.25rem 0;
   }
 
   .language-display {
@@ -130,16 +219,6 @@
 
   .language-options {
     width: 100%;
-  }
-
-  .footer-attribution {
-    width: 100%;
-    text-align: center;
-  }
-
-  /* Ensure the popup has enough room on mobile */
-  .footer-language-selector {
-    margin-top: 150px; /* Add space above the selector for the popup */
   }
 }
 
@@ -160,4 +239,35 @@
 
 .language-options::-webkit-scrollbar-thumb:hover {
   background: #555;
+}
+
+/* Accessibility focus styles */
+.footer a:focus,
+.footer button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #0056b3;
+}
+
+/* Touch device optimizations */
+@media (hover: none) {
+  .language-options {
+    position: fixed;
+    left: 0;
+    right: 0;
+    margin: 0 1rem;
+    width: auto;
+    max-height: 50vh;
+  }
+
+  .popup-up .language-options {
+    bottom: 1rem;
+  }
+
+  .popup-down .language-options {
+    top: 1rem;
+  }
+
+  .language-option:active {
+    background-color: #e9ecef;
+  }
 }
