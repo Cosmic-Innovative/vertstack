@@ -14,10 +14,11 @@ i18n.addResourceBundle('en', 'translation', {
   },
   navbar: {
     brand: 'VERT App',
-    home: 'Home',
+    brandHomeLink: 'VERT App - Return to homepage',
     about: 'About',
     contact: 'Contact',
     apiExample: 'API Example',
+    i18nExamples: 'I18n Examples',
   },
 });
 
@@ -32,10 +33,19 @@ const renderWithRouter = (ui: React.ReactElement, { route = '/' } = {}) => {
 describe('Navbar', () => {
   it('renders navigation links', () => {
     renderWithRouter(<Navbar />);
-    expect(screen.getByText(/home/i)).toBeInTheDocument();
     expect(screen.getByText(/about/i)).toBeInTheDocument();
     expect(screen.getByText(/contact/i)).toBeInTheDocument();
     expect(screen.getByText(/api example/i)).toBeInTheDocument();
+    expect(screen.getByText(/i18n examples/i)).toBeInTheDocument();
+  });
+
+  it('renders brand link as home navigation', () => {
+    renderWithRouter(<Navbar />);
+    const brandLink = screen.getByRole('link', {
+      name: /VERT App - Return to homepage/i,
+    });
+    expect(brandLink).toBeInTheDocument();
+    expect(brandLink).toHaveClass('navbar-brand');
   });
 
   it('toggles mobile menu when hamburger button is clicked', () => {
@@ -50,7 +60,6 @@ describe('Navbar', () => {
     expect(screen.getByTestId('navbar-menu')).toHaveClass('align-center');
   });
 
-  // New test for accessibility features
   it('has correct accessibility attributes', () => {
     renderWithRouter(<Navbar />);
     expect(screen.getByRole('navigation')).toHaveAttribute(

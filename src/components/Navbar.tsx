@@ -133,7 +133,8 @@ const Navbar: React.FC<NavbarProps> = ({ alignment = 'right' }) => {
         <Link
           to={`/${lang}`}
           className="navbar-brand"
-          aria-label={t('navbar.brand')}
+          aria-label={t('navbar.brandHomeLink')}
+          aria-current={isCurrentPage('/') ? 'page' : undefined}
         >
           {t('navbar.brand')}
         </Link>
@@ -158,15 +159,6 @@ const Navbar: React.FC<NavbarProps> = ({ alignment = 'right' }) => {
           data-testid="navbar-menu"
         >
           <ul className="navbar-links">
-            <li>
-              <Link
-                to={`/${lang}`}
-                onClick={() => setIsMenuOpen(false)}
-                aria-current={isCurrentPage('/') ? 'page' : undefined}
-              >
-                {t('navbar.home')}
-              </Link>
-            </li>
             <li>
               <Link
                 to={`/${lang}/about`}
@@ -194,6 +186,17 @@ const Navbar: React.FC<NavbarProps> = ({ alignment = 'right' }) => {
                 }
               >
                 {t('navbar.apiExample')}
+              </Link>
+            </li>
+            <li>
+              <Link
+                to={`/${lang}/i18n-examples`}
+                onClick={() => setIsMenuOpen(false)}
+                aria-current={
+                  isCurrentPage('/i18n-examples') ? 'page' : undefined
+                }
+              >
+                {t('navbar.i18nExamples')}
               </Link>
             </li>
           </ul>

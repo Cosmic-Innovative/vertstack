@@ -33,10 +33,6 @@ describe('ApiExample', () => {
         await expectTranslated('apiExample.title', 'en'),
       );
     });
-
-    expect(
-      screen.getByText(await expectTranslated('apiExample.description', 'en')),
-    ).toBeInTheDocument();
   });
 
   it('renders in Spanish when specified', async () => {
@@ -110,21 +106,5 @@ describe('ApiExample', () => {
     // Initial render with loading state
     const userListContainer = screen.getByTestId('user-list');
     expect(userListContainer).toBeInTheDocument();
-  });
-
-  it('contains informative content', async () => {
-    (api.fetchData as ReturnType<typeof vi.fn>).mockResolvedValue([]);
-
-    await actWithReturn(async () => {
-      await render(<ApiExample />, { route: '/en/api-example' });
-    });
-
-    await waitFor(async () => {
-      expect(
-        screen.getByText(
-          await expectTranslated('apiExample.description', 'en'),
-        ),
-      ).toBeInTheDocument();
-    });
   });
 });

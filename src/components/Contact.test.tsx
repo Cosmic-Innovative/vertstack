@@ -30,61 +30,35 @@ describe('Contact', () => {
     expect(screen.getByText(description)).toBeInTheDocument();
   });
 
-  it('renders contact information with proper structure', async () => {
+  it('renders community links with proper attributes', async () => {
     await render(<Contact />, { route: '/en/contact' });
 
-    // Check contact info section
-    const contactInfoTitle = await expectTranslated('contact.info.title', 'en');
-    expect(
-      screen.getByRole('heading', { name: contactInfoTitle }),
-    ).toBeInTheDocument();
+    const telegramLink = screen.getByRole('link', { name: /telegram/i });
+    const whatsappLink = screen.getByRole('link', { name: /whatsapp/i });
 
-    // Check contact list items
-    const list = screen.getByRole('list');
-    expect(list).toBeInTheDocument();
-    expect(list).toHaveClass('contact-list');
+    expect(telegramLink).toHaveAttribute('href', 'https://t.me/vertstack');
+    expect(telegramLink).toHaveAttribute('target', '_blank');
+    expect(telegramLink).toHaveAttribute('rel', 'noopener noreferrer');
 
-    // Check email link
-    const emailLabel = await expectTranslated('contact.info.emailLabel', 'en');
-    const emailLink = screen.getByRole('link', { name: emailLabel });
-    expect(emailLink).toHaveAttribute('href', 'mailto:contact@example.com');
-
-    // Check phone link
-    const phoneLabel = await expectTranslated('contact.info.phoneLabel', 'en');
-    const phoneLink = screen.getByRole('link', { name: phoneLabel });
-    expect(phoneLink).toHaveAttribute('href', 'tel:+1234567890');
-
-    // Check address
-    const addressLabel = await expectTranslated('contact.info.address', 'en');
-    const address = screen.getByText(addressLabel, { exact: false });
-    expect(address).toBeInTheDocument();
+    expect(whatsappLink).toHaveAttribute('href', 'https://wa.me/vertstack');
+    expect(whatsappLink).toHaveAttribute('target', '_blank');
+    expect(whatsappLink).toHaveAttribute('rel', 'noopener noreferrer');
   });
 
-  it('renders business hours with proper structure', async () => {
+  it('renders official contacts with proper links', async () => {
     await render(<Contact />, { route: '/en/contact' });
 
-    const hoursTitle = await expectTranslated('contact.hours.title', 'en');
-    expect(
-      screen.getByRole('heading', { name: hoursTitle }),
-    ).toBeInTheDocument();
+    const emailLink = screen.getByRole('link', {
+      name: 'contact@vertstack.dev',
+    });
+    const githubLink = screen.getByRole('link', {
+      name: 'github.com/vertstack',
+    });
 
-    // Check weekday hours using partial text match
-    const weekdays = await expectTranslated('contact.hours.weekdays', 'en');
-    const weekdayElement = screen.getByText((content) =>
-      content.includes(weekdays),
-    );
-    expect(weekdayElement).toBeInTheDocument();
-
-    // Check weekend hours using partial text match
-    const weekends = await expectTranslated('contact.hours.weekends', 'en');
-    const weekendElement = screen.getByText((content) =>
-      content.includes(weekends),
-    );
-    expect(weekendElement).toBeInTheDocument();
-
-    // Check hours are displayed
-    expect(screen.getByText('9:00 AM - 5:00 PM')).toBeInTheDocument();
-    expect(screen.getByText('Closed')).toBeInTheDocument();
+    expect(emailLink).toHaveAttribute('href', 'mailto:contact@vertstack.dev');
+    expect(githubLink).toHaveAttribute('href', 'https://github.com/vertstack');
+    expect(githubLink).toHaveAttribute('target', '_blank');
+    expect(githubLink).toHaveAttribute('rel', 'noopener noreferrer');
   });
 
   it('renders in Spanish when specified', async () => {
@@ -120,22 +94,9 @@ describe('Contact', () => {
     await render(<Contact />, { route: '/en/contact' });
 
     const headings = screen.getAllByRole('heading');
-    expect(headings[0].tagName).toBe('H1');
-    expect(headings[1].tagName).toBe('H2');
-    expect(headings[2].tagName).toBe('H2');
-  });
-
-  it('provides accessible links', async () => {
-    await render(<Contact />, { route: '/en/contact' });
-
-    const emailLabel = await expectTranslated('contact.info.emailLabel', 'en');
-    const phoneLabel = await expectTranslated('contact.info.phoneLabel', 'en');
-
-    const emailLink = screen.getByRole('link', { name: emailLabel });
-    const phoneLink = screen.getByRole('link', { name: phoneLabel });
-
-    expect(emailLink).toHaveAttribute('href', 'mailto:contact@example.com');
-    expect(phoneLink).toHaveAttribute('href', 'tel:+1234567890');
+    expect(headings[0].tagName).toBe('H1'); // Main title
+    expect(headings[1].tagName).toBe('H2'); // Community section
+    expect(headings[2].tagName).toBe('H2'); // Official contacts section
   });
 
   it('preserves visual styling and layout', async () => {
@@ -149,16 +110,19 @@ describe('Contact', () => {
 
     const contentWrapper = contentSection?.querySelector('.content-wrapper');
     expect(contentWrapper).toHaveClass('content-wrapper');
+    expect(contentWrapper).toHaveClass('max-w-2xl');
+    expect(contentWrapper).toHaveClass('mx-auto');
 
-    // Check section spacing using aria-labelledby
-    const contactInfoTitle = await expectTranslated('contact.info.title', 'en');
-    const contactInfoSection = screen.getByRole('region', {
-      name: contactInfoTitle,
-    });
-    expect(contactInfoSection).toHaveClass('mt-8');
+    // Check heading container
+    const titleContainer = screen.getByRole('heading', {
+      level: 1,
+    }).parentElement;
+    expect(titleContainer).toHaveClass('text-center', 'mb-12');
 
-    // Check hours list spacing
-    const hoursList = screen.getByRole('list', { name: '' });
-    expect(hoursList).toHaveClass('space-y-4');
+    // Check community links container
+    const communitySection = screen.getByRole('heading', {
+      name: await expectTranslated('contact.community.title', 'en'),
+    }).parentElement;
+    expect(communitySection).toHaveClass('mb-12');
   });
 });

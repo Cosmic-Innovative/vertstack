@@ -61,10 +61,6 @@ const OptimizedHeroImage: React.FC<OptimizedHeroImageProps> = ({
         loading={priority ? 'eager' : 'lazy'}
         width="100%"
         height="auto"
-        style={{
-          aspectRatio: '16/9',
-          objectFit: 'contain',
-        }}
       />
     </picture>
   );

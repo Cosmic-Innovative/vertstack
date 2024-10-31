@@ -6,83 +6,66 @@ function Contact() {
   return (
     <article role="main" aria-labelledby="contact-title">
       <section className="content-section">
-        <div className="content-wrapper">
-          <div className="title-container h-24 mb-8 flex items-center justify-center">
-            <h1 id="contact-title">{t('contact.title')}</h1>
+        <div className="content-wrapper max-w-2xl mx-auto">
+          <div className="text-center mb-12">
+            <h1 id="contact-title" className="text-3xl font-bold mb-4">
+              {t('contact.title')}
+            </h1>
+            <p className="text-lg text-gray-600 mb-12">
+              {t('contact.description')}
+            </p>
           </div>
 
-          <div className="description-section min-h-[100px] text-left">
-            <p>{t('contact.description')}</p>
+          {/* Community Links */}
+          <div className="mb-12">
+            <h2 className="text-xl font-semibold mb-6 text-center">
+              {t('contact.community.title')}
+            </h2>
+            <div className="flex justify-center gap-4">
+              <a
+                href="https://t.me/vertstack"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-opacity-90 transition-all"
+              >
+                Telegram
+              </a>
+              <a
+                href="https://wa.me/vertstack"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-opacity-90 transition-all"
+              >
+                WhatsApp
+              </a>
+            </div>
+          </div>
 
-            {/* Contact information section */}
-            <section
-              className="contact-info-section mt-8"
-              aria-labelledby="contact-info-title"
-            >
-              <h2 id="contact-info-title" className="mb-4">
-                {t('contact.info.title')}
-              </h2>
-              <ul className="contact-list space-y-4">
-                <li>
-                  <strong className="block mb-1">
-                    {t('contact.info.email')}:
-                  </strong>
-                  <a
-                    href="mailto:contact@example.com"
-                    className="text-primary hover:underline"
-                    aria-label={t('contact.info.emailLabel')}
-                  >
-                    contact@example.com
-                  </a>
-                </li>
-                <li>
-                  <strong className="block mb-1">
-                    {t('contact.info.phone')}:
-                  </strong>
-                  <a
-                    href="tel:+1234567890"
-                    className="text-primary hover:underline"
-                    aria-label={t('contact.info.phoneLabel')}
-                  >
-                    +1 (234) 567-890
-                  </a>
-                </li>
-                <li>
-                  <strong className="block mb-1">
-                    {t('contact.info.address')}:
-                  </strong>
-                  <address className="not-italic">
-                    123 Main Street
-                    <br />
-                    Suite 456
-                    <br />
-                    City, State 12345
-                    <br />
-                    Country
-                  </address>
-                </li>
-              </ul>
-            </section>
-
-            {/* Hours section */}
-            <section
-              className="hours-section mt-8"
-              aria-labelledby="hours-title"
-            >
-              <h2 id="hours-title" className="mb-4">
-                {t('contact.hours.title')}
-              </h2>
-              <dl className="hours-list space-y-2">
-                <div className="flex justify-between">
-                  <dt>{t('contact.hours.weekdays')}:</dt>
-                  <dd>9:00 AM - 5:00 PM</dd>
-                </div>
-                <div className="flex justify-between">
-                  <dt>{t('contact.hours.weekends')}:</dt>
-                  <dd>{t('contact.hours.closed')}</dd>
-                </div>
-              </dl>
-            </section>
+          {/* Official Contacts */}
+          <div className="border-t pt-8">
+            <h2 className="text-xl font-semibold mb-4 text-center">
+              {t('contact.official.title')}
+            </h2>
+            <ul className="space-y-3 text-center">
+              <li>
+                <a
+                  href="mailto:contact@vertstack.dev"
+                  className="text-primary hover:underline"
+                >
+                  contact@vertstack.dev
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://github.com/vertstack"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary hover:underline"
+                >
+                  github.com/vertstack
+                </a>
+              </li>
+            </ul>
           </div>
         </div>
       </section>

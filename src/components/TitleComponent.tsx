@@ -26,6 +26,11 @@ const TitleComponent: React.FC = () => {
           title: 'apiExample.title',
           description: 'apiExample.metaDescription',
         };
+      case 'i18n-examples':
+        return {
+          title: 'i18nExamples.title',
+          description: 'i18nExamples.description',
+        };
       default:
         return {
           title: 'general.appName',
@@ -45,6 +50,103 @@ const TitleComponent: React.FC = () => {
     hrefLang: lang,
     href: `https://example.com/${lang}${pathname.substring(3)}`,
   }));
+
+  // Generate JSON-LD based on page type
+  const getJsonLd = () => {
+    const basePath = pathname.split('/')[2] || '';
+    const baseSchema = {
+      '@context': 'https://schema.org',
+      '@type': 'WebPage',
+      name: title,
+      description: description,
+      url: url,
+      inLanguage: i18n.language,
+      isPartOf: {
+        '@type': 'WebSite',
+        name: appName,
+        url: 'https://example.com',
+      },
+    };
+
+    switch (basePath) {
+      case '':
+        return {
+          ...baseSchema,
+          '@type': 'WebSite',
+          potentialAction: {
+            '@type': 'SearchAction',
+            target: {
+              '@type': 'EntryPoint',
+              urlTemplate: 'https://example.com/search?q={search_term_string}',
+            },
+            'query-input': 'required name=search_term_string',
+          },
+        };
+
+      case 'contact':
+        return {
+          ...baseSchema,
+          '@type': 'ContactPage',
+          mainEntity: {
+            '@type': 'Organization',
+            name: appName,
+            email: 'contact@example.com',
+            telephone: '+1-234-567-890',
+            address: {
+              '@type': 'PostalAddress',
+              streetAddress: '123 Main Street, Suite 456',
+              addressLocality: 'City',
+              addressRegion: 'State',
+              postalCode: '12345',
+              addressCountry: 'Country',
+            },
+          },
+        };
+
+      case 'about':
+        return {
+          ...baseSchema,
+          '@type': 'AboutPage',
+          mainEntity: {
+            '@type': 'Organization',
+            name: appName,
+            description: description,
+            url: 'https://example.com',
+            sameAs: [
+              'https://github.com/yourusername',
+              'https://twitter.com/yourusername',
+            ],
+          },
+        };
+
+      case 'api-example':
+        return {
+          ...baseSchema,
+          '@type': 'TechArticle',
+          articleBody: description,
+          proficiencyLevel: 'Beginner',
+          articleSection: 'API Integration',
+        };
+
+      case 'i18n-examples':
+        return {
+          ...baseSchema,
+          '@type': 'TechArticle',
+          articleBody: description,
+          proficiencyLevel: 'Intermediate',
+          articleSection: 'Internationalization',
+          about: {
+            '@type': 'Thing',
+            name: 'Internationalization',
+            description:
+              'Web application internationalization examples and patterns',
+          },
+        };
+
+      default:
+        return baseSchema;
+    }
+  };
 
   return (
     <Helmet>
@@ -83,19 +185,7 @@ const TitleComponent: React.FC = () => {
       <link rel="canonical" href={url} />
 
       {/* Structured Data */}
-      <script type="application/ld+json">
-        {JSON.stringify({
-          '@context': 'https://schema.org',
-          '@type': 'WebSite',
-          name: appName,
-          url: 'https://example.com',
-          description: description,
-          inLanguage: i18n.language,
-          alternateName: supportedLanguages.map((lang) =>
-            lang === 'en' ? 'VERT Stack Template' : 'Plantilla VERT Stack',
-          ),
-        })}
-      </script>
+      <script type="application/ld+json">{JSON.stringify(getJsonLd())}</script>
     </Helmet>
   );
 };

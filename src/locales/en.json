@@ -1,49 +1,70 @@
 {
   "home": {
-    "title": "Welcome to the VERT Stack Template",
-    "description": "This template provides a solid foundation for building modern web applications using:",
-    "metaDescription": "VERT Stack Template: A powerful foundation for modern web apps using Vite, ESLint, React, and TypeScript. Build fast, efficient, and scalable applications.",
-    "features": {
-      "title": "VERT Stack Features",
-      "listLabel": "Core features list",
-      "vite": "Vite for fast development and efficient building",
-      "eslint": "ESLint for consistent code quality",
-      "react": "React for building user interfaces",
-      "typescript": "TypeScript for type safety"
-    },
-    "sections": {
-      "description": "Description",
-      "features": "Features",
-      "message": "Message",
-      "cta": "Call to Action"
-    },
-    "cta": "View API Example",
-    "ctaAriaLabel": "View API integration example",
+    "title": "The VERT Stack Template",
+    "description": "A modern foundation for scalable web applications",
+    "heroAlt": "VERT Stack Hero Image",
     "logoAlt": "VERT Stack Logo",
-    "heroAlt": "VERT Stack illustration",
-    "exploreMessage": "Explore the different pages to see examples of routing, component structure, and API integration."
+    "features": {
+      "title": "Built With",
+      "vite": "Vite",
+      "viteDesc": "Lightning-fast development with instant server start and hot module replacement.",
+      "eslint": "ESLint",
+      "eslintDesc": "Consistent code quality across your entire project with integrated linting.",
+      "react": "React",
+      "reactDesc": "Component-based UI development with the power of hooks and modern React patterns.",
+      "typescript": "TypeScript",
+      "typescriptDesc": "Type safety and enhanced developer experience with full TypeScript support."
+    },
+    "exploreMessage": "Ready to see the VERT Stack in action?",
+    "cta": {
+      "explore": "View Examples",
+      "exploreAriaLabel": "View VERT Stack example implementations",
+      "github": "View on GitHub",
+      "githubAriaLabel": "View VERT Stack source code on GitHub"
+    }
   },
   "about": {
-    "title": "About",
-    "description": "This is the about page of our VERT stack application.",
-    "metaDescription": "Learn about the VERT Stack Template: Our mission, features, and how it can accelerate your web development process."
+    "title": "About the VERT Stack",
+    "description": "A powerful foundation for modern web applications, combining Vite, ESLint, React, and TypeScript to deliver fast, reliable, and type-safe development experiences.",
+    "principles": {
+      "title": "Core Principles",
+      "speed": {
+        "title": "Lightning Fast Development",
+        "description": "Built on Vite for instant server start and blazing fast HMR, making development a joy."
+      },
+      "quality": {
+        "title": "Code Quality First",
+        "description": "Integrated ESLint configuration ensures consistent, high-quality code across your entire project."
+      },
+      "types": {
+        "title": "Type Safety",
+        "description": "Full TypeScript integration provides robust type checking and enhanced developer tooling."
+      },
+      "modern": {
+        "title": "Modern Best Practices",
+        "description": "Incorporates current web development standards, accessibility, and performance optimizations."
+      }
+    },
+    "builtFor": {
+      "title": "Built For Modern Teams",
+      "teams": {
+        "title": "Development Teams",
+        "description": "Perfect for teams who value code quality, type safety, and development speed."
+      },
+      "projects": {
+        "title": "Production Projects",
+        "description": "Ready for real-world applications with built-in optimization and testing infrastructure."
+      }
+    }
   },
   "contact": {
-    "title": "Contact",
-    "description": "Get in touch with the VERT Stack team. We're here to help with your questions and feedback.",
-    "info": {
-      "title": "Contact Information",
-      "email": "Email",
-      "emailLabel": "Send us an email",
-      "phone": "Phone",
-      "phoneLabel": "Call our support team",
-      "address": "Address"
+    "title": "Join the VERT Stack Community",
+    "description": "Connect with developers, get real-time support, and stay updated with the latest VERT Stack developments.",
+    "community": {
+      "title": "Community Chat via Telegram and WhatsApp"
     },
-    "hours": {
-      "title": "Business Hours",
-      "weekdays": "Monday - Friday",
-      "weekends": "Saturday - Sunday",
-      "closed": "Closed"
+    "official": {
+      "title": "Official Contacts"
     }
   },
   "apiExample": {
@@ -52,15 +73,16 @@
     "metaDescription": "Explore our API integration example using the VERT Stack. Learn how to fetch and display data efficiently in your React applications."
   },
   "navbar": {
-    "brand": "VERT App",
+    "brand": "The VERT Stack",
     "home": "Home",
     "about": "About",
     "contact": "Contact",
     "apiExample": "API Example",
-    "i18nExamples": "I18n Examples"
+    "i18nExamples": "I18n Examples",
+    "brandHomeLink": "The VERT Stack - Return to homepage"
   },
   "general": {
-    "appName": "VERT Stack Template",
+    "appName": "The VERT Stack Template",
     "skipToContent": "Skip to main content",
     "loading": "Loading..."
   },

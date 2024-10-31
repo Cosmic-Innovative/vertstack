@@ -142,7 +142,6 @@ main {
   width: 100%;
   height: auto;
   position: relative;
-  aspect-ratio: 16/9;
   background-color: var(--background-color);
   border-radius: 8px;
   overflow: hidden;

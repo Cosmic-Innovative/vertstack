@@ -18,6 +18,7 @@ const Home = lazy(() => import('./components/Home'));
 const About = lazy(() => import('./components/About'));
 const Contact = lazy(() => import('./components/Contact'));
 const ApiExample = lazy(() => import('./components/ApiExample'));
+const I18nExamples = lazy(() => import('./components/I18nExamples'));
 
 // List of supported languages
 const supportedLanguages = ['en', 'es'];
@@ -82,6 +83,12 @@ const AppContent: React.FC<AppContentProps> = React.memo(({ useRouter }) => {
         path="/api-example"
         element={<LanguageRoute component={ApiExample} useRouter={useRouter} />}
       />
+      <Route
+        path="/i18n-examples"
+        element={
+          <LanguageRoute component={I18nExamples} useRouter={useRouter} />
+        }
+      />
     </>
   ) : (
     <>
@@ -89,6 +96,7 @@ const AppContent: React.FC<AppContentProps> = React.memo(({ useRouter }) => {
       <Route path="/about" element={<About />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/api-example" element={<ApiExample />} />
+      <Route path="/i18n-examples" element={<I18nExamples />} />
     </>
   );
 

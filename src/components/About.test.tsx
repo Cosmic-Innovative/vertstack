@@ -30,7 +30,47 @@ describe('About', () => {
     expect(screen.getByText(description)).toBeInTheDocument();
   });
 
-  it('renders correct content in Spanish', async () => {
+  it('renders all core principles', async () => {
+    await render(<About />, { route: '/en/about' });
+
+    const principles = ['speed', 'quality', 'types', 'modern'];
+
+    for (const principle of principles) {
+      const title = await expectTranslated(
+        `about.principles.${principle}.title`,
+        'en',
+      );
+      const description = await expectTranslated(
+        `about.principles.${principle}.description`,
+        'en',
+      );
+
+      expect(screen.getByText(title)).toBeInTheDocument();
+      expect(screen.getByText(description)).toBeInTheDocument();
+    }
+  });
+
+  it('renders "Built For" sections', async () => {
+    await render(<About />, { route: '/en/about' });
+
+    const sections = ['teams', 'projects'];
+
+    for (const section of sections) {
+      const title = await expectTranslated(
+        `about.builtFor.${section}.title`,
+        'en',
+      );
+      const description = await expectTranslated(
+        `about.builtFor.${section}.description`,
+        'en',
+      );
+
+      expect(screen.getByText(title)).toBeInTheDocument();
+      expect(screen.getByText(description)).toBeInTheDocument();
+    }
+  });
+
+  it('renders in Spanish when specified', async () => {
     await render(<About />, { route: '/es/about' });
 
     const title = await expectTranslated('about.title', 'es');
@@ -41,7 +81,9 @@ describe('About', () => {
   });
 
   it('changes language dynamically', async () => {
-    const { changeLanguage } = await render(<About />, { route: '/en/about' });
+    const { changeLanguage } = await render(<About />, {
+      route: '/en/about',
+    });
 
     // Check English content
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
@@ -57,6 +99,31 @@ describe('About', () => {
     );
   });
 
+  it('maintains proper heading hierarchy', async () => {
+    await render(<About />, { route: '/en/about' });
+
+    const headings = screen.getAllByRole('heading');
+
+    // Check main title
+    expect(headings[0].tagName).toBe('H1');
+    expect(headings[0]).toHaveTextContent(
+      await expectTranslated('about.title', 'en'),
+    );
+
+    // Check section headings
+    expect(
+      screen.getByRole('heading', {
+        name: await expectTranslated('about.principles.title', 'en'),
+      }).tagName,
+    ).toBe('H2');
+
+    expect(
+      screen.getByRole('heading', {
+        name: await expectTranslated('about.builtFor.title', 'en'),
+      }).tagName,
+    ).toBe('H2');
+  });
+
   it('preserves visual styling and layout', async () => {
     await render(<About />, { route: '/en/about' });
 
@@ -68,38 +135,27 @@ describe('About', () => {
 
     const contentWrapper = contentSection?.querySelector('.content-wrapper');
     expect(contentWrapper).toHaveClass('content-wrapper');
+    expect(contentWrapper).toHaveClass('max-w-2xl');
+    expect(contentWrapper).toHaveClass('mx-auto');
 
-    // Check title container styling
+    // Check heading container
     const titleContainer = screen.getByRole('heading', {
       level: 1,
     }).parentElement;
-    expect(titleContainer).toHaveClass('title-container', 'h-24', 'mb-8');
-  });
+    expect(titleContainer).toHaveClass('text-center', 'mb-12');
 
-  it('maintains consistent text alignment', async () => {
-    await render(<About />, { route: '/en/about' });
+    // Check grid layout for "Built For" section
+    const builtForTitle = await expectTranslated('about.builtFor.title', 'en');
+    screen
+      .getByRole('heading', {
+        name: builtForTitle,
+      })
+      .closest('div');
 
-    const titleContainer = screen.getByRole('heading', {
-      level: 1,
-    }).parentElement;
-    expect(titleContainer).toHaveClass(
-      'flex',
-      'items-center',
-      'justify-center',
+    const gridContainer = contentSection?.querySelector(
+      '.grid.md\\:grid-cols-2',
     );
-
-    const descriptionSection = screen.getByText(
-      await expectTranslated('about.description', 'en'),
-    ).parentElement;
-    expect(descriptionSection).toHaveClass('text-left');
-  });
-
-  it('renders with proper heading structure', async () => {
-    await render(<About />, { route: '/en/about' });
-
-    const heading = screen.getByRole('heading', { level: 1 });
-    expect(heading).toBeInTheDocument();
-    expect(heading.tagName).toBe('H1');
-    expect(heading).toHaveAttribute('id', 'about-title');
+    expect(gridContainer).toBeInTheDocument();
+    expect(gridContainer).toHaveClass('grid', 'md:grid-cols-2', 'gap-6');
   });
 });

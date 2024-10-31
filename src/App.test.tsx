@@ -32,16 +32,16 @@ describe('App', () => {
     render(<App useRouter={false} />, { route: '/en' });
 
     // Use findBy instead of getBy for async elements
-    const homeLink = await screen.findByText('Home');
     const aboutLink = await screen.findByText('About');
     const contactLink = await screen.findByText('Contact');
     const apiLink = await screen.findByText('API Example');
+    const i18nLink = await screen.findByText('I18n Examples');
     const homePage = await screen.findByText('Home Page');
 
-    expect(homeLink).toBeInTheDocument();
     expect(aboutLink).toBeInTheDocument();
     expect(contactLink).toBeInTheDocument();
     expect(apiLink).toBeInTheDocument();
+    expect(i18nLink).toBeInTheDocument();
     expect(homePage).toBeInTheDocument();
   });
 
