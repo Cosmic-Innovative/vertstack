@@ -45,7 +45,10 @@ export default defineConfig(({ mode }) => {
         description: 'VERT Stack Template Application',
         start_url: '/?source=pwa',
         display: 'standalone',
-        theme_color: '#ffffff',
+        theme_color: {
+          light: '#ffffff',
+          dark: '#000000',
+        },
         background_color: '#ffffff',
         icons: [
           {
@@ -270,7 +273,7 @@ export default defineConfig(({ mode }) => {
             [
               "default-src 'self'",
               // Allow inline scripts and eval for development tools
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com",
               // Allow inline styles for development
               "style-src 'self' 'unsafe-inline'",
               // Allow data URLs for images and placeholder API
@@ -295,7 +298,7 @@ export default defineConfig(({ mode }) => {
             [
               "default-src 'self'",
               // More restrictive script handling for production
-              "script-src 'self' 'unsafe-inline'",
+              "script-src 'self' https://cdnjs.cloudflare.com",
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data: /api/placeholder/",
               "font-src 'self' data:",

@@ -3,65 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vertstack.svg" />
-    <!-- Update viewport meta for better accessibility -->
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1.0, user-scalable=yes"
     />
-    <!-- Enhanced security headers -->
-    <meta
-      http-equiv="Content-Security-Policy"
-      content="
-        default-src 'self';
-        script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com;
-        style-src 'self' 'unsafe-inline';
-        img-src 'self' data: /api/placeholder/ https:;
-        font-src 'self' data:;
-        connect-src 'self' https://jsonplaceholder.typicode.com;
-        worker-src 'self' blob:;
-        frame-src 'none';
-        object-src 'none';
-        base-uri 'self';
-        form-action 'self';
-        upgrade-insecure-requests;
-        require-trusted-types-for 'script';
-      "
-    />
-    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
-    <meta http-equiv="X-Frame-Options" content="DENY" />
-    <meta
-      http-equiv="Referrer-Policy"
-      content="strict-origin-when-cross-origin"
-    />
-    <meta
-      http-equiv="Permissions-Policy"
-      content="camera=(), microphone=(), geolocation=()"
-    />
-    <!-- Improved color scheme handling -->
-    <meta
-      name="theme-color"
-      content="#ffffff"
-      media="(prefers-color-scheme: light)"
-    />
-    <meta
-      name="theme-color"
-      content="#000000"
-      media="(prefers-color-scheme: dark)"
-    />
-    <!-- Enhanced accessibility meta tags -->
-    <meta
-      name="description"
-      content="VERT Stack Template: A powerful foundation for modern web apps"
-    />
-    <!-- Preload critical assets -->
-    <link rel="preload" href="/vertstack.svg" as="image" type="image/svg+xml" />
-    <link rel="preload" href="/src/styles/index.css" as="style" />
-    <!-- Apple-specific meta tags -->
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
-    <link rel="mask-icon" href="/masked-icon.svg" color="#FFFFFF" />
   </head>
   <body>
-    <!-- Add skip link for keyboard navigation -->
     <a href="#main-content" class="skip-to-main">Skip to main content</a>
     <div id="root"></div>
     <noscript>You need to enable JavaScript to run this application.</noscript>

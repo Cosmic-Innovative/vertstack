@@ -126,14 +126,19 @@ export function initMobilePerformanceTracking(): void {
   initImageErrorTracking();
 
   // Disconnect observers when page is unloaded
-  window.addEventListener('unload', () => {
-    fcpObserver.disconnect();
-    lcpObserver.disconnect();
-    fidObserver.disconnect();
-    clsObserver.disconnect();
-    navigationObserver.disconnect();
-    longTaskObserver.disconnect();
-  });
+  window.addEventListener(
+    'pagehide',
+    () => {
+      // Disconnect all performance observers
+      fcpObserver.disconnect();
+      lcpObserver.disconnect();
+      fidObserver.disconnect();
+      clsObserver.disconnect();
+      navigationObserver.disconnect();
+      longTaskObserver.disconnect();
+    },
+    { capture: true },
+  );
 }
 
 export function reportMobileVitals(): void {
