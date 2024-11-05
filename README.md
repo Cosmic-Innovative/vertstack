@@ -19,6 +19,7 @@ A web application development stack, prepared for a wide range of production sce
 - ⚡️ Vite for lightning fast development and building
 - 🔷 TypeScript for enhanced type safety and developer experience
 - ⚛️ React 18 for building interactive UIs
+- 🎨 Tailwind CSS for utility-first styling with full TypeScript integration
 - 🗣️ Robust internationalization support with dynamic language switching and SEO optimization
 - 🧹 ESLint with custom configuration for strict code quality control
 - 💖 Prettier for code formatting

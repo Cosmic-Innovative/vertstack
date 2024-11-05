@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* Base styles with enhanced accessibility */
 :root {
   /* WCAG 2.1 compliant color variables */

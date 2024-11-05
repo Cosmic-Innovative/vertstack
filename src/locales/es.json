@@ -70,7 +70,7 @@
   },
   "apiExample": {
     "title": "Ejemplo de Integración de API",
-    "description": "Esta página demuestra cómo integrar una API externa utilizando el stack VERT. Muestra la obtención de datos, el manejo de estados de carga y error, y la visualización de los resultados.",
+    "description": "Esta página demuestra patrones de integración de API en el stack VERT, mostrando manejo de errores, estados de carga y presentación de datos.",
     "metaDescription": "Explora nuestro ejemplo de integración de API usando el Stack VERT. Aprende cómo obtener y mostrar datos de manera eficiente en tus aplicaciones React."
   },
   "navbar": {
@@ -105,7 +105,7 @@
   },
   "userList": {
     "title": "Directorio de Usuarios",
-    "description": "Este componente demuestra cómo obtener y mostrar datos de una API externa utilizando el stack VERT, con soporte de internacionalización para el formato de direcciones, números y listas.",
+    "description": "Un directorio de usuarios que demuestra la obtención de datos, ordenamiento y formato internacionalizado para direcciones, números y fechas.",
     "name": "Nombre",
     "email": "Correo",
     "company": "Empresa",

@@ -70,7 +70,7 @@
   },
   "apiExample": {
     "title": "API Integration Example",
-    "description": "This page demonstrates how to integrate an external API using the VERT stack. It showcases fetching data, handling loading and error states, and displaying the results.",
+    "description": "This page demonstrates API integration patterns in the VERT stack, showcasing error handling, loading states, and data presentation.",
     "metaDescription": "Explore our API integration example using the VERT Stack. Learn how to fetch and display data efficiently in your React applications."
   },
   "navbar": {
@@ -105,7 +105,7 @@
   },
   "userList": {
     "title": "User Directory",
-    "description": "This component demonstrates how to fetch and display data from an external API using the VERT stack, with internationalization support for formatting addresses, numbers, and lists.",
+    "description": "A user directory component demonstrating data fetching, sorting, and internationalized formatting for addresses, numbers, and dates.",
     "name": "Name",
     "email": "Email",
     "company": "Company",

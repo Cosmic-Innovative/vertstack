@@ -27,46 +27,71 @@ const I18nExamples: React.FC = () => {
 
   return (
     <article className="content-section">
-      <div className="content-wrapper">
-        <h1>{t('i18nExamples.title')}</h1>
-        <p>{t('i18nExamples.description')}</p>
+      <div className="content-wrapper max-w-2xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <h1 className="text-3xl font-bold mb-4">{t('i18nExamples.title')}</h1>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            {t('i18nExamples.description')}
+          </p>
+        </div>
 
         {/* Currency and Prices */}
-        <section>
-          <h2>{t('i18nExamples.prices.title')}</h2>
-          <div className="example-grid">
-            <div className="example-item">
-              <h3>{t('i18nExamples.prices.product')}</h3>
-              <p>{formatCurrency(price, i18n.language, 'USD')}</p>
-              <p>{formatCurrency(price, i18n.language, 'EUR')}</p>
-              <p>{formatCurrency(price, i18n.language, 'GBP')}</p>
-            </div>
-            <div className="example-item">
-              <h3>{t('i18nExamples.prices.discount')}</h3>
-              <p>
-                <span className="original-price">
+        <section className="mb-12">
+          <h2 className="text-2xl font-semibold mb-6 text-center">
+            {t('i18nExamples.prices.title')}
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-white rounded-lg p-6 shadow-sm">
+              <h3 className="text-xl font-medium mb-4">
+                {t('i18nExamples.prices.product')}
+              </h3>
+              <div className="space-y-2">
+                <p className="text-lg">
                   {formatCurrency(price, i18n.language, 'USD')}
-                </span>
-                <span className="discount-badge">
+                </p>
+                <p className="text-lg">
+                  {formatCurrency(price, i18n.language, 'EUR')}
+                </p>
+                <p className="text-lg">
+                  {formatCurrency(price, i18n.language, 'GBP')}
+                </p>
+              </div>
+            </div>
+            <div className="bg-white rounded-lg p-6 shadow-sm">
+              <h3 className="text-xl font-medium mb-4">
+                {t('i18nExamples.prices.discount')}
+              </h3>
+              <div className="space-y-2">
+                <p className="text-lg line-through text-gray-500">
+                  {formatCurrency(price, i18n.language, 'USD')}
+                </p>
+                <p className="inline-block bg-red-100 text-red-700 px-2 py-1 rounded">
                   {formatPercentage(0.2, i18n.language)}{' '}
                   {t('i18nExamples.prices.off')}
-                </span>
-                <span className="final-price">
+                </p>
+                <p className="text-lg font-medium text-green-600">
                   {formatCurrency(price * 0.8, i18n.language, 'USD')}
-                </span>
-              </p>
+                </p>
+              </div>
             </div>
           </div>
         </section>
 
         {/* Units and Measurements */}
-        <section>
-          <h2>{t('i18nExamples.units.title')}</h2>
-          <div className="example-grid">
-            <div className="example-item">
-              <h3>{t('i18nExamples.units.temperature')}</h3>
-              <p>{formatUnit(temperature, 'celsius', i18n.language)}</p>
-              <p>
+        <section className="mb-12">
+          <h2 className="text-2xl font-semibold mb-6 text-center">
+            {t('i18nExamples.units.title')}
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="bg-white rounded-lg p-6 shadow-sm">
+              <h3 className="text-xl font-medium mb-4">
+                {t('i18nExamples.units.temperature')}
+              </h3>
+              <p className="text-lg">
+                {formatUnit(temperature, 'celsius', i18n.language)}
+              </p>
+              <p className="text-lg">
                 {formatUnit(
                   (temperature * 9) / 5 + 32,
                   'fahrenheit',
@@ -74,9 +99,11 @@ const I18nExamples: React.FC = () => {
                 )}
               </p>
             </div>
-            <div className="example-item">
-              <h3>{t('i18nExamples.units.fileSize')}</h3>
-              <p>
+            <div className="bg-white rounded-lg p-6 shadow-sm">
+              <h3 className="text-xl font-medium mb-4">
+                {t('i18nExamples.units.fileSize')}
+              </h3>
+              <p className="text-lg">
                 {formatUnit(
                   Math.floor(fileSize / 1024 / 1024),
                   'megabyte',
@@ -84,32 +111,48 @@ const I18nExamples: React.FC = () => {
                 )}
               </p>
             </div>
-            <div className="example-item">
-              <h3>{t('i18nExamples.units.distance')}</h3>
-              <p>{formatUnit(distance, 'kilometer', i18n.language)}</p>
-              <p>{formatUnit(distance * 0.621371, 'mile', i18n.language)}</p>
+            <div className="bg-white rounded-lg p-6 shadow-sm">
+              <h3 className="text-xl font-medium mb-4">
+                {t('i18nExamples.units.distance')}
+              </h3>
+              <p className="text-lg">
+                {formatUnit(distance, 'kilometer', i18n.language)}
+              </p>
+              <p className="text-lg">
+                {formatUnit(distance * 0.621371, 'mile', i18n.language)}
+              </p>
             </div>
           </div>
         </section>
 
         {/* Stats and Metrics */}
-        <section>
-          <h2>{t('i18nExamples.stats.title')}</h2>
-          <div className="example-grid">
-            <div className="example-item">
-              <h3>{t('i18nExamples.stats.progress')}</h3>
-              <div className="progress-bar">
-                <div
-                  className="progress-fill"
-                  style={{ width: `${progress * 100}%` }}
-                >
-                  {formatPercentage(progress, i18n.language)}
+        <section className="mb-12">
+          <h2 className="text-2xl font-semibold mb-6 text-center">
+            {t('i18nExamples.stats.title')}
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-white rounded-lg p-6 shadow-sm">
+              <h3 className="text-xl font-medium mb-4">
+                {t('i18nExamples.stats.progress')}
+              </h3>
+              <div className="relative pt-1">
+                <div className="overflow-hidden h-6 mb-4 text-xs flex rounded-full bg-gray-200">
+                  <div
+                    style={{ width: `${progress * 100}%` }}
+                    className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-600 rounded-full transition-all duration-500"
+                  >
+                    <span className="px-2">
+                      {formatPercentage(progress, i18n.language)}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
-            <div className="example-item">
-              <h3>{t('i18nExamples.stats.engagement')}</h3>
-              <p>
+            <div className="bg-white rounded-lg p-6 shadow-sm">
+              <h3 className="text-xl font-medium mb-4">
+                {t('i18nExamples.stats.engagement')}
+              </h3>
+              <p className="text-lg">
                 {t('i18nExamples.stats.views', {
                   count: views,
                   formatted: formatCompactNumber(views, i18n.language),
@@ -120,19 +163,27 @@ const I18nExamples: React.FC = () => {
         </section>
 
         {/* Dates and Times */}
-        <section>
-          <h2>{t('i18nExamples.dates.title')}</h2>
-          <div className="example-grid">
-            <div className="example-item">
-              <h3>{t('i18nExamples.dates.event')}</h3>
-              <p>{formatDate(now, i18n.language)}</p>
-              <p>
+        <section className="mb-12">
+          <h2 className="text-2xl font-semibold mb-6 text-center">
+            {t('i18nExamples.dates.title')}
+          </h2>
+          <div className="bg-white rounded-lg p-6 shadow-sm">
+            <h3 className="text-xl font-medium mb-4">
+              {t('i18nExamples.dates.event')}
+            </h3>
+            <div className="space-y-2">
+              <p className="text-lg">{formatDate(now, i18n.language)}</p>
+              <p className="text-lg">
                 {formatRelativeTime(futureDate, i18n.language)} -{' '}
-                {t('i18nExamples.dates.upcoming')}
+                <span className="text-green-600">
+                  {t('i18nExamples.dates.upcoming')}
+                </span>
               </p>
-              <p>
+              <p className="text-lg">
                 {formatRelativeTime(pastDate, i18n.language)} -{' '}
-                {t('i18nExamples.dates.past')}
+                <span className="text-gray-600">
+                  {t('i18nExamples.dates.past')}
+                </span>
               </p>
             </div>
           </div>
@@ -140,10 +191,14 @@ const I18nExamples: React.FC = () => {
 
         {/* Lists and Series */}
         <section>
-          <h2>{t('i18nExamples.lists.title')}</h2>
-          <div className="example-item">
-            <h3>{t('i18nExamples.lists.options')}</h3>
-            <p>
+          <h2 className="text-2xl font-semibold mb-6 text-center">
+            {t('i18nExamples.lists.title')}
+          </h2>
+          <div className="bg-white rounded-lg p-6 shadow-sm">
+            <h3 className="text-xl font-medium mb-4">
+              {t('i18nExamples.lists.options')}
+            </h3>
+            <p className="text-lg">
               {formatList(
                 [
                   t('i18nExamples.lists.option1'),
