@@ -11,61 +11,85 @@ function Contact() {
             <h1 id="contact-title" className="text-3xl font-bold mb-4">
               {t('contact.title')}
             </h1>
-            <p className="text-lg text-gray-600 mb-12">
-              {t('contact.description')}
-            </p>
+            <p className="text-lg text-gray-600">{t('contact.description')}</p>
           </div>
 
-          {/* Community Links */}
+          {/* Community Section */}
           <div className="mb-12">
             <h2 className="text-xl font-semibold mb-6 text-center">
               {t('contact.community.title')}
             </h2>
-            <div className="flex justify-center gap-4">
+            <div className="grid grid-cols-2 gap-6 max-w-xl mx-auto">
+              {/* Telegram */}
               <a
                 href="https://t.me/vertstack"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-block bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-opacity-90 transition-all"
+                className="flex flex-col items-center p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow border border-gray-100"
               >
-                Telegram
+                <span
+                  role="img"
+                  aria-label="Telegram"
+                  className="text-4xl mb-3"
+                >
+                  📬
+                </span>
+                <h3 className="font-medium text-lg mb-1">Telegram</h3>
+                <p className="text-sm text-gray-600">@vertstack</p>
               </a>
+
+              {/* WhatsApp */}
               <a
                 href="https://wa.me/vertstack"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-block bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-opacity-90 transition-all"
+                className="flex flex-col items-center p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow border border-gray-100"
               >
-                WhatsApp
+                <span
+                  role="img"
+                  aria-label="WhatsApp"
+                  className="text-4xl mb-3"
+                >
+                  💬
+                </span>
+                <h3 className="font-medium text-lg mb-1">WhatsApp</h3>
+                <p className="text-sm text-gray-600">VERT Stack Group</p>
               </a>
             </div>
           </div>
 
-          {/* Official Contacts */}
+          {/* Official Contacts Section */}
           <div className="border-t pt-8">
-            <h2 className="text-xl font-semibold mb-4 text-center">
+            <h2 className="text-xl font-semibold mb-6 text-center">
               {t('contact.official.title')}
             </h2>
-            <ul className="space-y-3 text-center">
-              <li>
-                <a
-                  href="mailto:contact@vertstack.dev"
-                  className="text-primary hover:underline"
-                >
-                  contact@vertstack.dev
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://github.com/vertstack"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-primary hover:underline"
-                >
-                  github.com/vertstack
-                </a>
-              </li>
-            </ul>
+            <div className="grid grid-cols-2 gap-6 max-w-xl mx-auto">
+              {/* Email */}
+              <a
+                href="mailto:contact@vertstack.dev"
+                className="flex flex-col items-center p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow border border-gray-100"
+              >
+                <span role="img" aria-label="Email" className="text-4xl mb-3">
+                  ✉️
+                </span>
+                <h3 className="font-medium text-lg mb-1">Email</h3>
+                <p className="text-sm text-gray-600">contact@vertstack.dev</p>
+              </a>
+
+              {/* GitHub */}
+              <a
+                href="https://github.com/vertstack"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex flex-col items-center p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow border border-gray-100"
+              >
+                <span role="img" aria-label="GitHub" className="text-4xl mb-3">
+                  🐙
+                </span>
+                <h3 className="font-medium text-lg mb-1">GitHub</h3>
+                <p className="text-sm text-gray-600">github.com/vertstack</p>
+              </a>
+            </div>
           </div>
         </div>
       </section>

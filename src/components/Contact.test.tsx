@@ -49,10 +49,10 @@ describe('Contact', () => {
     await render(<Contact />, { route: '/en/contact' });
 
     const emailLink = screen.getByRole('link', {
-      name: 'contact@vertstack.dev',
+      name: /contact@vertstack\.dev/i,
     });
     const githubLink = screen.getByRole('link', {
-      name: 'github.com/vertstack',
+      name: /github\.com\/vertstack/i,
     });
 
     expect(emailLink).toHaveAttribute('href', 'mailto:contact@vertstack.dev');
@@ -94,9 +94,32 @@ describe('Contact', () => {
     await render(<Contact />, { route: '/en/contact' });
 
     const headings = screen.getAllByRole('heading');
-    expect(headings[0].tagName).toBe('H1'); // Main title
-    expect(headings[1].tagName).toBe('H2'); // Community section
-    expect(headings[2].tagName).toBe('H2'); // Official contacts section
+
+    // Main title
+    expect(headings[0].tagName).toBe('H1');
+    expect(headings[0]).toHaveTextContent(
+      await expectTranslated('contact.title', 'en'),
+    );
+
+    // Community section
+    expect(headings[1].tagName).toBe('H2');
+    expect(headings[1]).toHaveTextContent(
+      await expectTranslated('contact.community.title', 'en'),
+    );
+
+    // Telegram and WhatsApp headings
+    expect(headings[2].tagName).toBe('H3');
+    expect(headings[3].tagName).toBe('H3');
+
+    // Official contacts section
+    expect(headings[4].tagName).toBe('H2');
+    expect(headings[4]).toHaveTextContent(
+      await expectTranslated('contact.official.title', 'en'),
+    );
+
+    // Email and GitHub headings
+    expect(headings[5].tagName).toBe('H3');
+    expect(headings[6].tagName).toBe('H3');
   });
 
   it('preserves visual styling and layout', async () => {

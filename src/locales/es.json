@@ -4,6 +4,8 @@
     "description": "Una base moderna para aplicaciones web escalables",
     "heroAlt": "Imagen Principal de VERT Stack",
     "logoAlt": "Logo de VERT Stack",
+    "foundation": "Una base poderosa para aplicaciones web modernas",
+    "tagline": "Construido para velocidad, calidad y experiencia del desarrollador",
     "features": {
       "title": "Construido Con",
       "vite": "Vite",
@@ -15,7 +17,6 @@
       "typescript": "TypeScript",
       "typescriptDesc": "Seguridad de tipos y experiencia mejorada para desarrolladores con soporte completo de TypeScript."
     },
-    "exploreMessage": "¿Listo para ver VERT Stack en acción?",
     "cta": {
       "explore": "Ver Ejemplos",
       "exploreAriaLabel": "Ver ejemplos de implementación de VERT Stack",

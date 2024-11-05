@@ -10,6 +10,9 @@ interface OptimizedHeroImageProps {
   alt: string;
   className?: string;
   priority?: boolean;
+  width: string;
+  height: string;
+  aspectRatio?: string;
 }
 
 const OptimizedHeroImage: React.FC<OptimizedHeroImageProps> = ({

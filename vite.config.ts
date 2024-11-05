@@ -187,6 +187,9 @@ export default defineConfig(({ mode }) => {
             }
             return 'assets/[name].[hash][extname]';
           },
+          format: 'es',
+          // Improve tree-shaking
+          preserveEntrySignatures: 'strict',
         },
       },
       modulePreload: {
@@ -202,6 +205,8 @@ export default defineConfig(({ mode }) => {
       minify: 'terser',
       terserOptions: {
         compress: {
+          ecma: 2020,
+          passes: 2,
           drop_console: isProd,
           drop_debugger: isProd,
           pure_funcs: isProd
