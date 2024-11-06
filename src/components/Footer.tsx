@@ -36,9 +36,6 @@ const Footer: React.FC = () => {
             <Link to={`/${lang}/terms`} className="footer-link">
               {t('footer.terms')}
             </Link>
-            <Link to={`/${lang}/sitemap`} className="footer-link">
-              {t('footer.sitemap')}
-            </Link>
           </nav>
 
           {/* Attribution */}

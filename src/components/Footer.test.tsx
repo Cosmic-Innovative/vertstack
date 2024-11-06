@@ -56,13 +56,9 @@ describe('Footer', () => {
     const terms = screen.getByRole('link', {
       name: await expectTranslated('footer.terms', 'en'),
     });
-    const sitemap = screen.getByRole('link', {
-      name: await expectTranslated('footer.sitemap', 'en'),
-    });
 
     expect(privacy).toHaveAttribute('href', '/en/privacy');
     expect(terms).toHaveAttribute('href', '/en/terms');
-    expect(sitemap).toHaveAttribute('href', '/en/sitemap');
   });
 
   it('renders language switcher with correct props', async () => {
@@ -170,7 +166,7 @@ describe('Footer', () => {
 
     // Verify links are present
     const links = navigation.querySelectorAll('a');
-    expect(links).toHaveLength(3); // Privacy, Terms, Sitemap
+    expect(links).toHaveLength(2); // Privacy, Terms
     expect(links[0]).toHaveClass('footer-link');
   });
 });
