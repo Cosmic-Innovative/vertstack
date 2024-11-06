@@ -21,58 +21,15 @@ const NotFound = () => {
             {t('notFound.description')}
           </p>
 
-          {/* SVG Illustration */}
-          <div
-            className="w-64 h-64 mx-auto mb-8"
-            role="img"
-            aria-label={t('notFound.illustration')}
-          >
-            <svg viewBox="0 0 200 200" className="w-full h-full">
-              <rect width="200" height="200" fill="#f8f9fa" />
-              {/* Stack of "pages" */}
-              <rect
-                x="40"
-                y="40"
-                width="120"
-                height="120"
-                fill="#e9ecef"
-                rx="4"
-              />
-              <rect
-                x="45"
-                y="35"
-                width="120"
-                height="120"
-                fill="#dee2e6"
-                rx="4"
-              />
-              <rect
-                x="50"
-                y="30"
-                width="120"
-                height="120"
-                fill="#ffffff"
-                rx="4"
-              />
-              {/* 404 text */}
-              <text
-                x="100"
-                y="100"
-                fontSize="32"
-                fontWeight="bold"
-                fill="#0052cc"
-                textAnchor="middle"
-                dominantBaseline="middle"
-              >
-                404
-              </text>
-              {/* VERT logo simplified */}
-              <path
-                d="M85 75 L100 60 L115 75 L100 90 Z"
-                fill="#0052cc"
-                opacity="0.2"
-              />
-            </svg>
+          {/* 404 Illustration */}
+          <div className="w-64 h-64 mx-auto mb-8">
+            <img
+              src="/404.svg"
+              alt={t('notFound.illustration')}
+              className="w-full h-full"
+              width="256"
+              height="256"
+            />
           </div>
 
           <button

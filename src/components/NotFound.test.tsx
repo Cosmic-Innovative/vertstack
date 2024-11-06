@@ -26,6 +26,16 @@ describe('NotFound', () => {
     expect(screen.getByText(description)).toBeInTheDocument();
   });
 
+  it('renders 404 image with correct attributes', async () => {
+    await render(<NotFound />, { route: '/en/invalid-page' });
+
+    const image = screen.getByRole('img', {
+      name: await expectTranslated('notFound.illustration', 'en'),
+    });
+    expect(image).toHaveAttribute('src', '/404.svg');
+    expect(image).toHaveClass('w-full h-full');
+  });
+
   it('renders in Spanish when specified', async () => {
     await render(<NotFound />, { route: '/es/invalid-page' });
 
