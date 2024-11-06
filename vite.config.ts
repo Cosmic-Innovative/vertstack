@@ -257,7 +257,7 @@ export default defineConfig(({ mode }) => {
       },
     },
     configureServer(server) {
-      server.middlewares.use((req, res, next) => {
+      server.middlewares.use(async (req, res, next) => {
         // Set security headers with development-friendly CSP
         res.setHeader(
           'Strict-Transport-Security',
@@ -328,20 +328,18 @@ export default defineConfig(({ mode }) => {
           return;
         }
 
-        if (url === '/sitemap.xml') {
-          console.log('Sitemap request received');
-          generateSitemap()
-            .then((sitemap) => {
-              res.setHeader('Content-Type', 'application/xml');
-              res.end(sitemap);
-              console.log('Sitemap sent to client');
-            })
-            .catch((error) => {
-              console.error('Error generating or sending sitemap:', error);
-              res.statusCode = 500;
-              res.end('Error generating sitemap');
-            });
-          return;
+        if (url === '/sitemap.xml' || /^\/[a-z]{2}\/sitemap\.xml$/.test(url)) {
+          try {
+            const sitemap = await generateSitemap();
+            res.setHeader('Content-Type', 'application/xml');
+            res.end(sitemap);
+            return;
+          } catch (error) {
+            console.error('Error generating or sending sitemap:', error);
+            res.statusCode = 500;
+            res.end('Error generating sitemap');
+            return;
+          }
         }
 
         next();

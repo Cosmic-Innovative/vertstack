@@ -1,10 +1,12 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link, useParams } from 'react-router-dom';
 import LanguageSwitcher from './LanguageSwitcher';
 import '../styles/Footer.css';
 
 const Footer: React.FC = () => {
   const { t } = useTranslation();
+  const { lang } = useParams<{ lang: string }>();
   const currentYear = new Date().getFullYear();
 
   return (
@@ -28,15 +30,15 @@ const Footer: React.FC = () => {
             className="footer-links"
             aria-label={t('footer.navigationLabel')}
           >
-            <a href="/privacy" className="footer-link">
+            <Link to={`/${lang}/privacy`} className="footer-link">
               {t('footer.privacy')}
-            </a>
-            <a href="/terms" className="footer-link">
+            </Link>
+            <Link to={`/${lang}/terms`} className="footer-link">
               {t('footer.terms')}
-            </a>
-            <a href="/sitemap" className="footer-link">
+            </Link>
+            <Link to={`/${lang}/sitemap`} className="footer-link">
               {t('footer.sitemap')}
-            </a>
+            </Link>
           </nav>
 
           {/* Attribution */}

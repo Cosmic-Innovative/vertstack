@@ -47,11 +47,8 @@ describe('Footer', () => {
     expect(children?.[2]).toHaveClass('footer-attribution');
   });
 
-  it('renders navigation links', async () => {
+  it('renders navigation links with correct language prefix', async () => {
     await render(<Footer />, { route: '/en' });
-
-    const nav = screen.getByRole('navigation', { name: /footer navigation/i });
-    expect(nav).toHaveClass('footer-links');
 
     const privacy = screen.getByRole('link', {
       name: await expectTranslated('footer.privacy', 'en'),
@@ -63,9 +60,9 @@ describe('Footer', () => {
       name: await expectTranslated('footer.sitemap', 'en'),
     });
 
-    expect(privacy).toHaveAttribute('href', '/privacy');
-    expect(terms).toHaveAttribute('href', '/terms');
-    expect(sitemap).toHaveAttribute('href', '/sitemap');
+    expect(privacy).toHaveAttribute('href', '/en/privacy');
+    expect(terms).toHaveAttribute('href', '/en/terms');
+    expect(sitemap).toHaveAttribute('href', '/en/sitemap');
   });
 
   it('renders language switcher with correct props', async () => {

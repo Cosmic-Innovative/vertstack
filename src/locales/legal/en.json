@@ -1,0 +1,55 @@
+{
+  "termsOfService": {
+    "title": "Terms of Service",
+    "description": "Terms and conditions for using the VERT Stack Template",
+    "overview": {
+      "title": "Overview",
+      "content": "This template is provided as-is for use in web development projects. By using this template, you agree to these terms."
+    },
+    "usage": {
+      "title": "Usage Rights",
+      "permitted": {
+        "title": "You may:",
+        "personal": "Use this template in personal and commercial projects",
+        "modify": "Modify the template for your needs",
+        "share": "Share and distribute your modifications"
+      },
+      "prohibited": {
+        "title": "You may not:",
+        "claim": "Claim this template as your original work",
+        "sell": "Sell the unmodified template",
+        "liability": "Hold the template creators liable for issues"
+      }
+    },
+    "limitations": {
+      "title": "Limitations",
+      "content": "This template is provided 'as is' without warranty of any kind. No guarantees are made regarding suitability for any purpose."
+    }
+  },
+  "privacyPolicy": {
+    "title": "Privacy Policy",
+    "description": "Privacy policy and data handling practices for the VERT Stack Template",
+    "dataCollection": {
+      "title": "Data Collection",
+      "content": "The VERT Stack Template is designed with privacy in mind.",
+      "noPersonal": "Does not collect personal information",
+      "noCookies": "Does not use cookies",
+      "noTracking": "Does not track users"
+    },
+    "storage": {
+      "title": "Local Storage",
+      "preferences": "Browser local storage for preferences",
+      "temporary": "Session storage for temporary data",
+      "noSensitive": "No sensitive data is stored by default"
+    },
+    "security": {
+      "title": "Security Measures",
+      "content": "The template includes security headers configuration, XSS protection measures, and CSRF prevention setup."
+    }
+  },
+  "common": {
+    "backToHome": "Back to Home",
+    "lastUpdated": "Last Updated",
+    "contactUs": "Contact Us"
+  }
+}
