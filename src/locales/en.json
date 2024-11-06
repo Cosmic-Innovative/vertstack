@@ -186,5 +186,12 @@
     "userStatistics": "User statistics",
     "totalUsers": "Total number of users",
     "companiesRepresented": "Number of companies represented"
+  },
+  "notFound": {
+    "title": "Page Not Found",
+    "description": "Oops! Looks like you've ventured into uncharted territory. The page you're looking for seems to have gone missing.",
+    "illustration": "404 error illustration with VERT Stack theme",
+    "returnButton": "Return Home",
+    "returnHome": "Return to homepage"
   }
 }

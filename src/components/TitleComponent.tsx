@@ -11,6 +11,18 @@ const TitleComponent: React.FC = () => {
 
   const getPageInfo = () => {
     const path = pathname.split('/')[2] || '';
+
+    // Check if we're at an unmatched route (404)
+    if (
+      !path.match(/^(|about|contact|api-example|i18n-examples|terms|privacy)$/)
+    ) {
+      return {
+        title: 'notFound.title',
+        description: 'notFound.description',
+        type: '404',
+      };
+    }
+
     switch (path) {
       case '':
         return { title: 'home.title', description: 'home.metaDescription' };
@@ -67,6 +79,34 @@ const TitleComponent: React.FC = () => {
         url: 'https://example.com',
       },
     };
+
+    if (pageInfo.type === '404') {
+      return {
+        ...baseSchema,
+        '@type': 'WebPage',
+        breadcrumb: {
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            {
+              '@type': 'ListItem',
+              position: 1,
+              item: {
+                '@id': `/${i18n.language}`,
+                name: t('home.title'),
+              },
+            },
+            {
+              '@type': 'ListItem',
+              position: 2,
+              item: {
+                '@id': url,
+                name: title,
+              },
+            },
+          ],
+        },
+      };
+    }
 
     switch (basePath) {
       case '':
@@ -153,6 +193,7 @@ const TitleComponent: React.FC = () => {
       <html lang={i18n.language} />
       <title>{fullTitle}</title>
       <meta name="description" content={description} />
+      {pageInfo.type === '404' && <meta name="robots" content="noindex" />}
 
       {/* Open Graph / Facebook */}
       <meta property="og:type" content="website" />

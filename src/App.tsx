@@ -21,6 +21,7 @@ const ApiExample = lazy(() => import('./components/ApiExample'));
 const I18nExamples = lazy(() => import('./components/I18nExamples'));
 const TermsOfService = lazy(() => import('./components/Legal/TermsOfService'));
 const PrivacyPolicy = lazy(() => import('./components/Legal/PrivacyPolicy'));
+const NotFound = lazy(() => import('./components/NotFound'));
 
 // List of supported languages
 const supportedLanguages = ['en', 'es'];
@@ -103,6 +104,10 @@ const AppContent: React.FC<AppContentProps> = React.memo(({ useRouter }) => {
           <LanguageRoute component={PrivacyPolicy} useRouter={useRouter} />
         }
       />
+      <Route
+        path="*"
+        element={<LanguageRoute component={NotFound} useRouter={useRouter} />}
+      />
     </>
   ) : (
     <>
@@ -113,6 +118,7 @@ const AppContent: React.FC<AppContentProps> = React.memo(({ useRouter }) => {
       <Route path="/i18n-examples" element={<I18nExamples />} />
       <Route path="/terms" element={<TermsOfService />} />
       <Route path="/privacy" element={<PrivacyPolicy />} />
+      <Route path="*" element={<NotFound />} />
     </>
   );
 
