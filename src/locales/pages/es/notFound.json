@@ -1,0 +1,9 @@
+{
+  "notFound": {
+    "title": "Página No Encontrada",
+    "description": "¡Vaya! Parece que te has aventurado en territorio desconocido. La página que buscas parece haberse perdido.",
+    "illustration": "Ilustración de error 404 con tema de VERT Stack",
+    "returnButton": "Volver al Inicio",
+    "returnHome": "Volver a la página de inicio"
+  }
+}

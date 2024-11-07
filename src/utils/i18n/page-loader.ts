@@ -6,7 +6,9 @@ export type PageNamespace =
   | 'about'
   | 'contact'
   | 'apiExample'
-  | 'i18nExamples';
+  | 'i18nExamples'
+  | 'userList'
+  | 'notFound';
 
 // Helper to type-check translations object
 interface TranslationsModule {
@@ -16,6 +18,8 @@ interface TranslationsModule {
     contact?: Record<string, unknown>;
     apiExample?: Record<string, unknown>;
     i18nExamples?: Record<string, unknown>;
+    userList?: Record<string, unknown>;
+    notFound?: Record<string, unknown>;
   };
 }
 
@@ -25,6 +29,8 @@ const validPages = new Set<PageNamespace>([
   'contact',
   'apiExample',
   'i18nExamples',
+  'userList',
+  'notFound',
 ]);
 
 const isValidPageNamespace = (page: string): page is PageNamespace => {
@@ -46,6 +52,10 @@ const getTranslations = (
       return translations.default.apiExample || null;
     case 'i18nExamples':
       return translations.default.i18nExamples || null;
+    case 'userList':
+      return translations.default.userList || null;
+    case 'notFound':
+      return translations.default.notFound || null;
     default:
       return null;
   }

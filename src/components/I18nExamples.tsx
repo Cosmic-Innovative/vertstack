@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useParams } from 'react-router-dom';
+import { loadPageTranslations } from '../utils/i18n/page-loader';
 import {
   formatCurrency,
   formatDate,
@@ -11,7 +13,41 @@ import {
 } from '../utils/i18n';
 
 const I18nExamples: React.FC = () => {
-  const { t, i18n } = useTranslation();
+  const { t, i18n } = useTranslation('i18nExamples');
+  const { lang } = useParams<{ lang: string }>();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    let mounted = true;
+
+    const initializeTranslations = async () => {
+      if (lang) {
+        setIsLoading(true);
+        await loadPageTranslations('i18nExamples', lang);
+        if (mounted) {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    initializeTranslations();
+
+    return () => {
+      mounted = false;
+    };
+  }, [lang]);
+
+  if (isLoading) {
+    return (
+      <div className="content-section">
+        <div className="content-wrapper max-w-2xl mx-auto">
+          <div className="loading-container" role="status" aria-live="polite">
+            {t('general:loading')}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const now = new Date();
   const pastDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
@@ -30,21 +66,21 @@ const I18nExamples: React.FC = () => {
       <div className="content-wrapper max-w-2xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-3xl font-bold mb-4">{t('i18nExamples.title')}</h1>
+          <h1 className="text-3xl font-bold mb-4">{t('title')}</h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            {t('i18nExamples.description')}
+            {t('description')}
           </p>
         </div>
 
         {/* Currency and Prices */}
         <section className="mb-12">
           <h2 className="text-2xl font-semibold mb-6 text-center">
-            {t('i18nExamples.prices.title')}
+            {t('prices.title')}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="bg-white rounded-lg p-6 shadow-sm">
               <h3 className="text-xl font-medium mb-4">
-                {t('i18nExamples.prices.product')}
+                {t('prices.product')}
               </h3>
               <div className="space-y-2">
                 <p className="text-lg">
@@ -60,15 +96,14 @@ const I18nExamples: React.FC = () => {
             </div>
             <div className="bg-white rounded-lg p-6 shadow-sm">
               <h3 className="text-xl font-medium mb-4">
-                {t('i18nExamples.prices.discount')}
+                {t('prices.discount')}
               </h3>
               <div className="space-y-2">
                 <p className="text-lg line-through text-gray-500">
                   {formatCurrency(price, i18n.language, 'USD')}
                 </p>
                 <p className="inline-block bg-red-100 text-red-700 px-2 py-1 rounded">
-                  {formatPercentage(0.2, i18n.language)}{' '}
-                  {t('i18nExamples.prices.off')}
+                  {formatPercentage(0.2, i18n.language)} {t('prices.off')}
                 </p>
                 <p className="text-lg font-medium text-green-600">
                   {formatCurrency(price * 0.8, i18n.language, 'USD')}
@@ -81,12 +116,12 @@ const I18nExamples: React.FC = () => {
         {/* Units and Measurements */}
         <section className="mb-12">
           <h2 className="text-2xl font-semibold mb-6 text-center">
-            {t('i18nExamples.units.title')}
+            {t('units.title')}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="bg-white rounded-lg p-6 shadow-sm">
               <h3 className="text-xl font-medium mb-4">
-                {t('i18nExamples.units.temperature')}
+                {t('units.temperature')}
               </h3>
               <p className="text-lg">
                 {formatUnit(temperature, 'celsius', i18n.language)}
@@ -101,7 +136,7 @@ const I18nExamples: React.FC = () => {
             </div>
             <div className="bg-white rounded-lg p-6 shadow-sm">
               <h3 className="text-xl font-medium mb-4">
-                {t('i18nExamples.units.fileSize')}
+                {t('units.fileSize')}
               </h3>
               <p className="text-lg">
                 {formatUnit(
@@ -113,7 +148,7 @@ const I18nExamples: React.FC = () => {
             </div>
             <div className="bg-white rounded-lg p-6 shadow-sm">
               <h3 className="text-xl font-medium mb-4">
-                {t('i18nExamples.units.distance')}
+                {t('units.distance')}
               </h3>
               <p className="text-lg">
                 {formatUnit(distance, 'kilometer', i18n.language)}
@@ -128,12 +163,12 @@ const I18nExamples: React.FC = () => {
         {/* Stats and Metrics */}
         <section className="mb-12">
           <h2 className="text-2xl font-semibold mb-6 text-center">
-            {t('i18nExamples.stats.title')}
+            {t('stats.title')}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="bg-white rounded-lg p-6 shadow-sm">
               <h3 className="text-xl font-medium mb-4">
-                {t('i18nExamples.stats.progress')}
+                {t('stats.progress')}
               </h3>
               <div className="relative pt-1">
                 <div className="overflow-hidden h-6 mb-4 text-xs flex rounded-full bg-gray-200">
@@ -150,11 +185,10 @@ const I18nExamples: React.FC = () => {
             </div>
             <div className="bg-white rounded-lg p-6 shadow-sm">
               <h3 className="text-xl font-medium mb-4">
-                {t('i18nExamples.stats.engagement')}
+                {t('stats.engagement')}
               </h3>
               <p className="text-lg">
-                {t('i18nExamples.stats.views', {
-                  count: views,
+                {t('stats.views', {
                   formatted: formatCompactNumber(views, i18n.language),
                 })}
               </p>
@@ -165,25 +199,19 @@ const I18nExamples: React.FC = () => {
         {/* Dates and Times */}
         <section className="mb-12">
           <h2 className="text-2xl font-semibold mb-6 text-center">
-            {t('i18nExamples.dates.title')}
+            {t('dates.title')}
           </h2>
           <div className="bg-white rounded-lg p-6 shadow-sm">
-            <h3 className="text-xl font-medium mb-4">
-              {t('i18nExamples.dates.event')}
-            </h3>
+            <h3 className="text-xl font-medium mb-4">{t('dates.event')}</h3>
             <div className="space-y-2">
               <p className="text-lg">{formatDate(now, i18n.language)}</p>
               <p className="text-lg">
                 {formatRelativeTime(futureDate, i18n.language)} -{' '}
-                <span className="text-green-600">
-                  {t('i18nExamples.dates.upcoming')}
-                </span>
+                <span className="text-green-600">{t('dates.upcoming')}</span>
               </p>
               <p className="text-lg">
                 {formatRelativeTime(pastDate, i18n.language)} -{' '}
-                <span className="text-gray-600">
-                  {t('i18nExamples.dates.past')}
-                </span>
+                <span className="text-gray-600">{t('dates.past')}</span>
               </p>
             </div>
           </div>
@@ -192,19 +220,13 @@ const I18nExamples: React.FC = () => {
         {/* Lists and Series */}
         <section>
           <h2 className="text-2xl font-semibold mb-6 text-center">
-            {t('i18nExamples.lists.title')}
+            {t('lists.title')}
           </h2>
           <div className="bg-white rounded-lg p-6 shadow-sm">
-            <h3 className="text-xl font-medium mb-4">
-              {t('i18nExamples.lists.options')}
-            </h3>
+            <h3 className="text-xl font-medium mb-4">{t('lists.options')}</h3>
             <p className="text-lg">
               {formatList(
-                [
-                  t('i18nExamples.lists.option1'),
-                  t('i18nExamples.lists.option2'),
-                  t('i18nExamples.lists.option3'),
-                ],
+                [t('lists.option1'), t('lists.option2'), t('lists.option3')],
                 i18n.language,
               )}
             </p>

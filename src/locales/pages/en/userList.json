@@ -1,0 +1,19 @@
+{
+  "userList": {
+    "title": "User Directory",
+    "description": "A user directory component demonstrating data fetching, sorting, and internationalized formatting for addresses, numbers, and dates.",
+    "name": "Name",
+    "email": "Email",
+    "company": "Company",
+    "location": "Location",
+    "contact": "Contact Information",
+    "noUsers": "No users found",
+    "totalUsers": "Total Users: {{formatted}}",
+    "companiesRepresented": "Companies Represented: {{formatted}}",
+    "loadingError": "Error loading users: {{error}}",
+    "retryButton": "Retry loading users",
+    "sortAscending": "Sort ascending",
+    "sortDescending": "Sort descending",
+    "clearSort": "Clear sort"
+  }
+}

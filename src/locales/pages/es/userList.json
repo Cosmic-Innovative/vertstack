@@ -1,0 +1,19 @@
+{
+  "userList": {
+    "title": "Directorio de Usuarios",
+    "description": "Un directorio de usuarios que demuestra la obtención de datos, ordenamiento y formato internacionalizado para direcciones, números y fechas.",
+    "name": "Nombre",
+    "email": "Correo",
+    "company": "Empresa",
+    "location": "Ubicación",
+    "contact": "Información de Contacto",
+    "noUsers": "No se encontraron usuarios",
+    "totalUsers": "Total de Usuarios: {{formatted}}",
+    "companiesRepresented": "Empresas Representadas: {{formatted}}",
+    "loadingError": "Error al cargar usuarios: {{error}}",
+    "retryButton": "Reintentar carga de usuarios",
+    "sortAscending": "Ordenar ascendente",
+    "sortDescending": "Ordenar descendente",
+    "clearSort": "Limpiar ordenamiento"
+  }
+}

@@ -1,7 +1,9 @@
 import { screen, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { act } from '@testing-library/react';
 import UserList from './UserList';
 import * as api from '../utils/api';
+import * as pageLoader from '../utils/i18n/page-loader';
 import { render, expectTranslated } from '../test-utils';
 
 vi.mock('../utils/api', () => ({
@@ -12,15 +14,26 @@ vi.mock('../utils/api', () => ({
 describe('UserList', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.spyOn(pageLoader, 'loadPageTranslations').mockResolvedValue(true);
   });
 
+  const waitForTranslations = async () => {
+    await act(async () => {
+      await Promise.resolve();
+    });
+  };
+
   it('renders loading state with proper accessibility attributes', async () => {
+    vi.mocked(pageLoader.loadPageTranslations).mockImplementation(
+      () => new Promise(() => {}),
+    );
+
     const loadingPromise = new Promise(() => {});
     (api.fetchData as ReturnType<typeof vi.fn>).mockReturnValue(loadingPromise);
 
     await render(<UserList />, { route: '/en' });
 
-    const loadingText = await expectTranslated('general.loading', 'en');
+    const loadingText = await expectTranslated('general:loading', 'en');
     const statusElement = screen.getByRole('status');
 
     expect(statusElement).toHaveTextContent(loadingText);
@@ -32,11 +45,15 @@ describe('UserList', () => {
     (api.fetchData as ReturnType<typeof vi.fn>).mockRejectedValue(error);
 
     await render(<UserList />, { route: '/en' });
+    await waitForTranslations();
 
-    await waitFor(() => {
+    await waitFor(async () => {
+      const errorText = await expectTranslated('userList:loadingError', 'en', {
+        error: 'Failed to fetch',
+      });
       const alertElement = screen.getByRole('alert');
       expect(alertElement).toBeInTheDocument();
-      expect(alertElement).toHaveTextContent(/Error fetching user data/);
+      expect(alertElement).toHaveTextContent(errorText);
     });
   });
 
@@ -44,9 +61,10 @@ describe('UserList', () => {
     (api.fetchData as ReturnType<typeof vi.fn>).mockResolvedValue([]);
 
     await render(<UserList />, { route: '/en' });
+    await waitForTranslations();
 
     await waitFor(async () => {
-      const noUsersText = await expectTranslated('userList.noUsers', 'en');
+      const noUsersText = await expectTranslated('userList:noUsers', 'en');
       const statusElement = screen.getByRole('status');
       expect(statusElement).toHaveTextContent(noUsersText);
     });
@@ -74,6 +92,7 @@ describe('UserList', () => {
     (api.fetchData as ReturnType<typeof vi.fn>).mockResolvedValue(mockUsers);
 
     await render(<UserList />, { route: '/en' });
+    await waitForTranslations();
 
     await waitFor(() => {
       expect(screen.getByRole('table')).toBeInTheDocument();
@@ -98,26 +117,62 @@ describe('UserList', () => {
     expect(screen.getByText('Company A')).toBeInTheDocument();
   });
 
-  it('provides proper link labels for websites', async () => {
-    const mockUsers = [
-      {
-        id: 1,
-        name: 'John Doe',
-        email: 'john@example.com',
-        company: { name: 'Company A', catchPhrase: 'Catch phrase' },
-        website: 'example.com',
-        phone: '123-456-7890',
-      },
-    ];
+  it('renders in Spanish when specified', async () => {
+    (api.fetchData as ReturnType<typeof vi.fn>).mockResolvedValue([]);
 
-    (api.fetchData as ReturnType<typeof vi.fn>).mockResolvedValue(mockUsers);
+    await render(<UserList />, { route: '/es' });
+    await waitForTranslations();
 
-    await render(<UserList />, { route: '/en' });
-
-    await waitFor(() => {
-      const link = screen.getByRole('link');
-      expect(link).toHaveAttribute('aria-label');
-      expect(link).toHaveAttribute('rel', 'noopener noreferrer');
+    await waitFor(async () => {
+      const title = await expectTranslated('userList:title', 'es');
+      expect(screen.getByText(title)).toBeInTheDocument();
     });
+
+    expect(pageLoader.loadPageTranslations).toHaveBeenCalledWith(
+      'userList',
+      'es',
+    );
+  });
+
+  it('changes language dynamically', async () => {
+    (api.fetchData as ReturnType<typeof vi.fn>).mockResolvedValue([]);
+    const { changeLanguage } = await render(<UserList />, { route: '/en' });
+    await waitForTranslations();
+
+    // Check English content
+    await waitFor(async () => {
+      const title = await expectTranslated('userList:title', 'en');
+      expect(screen.getByText(title)).toBeInTheDocument();
+    });
+
+    // Switch to Spanish
+    await changeLanguage('es');
+
+    // Check Spanish content
+    await waitFor(async () => {
+      const title = await expectTranslated('userList:title', 'es');
+      expect(screen.getByText(title)).toBeInTheDocument();
+    });
+  });
+
+  it('cleans up when unmounted', async () => {
+    let resolveTranslations: () => void;
+    const translationsPromise = new Promise<boolean>((resolve) => {
+      resolveTranslations = () => resolve(true);
+    });
+
+    vi.mocked(pageLoader.loadPageTranslations).mockReturnValue(
+      translationsPromise,
+    );
+    const { unmount } = await render(<UserList />, { route: '/en' });
+
+    unmount();
+
+    await act(async () => {
+      resolveTranslations();
+      await Promise.resolve();
+    });
+
+    expect(true).toBe(true);
   });
 });

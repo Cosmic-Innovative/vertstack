@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useParams } from 'react-router-dom';
 import { fetchData, sanitizeInput } from '../utils/api';
 import { formatNumber, formatList } from '../utils/i18n';
+import { loadPageTranslations } from '../utils/i18n/page-loader';
 
 interface UserAddress {
   street: string;
@@ -32,22 +34,66 @@ interface User {
 }
 
 function UserList() {
-  const { t, i18n } = useTranslation();
+  const { t, i18n } = useTranslation('userList');
+  const { lang } = useParams<{ lang: string }>();
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [translationsLoaded, setTranslationsLoaded] = useState(false);
 
   useEffect(() => {
-    fetchData<User[]>('https://jsonplaceholder.typicode.com/users')
-      .then((data) => {
-        setUsers(data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        setError(error.message);
-        setLoading(false);
-      });
-  }, []);
+    let mounted = true;
+
+    const initializeTranslations = async () => {
+      if (lang) {
+        try {
+          await loadPageTranslations('userList', lang);
+        } finally {
+          if (mounted) {
+            setTranslationsLoaded(true);
+          }
+        }
+      }
+    };
+
+    initializeTranslations();
+
+    return () => {
+      mounted = false;
+    };
+  }, [lang]);
+
+  useEffect(() => {
+    let mounted = true;
+
+    const loadUsers = async () => {
+      try {
+        if (!translationsLoaded) return;
+
+        const data = await fetchData<User[]>(
+          'https://jsonplaceholder.typicode.com/users',
+        );
+        if (mounted) {
+          setUsers(data);
+          setError(null);
+        }
+      } catch (error) {
+        if (mounted) {
+          setError(error instanceof Error ? error.message : String(error));
+        }
+      } finally {
+        if (mounted) {
+          setLoading(false);
+        }
+      }
+    };
+
+    loadUsers();
+
+    return () => {
+      mounted = false;
+    };
+  }, [translationsLoaded]);
 
   const formatAddress = (address?: UserAddress): string => {
     if (!address) return '-';
@@ -60,35 +106,43 @@ function UserList() {
     return formatList(parts, i18n.language);
   };
 
+  if (!translationsLoaded || loading) {
+    return (
+      <div className="content-section">
+        <div className="content-wrapper max-w-2xl mx-auto">
+          <div
+            role="status"
+            aria-live="polite"
+            className="loading-container loading"
+          >
+            {t('general:loading')}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div
       className="user-list-container"
       role="region"
-      aria-label={t('userList.title')}
+      aria-labelledby="user-list-title"
     >
-      <h2 id="user-list-title">{t('userList.title')}</h2>
-      <p id="user-list-description">{t('userList.description')}</p>
+      <h2 id="user-list-title">{t('title')}</h2>
+      <p id="user-list-description">{t('description')}</p>
 
-      {/* Single status region for loading/error/empty states */}
-      <div
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
-        className={loading ? 'loading' : undefined}
-      >
-        {loading ? (
-          t('general.loading')
-        ) : error ? (
+      <div role="status" aria-live="polite" aria-atomic="true">
+        {error ? (
           <div role="alert">
-            {t('errors.fetchError', { error: sanitizeInput(error) })}
+            {t('loadingError', { error: sanitizeInput(error) })}
           </div>
         ) : users.length === 0 ? (
-          t('userList.noUsers')
+          t('noUsers')
         ) : null}
       </div>
 
-      {!loading && !error && users.length > 0 && (
-        <div aria-busy={loading}>
+      {!error && users.length > 0 && (
+        <div>
           <table
             aria-labelledby="user-list-title"
             aria-describedby="user-list-description"
@@ -97,19 +151,19 @@ function UserList() {
             <thead>
               <tr>
                 <th scope="col" id="header-name">
-                  {t('userList.name')}
+                  {t('name')}
                 </th>
                 <th scope="col" id="header-email">
-                  {t('userList.email')}
+                  {t('email')}
                 </th>
                 <th scope="col" id="header-company">
-                  {t('userList.company')}
+                  {t('company')}
                 </th>
                 <th scope="col" id="header-location">
-                  {t('userList.location')}
+                  {t('location')}
                 </th>
                 <th scope="col" id="header-contact">
-                  {t('userList.contact')}
+                  {t('contact')}
                 </th>
               </tr>
             </thead>
@@ -133,7 +187,7 @@ function UserList() {
                       href={`https://${user.website}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      aria-label={t('userList.visitWebsite', {
+                      aria-label={t('accessibility.visitWebsite', {
                         website: user.website,
                       })}
                     >
@@ -148,16 +202,16 @@ function UserList() {
           <div
             className="stats-summary"
             role="complementary"
-            aria-label={t('userList.statisticsSummary')}
+            aria-label={t('accessibility.userStatistics')}
           >
             <div>
-              {t('userList.totalUsers', {
+              {t('totalUsers', {
                 count: users.length,
                 formatted: formatNumber(users.length, i18n.language),
               })}
             </div>
             <div>
-              {t('userList.companiesRepresented', {
+              {t('companiesRepresented', {
                 count: new Set(users.map((user) => user.company.name)).size,
                 formatted: formatNumber(
                   new Set(users.map((user) => user.company.name)).size,
