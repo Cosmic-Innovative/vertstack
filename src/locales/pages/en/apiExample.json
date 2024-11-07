@@ -1,0 +1,7 @@
+{
+  "apiExample": {
+    "title": "API Integration Example",
+    "description": "This page demonstrates API integration patterns in the VERT stack, showcasing error handling, loading states, and data presentation.",
+    "metaDescription": "Explore our API integration example using the VERT Stack. Learn how to fetch and display data efficiently in your React applications."
+  }
+}

@@ -1,7 +1,46 @@
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useParams } from 'react-router-dom';
+import { loadPageTranslations } from '../utils/i18n/page-loader';
 
 function Contact() {
-  const { t } = useTranslation();
+  const { t } = useTranslation('contact');
+  const { lang } = useParams<{ lang: string }>();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    let mounted = true;
+
+    const initializeTranslations = async () => {
+      if (lang) {
+        setIsLoading(true);
+        await loadPageTranslations('contact', lang);
+        // Only update state if component is still mounted
+        if (mounted) {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    initializeTranslations();
+
+    // Cleanup function to prevent memory leaks
+    return () => {
+      mounted = false;
+    };
+  }, [lang]);
+
+  if (isLoading) {
+    return (
+      <div className="content-section">
+        <div className="content-wrapper max-w-2xl mx-auto">
+          <div className="loading-container" role="status" aria-live="polite">
+            {t('general:loading')}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <article role="main" aria-labelledby="contact-title">
@@ -10,17 +49,17 @@ function Contact() {
           {/* Header Section */}
           <div className="text-center mb-12">
             <h1 id="contact-title" className="text-3xl font-bold mb-4">
-              {t('contact.title')}
+              {t('title')}
             </h1>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              {t('contact.description')}
+              {t('description')}
             </p>
           </div>
 
           {/* Community Section */}
           <div className="mb-12">
             <h2 className="text-xl font-semibold mb-6 text-center">
-              {t('contact.community.title')}
+              {t('community.title')}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-xl mx-auto">
               {/* Telegram */}
@@ -64,7 +103,7 @@ function Contact() {
           {/* Official Contacts Section */}
           <div className="border-t pt-8">
             <h2 className="text-xl font-semibold mb-6 text-center">
-              {t('contact.official.title')}
+              {t('official.title')}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-xl mx-auto">
               {/* Email */}

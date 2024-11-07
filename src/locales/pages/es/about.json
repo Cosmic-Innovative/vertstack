@@ -1,0 +1,36 @@
+{
+  "about": {
+    "title": "Sobre el VERT Stack",
+    "description": "Una base poderosa para aplicaciones web modernas, combinando Vite, ESLint, React y TypeScript para ofrecer experiencias de desarrollo rápidas, confiables y seguras.",
+    "principles": {
+      "title": "Principios Fundamentales",
+      "speed": {
+        "title": "Desarrollo Ultrarrápido",
+        "description": "Construido sobre Vite para un inicio instantáneo del servidor y HMR ultrarrápido, haciendo del desarrollo un placer."
+      },
+      "quality": {
+        "title": "Calidad de Código Primero",
+        "description": "La configuración integrada de ESLint asegura código consistente y de alta calidad en todo tu proyecto."
+      },
+      "types": {
+        "title": "Seguridad de Tipos",
+        "description": "Integración completa de TypeScript proporciona una sólida verificación de tipos y herramientas mejoradas para desarrolladores."
+      },
+      "modern": {
+        "title": "Mejores Prácticas Modernas",
+        "description": "Incorpora estándares actuales de desarrollo web, accesibilidad y optimizaciones de rendimiento."
+      }
+    },
+    "builtFor": {
+      "title": "Diseñado para Equipos Modernos",
+      "teams": {
+        "title": "Equipos de Desarrollo",
+        "description": "Perfecto para equipos que valoran la calidad del código, la seguridad de tipos y la velocidad de desarrollo."
+      },
+      "projects": {
+        "title": "Proyectos de Producción",
+        "description": "Listo para aplicaciones del mundo real con infraestructura integrada de optimización y pruebas."
+      }
+    }
+  }
+}

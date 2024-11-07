@@ -1,0 +1,27 @@
+{
+  "home": {
+    "title": "La Plantilla VERT Stack",
+    "description": "Una base moderna para aplicaciones web escalables",
+    "heroAlt": "Imagen Principal de VERT Stack",
+    "logoAlt": "Logo de VERT Stack",
+    "foundation": "Una base poderosa para aplicaciones web modernas",
+    "tagline": "Construido para velocidad, calidad y experiencia del desarrollador",
+    "features": {
+      "title": "Construido Con",
+      "vite": "Vite",
+      "viteDesc": "Desarrollo ultrarrápido con inicio instantáneo del servidor y reemplazo de módulos en caliente.",
+      "eslint": "ESLint",
+      "eslintDesc": "Calidad de código consistente en todo tu proyecto con linting integrado.",
+      "react": "React",
+      "reactDesc": "Desarrollo de UI basado en componentes con el poder de hooks y patrones modernos de React.",
+      "typescript": "TypeScript",
+      "typescriptDesc": "Seguridad de tipos y experiencia mejorada para desarrolladores con soporte completo de TypeScript."
+    },
+    "cta": {
+      "explore": "Ver Ejemplos",
+      "exploreAriaLabel": "Ver ejemplos de implementación de VERT Stack",
+      "github": "Ver en GitHub",
+      "githubAriaLabel": "Ver código fuente de VERT Stack en GitHub"
+    }
+  }
+}

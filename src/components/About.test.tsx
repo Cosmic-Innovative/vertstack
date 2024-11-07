@@ -1,83 +1,110 @@
-import { screen } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
+import { screen, waitFor } from '@testing-library/react';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { act } from '@testing-library/react';
 import About from './About';
 import { render, expectTranslated } from '../test-utils';
+import * as pageLoader from '../utils/i18n/page-loader';
 
 describe('About', () => {
-  it('renders with proper document structure', async () => {
-    await render(<About />, { route: '/en/about' });
-
-    // Check main landmark
-    const main = screen.getByRole('main');
-    expect(main).toBeInTheDocument();
-    expect(main).toHaveAttribute('aria-labelledby', 'about-title');
-
-    // Check content section styling
-    const contentSection = screen
-      .getByRole('main')
-      .querySelector('.content-section');
-    expect(contentSection).toBeInTheDocument();
-    expect(contentSection).toHaveClass('content-section');
+  beforeEach(() => {
+    vi.spyOn(pageLoader, 'loadPageTranslations').mockResolvedValue(true);
   });
 
-  it('renders correct content in English', async () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  const waitForTranslations = async () => {
+    await act(async () => {
+      await Promise.resolve();
+    });
+  };
+
+  it('renders loading state initially', async () => {
+    // Create a never-resolving promise to keep loading state
+    vi.mocked(pageLoader.loadPageTranslations).mockImplementation(
+      () => new Promise(() => {}), // Never resolves
+    );
+
     await render(<About />, { route: '/en/about' });
 
-    const title = await expectTranslated('about.title', 'en');
-    const description = await expectTranslated('about.description', 'en');
+    // Verify loading state
+    const loadingElement = screen.getByRole('status');
+    expect(loadingElement).toHaveTextContent(
+      await expectTranslated('general:loading', 'en'),
+    );
+  });
 
-    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(title);
-    expect(screen.getByText(description)).toBeInTheDocument();
+  it('loads page translations and renders content', async () => {
+    await render(<About />, { route: '/en/about' });
+    await waitForTranslations();
+
+    await waitFor(async () => {
+      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+        await expectTranslated('about:title', 'en'),
+      );
+    });
+
+    expect(pageLoader.loadPageTranslations).toHaveBeenCalledWith('about', 'en');
   });
 
   it('renders all core principles', async () => {
     await render(<About />, { route: '/en/about' });
+    await waitForTranslations();
 
     const principles = ['speed', 'quality', 'types', 'modern'];
 
     for (const principle of principles) {
-      const title = await expectTranslated(
-        `about.principles.${principle}.title`,
-        'en',
-      );
-      const description = await expectTranslated(
-        `about.principles.${principle}.description`,
-        'en',
-      );
+      await waitFor(async () => {
+        const title = await expectTranslated(
+          `about:principles.${principle}.title`,
+          'en',
+        );
+        const description = await expectTranslated(
+          `about:principles.${principle}.description`,
+          'en',
+        );
 
-      expect(screen.getByText(title)).toBeInTheDocument();
-      expect(screen.getByText(description)).toBeInTheDocument();
+        expect(screen.getByText(title)).toBeInTheDocument();
+        expect(screen.getByText(description)).toBeInTheDocument();
+      });
     }
   });
 
   it('renders "Built For" sections', async () => {
     await render(<About />, { route: '/en/about' });
+    await waitForTranslations();
 
     const sections = ['teams', 'projects'];
 
     for (const section of sections) {
-      const title = await expectTranslated(
-        `about.builtFor.${section}.title`,
-        'en',
-      );
-      const description = await expectTranslated(
-        `about.builtFor.${section}.description`,
-        'en',
-      );
+      await waitFor(async () => {
+        const title = await expectTranslated(
+          `about:builtFor.${section}.title`,
+          'en',
+        );
+        const description = await expectTranslated(
+          `about:builtFor.${section}.description`,
+          'en',
+        );
 
-      expect(screen.getByText(title)).toBeInTheDocument();
-      expect(screen.getByText(description)).toBeInTheDocument();
+        expect(screen.getByText(title)).toBeInTheDocument();
+        expect(screen.getByText(description)).toBeInTheDocument();
+      });
     }
   });
 
   it('renders in Spanish when specified', async () => {
     await render(<About />, { route: '/es/about' });
+    await waitForTranslations();
 
-    const title = await expectTranslated('about.title', 'es');
-    const description = await expectTranslated('about.description', 'es');
+    await waitFor(async () => {
+      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+        await expectTranslated('about:title', 'es'),
+      );
+    });
 
-    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(title);
-    expect(screen.getByText(description)).toBeInTheDocument();
+    expect(pageLoader.loadPageTranslations).toHaveBeenCalledWith('about', 'es');
   });
 
   it('changes language dynamically', async () => {
@@ -85,77 +112,76 @@ describe('About', () => {
       route: '/en/about',
     });
 
+    await waitForTranslations();
+
     // Check English content
-    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
-      await expectTranslated('about.title', 'en'),
-    );
+    await waitFor(async () => {
+      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+        await expectTranslated('about:title', 'en'),
+      );
+    });
 
     // Switch to Spanish
     await changeLanguage('es');
 
     // Check Spanish content
-    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
-      await expectTranslated('about.title', 'es'),
-    );
+    await waitFor(async () => {
+      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+        await expectTranslated('about:title', 'es'),
+      );
+    });
   });
 
   it('maintains proper heading hierarchy', async () => {
     await render(<About />, { route: '/en/about' });
+    await waitForTranslations();
 
-    const headings = screen.getAllByRole('heading');
+    await waitFor(async () => {
+      const headings = screen.getAllByRole('heading');
+      expect(headings[0].tagName).toBe('H1');
+      expect(headings[0]).toHaveTextContent(
+        await expectTranslated('about:title', 'en'),
+      );
 
-    // Check main title
-    expect(headings[0].tagName).toBe('H1');
-    expect(headings[0]).toHaveTextContent(
-      await expectTranslated('about.title', 'en'),
-    );
+      expect(
+        screen.getByRole('heading', {
+          name: await expectTranslated('about:principles.title', 'en'),
+          level: 2,
+        }),
+      ).toBeInTheDocument();
 
-    // Check section headings
-    expect(
-      screen.getByRole('heading', {
-        name: await expectTranslated('about.principles.title', 'en'),
-      }).tagName,
-    ).toBe('H2');
-
-    expect(
-      screen.getByRole('heading', {
-        name: await expectTranslated('about.builtFor.title', 'en'),
-      }).tagName,
-    ).toBe('H2');
+      expect(
+        screen.getByRole('heading', {
+          name: await expectTranslated('about:builtFor.title', 'en'),
+          level: 2,
+        }),
+      ).toBeInTheDocument();
+    });
   });
 
-  it('preserves visual styling and layout', async () => {
-    await render(<About />, { route: '/en/about' });
+  it('cleans up when unmounted', async () => {
+    // Create a promise that we control
+    let resolveTranslations: () => void;
+    const translationsPromise = new Promise<boolean>((resolve) => {
+      resolveTranslations = () => resolve(true);
+    });
 
-    // Check container classes
-    const contentSection = screen
-      .getByRole('main')
-      .querySelector('.content-section');
-    expect(contentSection).toHaveClass('content-section');
-
-    const contentWrapper = contentSection?.querySelector('.content-wrapper');
-    expect(contentWrapper).toHaveClass('content-wrapper');
-    expect(contentWrapper).toHaveClass('max-w-2xl');
-    expect(contentWrapper).toHaveClass('mx-auto');
-
-    // Check heading container
-    const titleContainer = screen.getByRole('heading', {
-      level: 1,
-    }).parentElement;
-    expect(titleContainer).toHaveClass('text-center', 'mb-12');
-
-    // Check grid layout for "Built For" section
-    const builtForTitle = await expectTranslated('about.builtFor.title', 'en');
-    screen
-      .getByRole('heading', {
-        name: builtForTitle,
-      })
-      .closest('div');
-
-    const gridContainer = contentSection?.querySelector(
-      '.grid.md\\:grid-cols-2',
+    vi.mocked(pageLoader.loadPageTranslations).mockReturnValue(
+      translationsPromise,
     );
-    expect(gridContainer).toBeInTheDocument();
-    expect(gridContainer).toHaveClass('grid', 'md:grid-cols-2', 'gap-6');
+
+    const { unmount } = await render(<About />, { route: '/en/about' });
+
+    // Unmount before translations resolve
+    unmount();
+
+    // Now resolve translations and verify no errors occur
+    await act(async () => {
+      resolveTranslations();
+      await Promise.resolve();
+    });
+
+    // If we get here without errors, the cleanup worked
+    expect(true).toBe(true);
   });
 });

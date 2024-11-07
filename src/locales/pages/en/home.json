@@ -1,0 +1,27 @@
+{
+  "home": {
+    "title": "The VERT Stack Template",
+    "description": "A modern foundation for scalable web applications",
+    "heroAlt": "VERT Stack Hero Image",
+    "logoAlt": "VERT Stack Logo",
+    "foundation": "A powerful foundation for modern web applications",
+    "tagline": "Built for speed, quality, and developer experience",
+    "features": {
+      "title": "Built With",
+      "vite": "Vite",
+      "viteDesc": "Lightning-fast development with instant server start and hot module replacement.",
+      "eslint": "ESLint",
+      "eslintDesc": "Consistent code quality across your entire project with integrated linting.",
+      "react": "React",
+      "reactDesc": "Component-based UI development with the power of hooks and modern React patterns.",
+      "typescript": "TypeScript",
+      "typescriptDesc": "Type safety and enhanced developer experience with full TypeScript support."
+    },
+    "cta": {
+      "explore": "View Examples",
+      "exploreAriaLabel": "View VERT Stack example implementations",
+      "github": "View on GitHub",
+      "githubAriaLabel": "View VERT Stack source code on GitHub"
+    }
+  }
+}
