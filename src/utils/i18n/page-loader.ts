@@ -93,7 +93,7 @@ export const loadPageTranslations = async (
       import.meta.url,
     ).pathname;
 
-    const translations = await import(validatedPath);
+    const translations = await import(/* @vite-ignore */ validatedPath);
 
     // Create a Map for type-safe lookup
     const translationMap = new Map(Object.entries(translations.default));

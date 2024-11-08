@@ -56,11 +56,11 @@ const TitleComponent: React.FC = () => {
   const description = t(pageInfo.description);
   const appName = t('general.appName');
   const fullTitle = `${title} - ${appName}`;
-  const url = `https://example.com${pathname}`;
-
+  const baseUrl = import.meta.env.VITE_PUBLIC_URL || 'http://localhost:5173';
+  const url = `${baseUrl}${pathname}`;
   const alternateLinks = supportedLanguages.map((lang) => ({
     hrefLang: lang,
-    href: `https://example.com/${lang}${pathname.substring(3)}`,
+    href: `${baseUrl}/${lang}${pathname.substring(3)}`,
   }));
 
   // Generate JSON-LD based on page type
