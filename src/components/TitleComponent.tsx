@@ -1,232 +1,239 @@
-import React from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
+import {
+  loadPageTranslations,
+  type PageNamespace,
+} from '../utils/i18n/page-loader';
+import { loadLegalTranslations } from '../utils/i18n/legal-loader';
+import { logger } from '../utils/logger';
 
-const supportedLanguages = ['en', 'es'];
+interface PageInfo {
+  namespace: PageNamespace | 'legal';
+  titleKey: string;
+  descriptionKey: string;
+  type?: '404';
+  isLegal?: boolean;
+}
+
+const VALID_ROUTES = new Map<string, PageInfo>([
+  [
+    '',
+    {
+      namespace: 'home',
+      titleKey: 'title',
+      descriptionKey: 'description',
+    },
+  ],
+  [
+    'about',
+    {
+      namespace: 'about',
+      titleKey: 'title',
+      descriptionKey: 'description',
+    },
+  ],
+  [
+    'contact',
+    {
+      namespace: 'contact',
+      titleKey: 'title',
+      descriptionKey: 'description',
+    },
+  ],
+  [
+    'api-example',
+    {
+      namespace: 'apiExample',
+      titleKey: 'title',
+      descriptionKey: 'description',
+    },
+  ],
+  [
+    'i18n-examples',
+    {
+      namespace: 'i18nExamples',
+      titleKey: 'title',
+      descriptionKey: 'description',
+    },
+  ],
+  // Legal pages
+  [
+    'terms',
+    {
+      namespace: 'legal',
+      titleKey: 'termsOfService.title',
+      descriptionKey: 'termsOfService.description',
+      isLegal: true,
+    },
+  ],
+  [
+    'privacy',
+    {
+      namespace: 'legal',
+      titleKey: 'privacyPolicy.title',
+      descriptionKey: 'privacyPolicy.description',
+      isLegal: true,
+    },
+  ],
+]);
 
 const TitleComponent: React.FC = () => {
   const { t, i18n } = useTranslation();
   const { pathname } = useLocation();
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const loadingRef = useRef<ReturnType<typeof setTimeout>>();
 
-  const getPageInfo = () => {
+  const getPageInfo = useCallback((): PageInfo => {
     const path = pathname.split('/')[2] || '';
 
-    // Check if we're at an unmatched route (404)
-    if (
-      !path.match(/^(|about|contact|api-example|i18n-examples|terms|privacy)$/)
-    ) {
-      return {
-        title: 'notFound.title',
-        description: 'notFound.description',
-        type: '404',
-      };
+    if (VALID_ROUTES.has(path)) {
+      return VALID_ROUTES.get(path)!;
     }
 
-    switch (path) {
-      case '':
-        return { title: 'home.title', description: 'home.metaDescription' };
-      case 'about':
-        return { title: 'about.title', description: 'about.metaDescription' };
-      case 'contact':
-        return {
-          title: 'contact.title',
-          description: 'contact.metaDescription',
-        };
-      case 'api-example':
-        return {
-          title: 'apiExample.title',
-          description: 'apiExample.metaDescription',
-        };
-      case 'i18n-examples':
-        return {
-          title: 'i18nExamples.title',
-          description: 'i18nExamples.description',
-        };
-      default:
-        return {
-          title: 'general.appName',
-          description: 'home.metaDescription',
-        };
-    }
-  };
+    return {
+      namespace: 'notFound',
+      titleKey: 'title',
+      descriptionKey: 'description',
+      type: '404',
+    };
+  }, [pathname]);
+
+  useEffect(() => {
+    let mounted = true;
+
+    const loadTranslations = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+        const pageInfo = getPageInfo();
+
+        if (loadingRef.current) {
+          clearTimeout(loadingRef.current);
+        }
+
+        loadingRef.current = setTimeout(async () => {
+          try {
+            if (pageInfo.isLegal) {
+              await loadLegalTranslations(i18n.language);
+              // If no error was thrown, consider it successful
+              if (mounted) {
+                setIsLoading(false);
+              }
+            } else if (pageInfo.type === '404') {
+              if (mounted) {
+                setIsLoading(false);
+              }
+            } else {
+              const success = await loadPageTranslations(
+                pageInfo.namespace as PageNamespace,
+                i18n.language,
+              );
+              if (!success) {
+                throw new Error('Failed to load translations');
+              }
+              if (mounted) {
+                setIsLoading(false);
+              }
+            }
+          } catch (error) {
+            if (mounted) {
+              logger.error('Translation loading failed', {
+                error,
+                pageType: pageInfo.isLegal ? 'legal' : 'regular',
+                namespace: pageInfo.namespace,
+                language: i18n.language,
+              });
+              setError(
+                error instanceof Error ? error.message : 'Unknown error',
+              );
+              setIsLoading(false);
+            }
+          }
+        }, 100);
+      } catch (error) {
+        if (mounted) {
+          logger.error('Translation setup failed', {
+            error,
+            pathname,
+            language: i18n.language,
+          });
+          setError(error instanceof Error ? error.message : 'Unknown error');
+          setIsLoading(false);
+        }
+      }
+    };
+
+    void loadTranslations();
+
+    return () => {
+      mounted = false;
+      if (loadingRef.current) {
+        clearTimeout(loadingRef.current);
+      }
+    };
+  }, [getPageInfo, i18n.language, pathname]);
+
+  if (isLoading) {
+    return null;
+  }
 
   const pageInfo = getPageInfo();
-  const title = t(pageInfo.title);
-  const description = t(pageInfo.description);
+
+  // For legal pages, use the 'legal' namespace directly
+  const title = pageInfo.isLegal
+    ? t(`legal:${pageInfo.titleKey}`)
+    : t(`${pageInfo.namespace}:${pageInfo.titleKey}`);
+
+  const description = pageInfo.isLegal
+    ? t(`legal:${pageInfo.descriptionKey}`)
+    : t(`${pageInfo.namespace}:${pageInfo.descriptionKey}`);
+
   const appName = t('general.appName');
   const fullTitle = `${title} - ${appName}`;
+
   const baseUrl = import.meta.env.VITE_PUBLIC_URL || 'http://localhost:5173';
-  const url = `${baseUrl}${pathname}`;
+  const currentUrl = `${baseUrl}${pathname}`;
+
+  const supportedLanguages = ['en', 'es'];
+
   const alternateLinks = supportedLanguages.map((lang) => ({
     hrefLang: lang,
     href: `${baseUrl}/${lang}${pathname.substring(3)}`,
   }));
 
-  // Generate JSON-LD based on page type
-  const getJsonLd = () => {
-    const basePath = pathname.split('/')[2] || '';
-    const baseSchema = {
-      '@context': 'https://schema.org',
-      '@type': 'WebPage',
-      name: title,
-      description: description,
-      url: url,
-      inLanguage: i18n.language,
-      isPartOf: {
-        '@type': 'WebSite',
-        name: appName,
-        url: 'https://example.com',
-      },
-    };
-
-    if (pageInfo.type === '404') {
-      return {
-        ...baseSchema,
-        '@type': 'WebPage',
-        breadcrumb: {
-          '@type': 'BreadcrumbList',
-          itemListElement: [
-            {
-              '@type': 'ListItem',
-              position: 1,
-              item: {
-                '@id': `/${i18n.language}`,
-                name: t('home.title'),
-              },
-            },
-            {
-              '@type': 'ListItem',
-              position: 2,
-              item: {
-                '@id': url,
-                name: title,
-              },
-            },
-          ],
-        },
-      };
-    }
-
-    switch (basePath) {
-      case '':
-        return {
-          ...baseSchema,
-          '@type': 'WebSite',
-          potentialAction: {
-            '@type': 'SearchAction',
-            target: {
-              '@type': 'EntryPoint',
-              urlTemplate: 'https://example.com/search?q={search_term_string}',
-            },
-            'query-input': 'required name=search_term_string',
-          },
-        };
-
-      case 'contact':
-        return {
-          ...baseSchema,
-          '@type': 'ContactPage',
-          mainEntity: {
-            '@type': 'Organization',
-            name: appName,
-            email: 'contact@example.com',
-            telephone: '+1-234-567-890',
-            address: {
-              '@type': 'PostalAddress',
-              streetAddress: '123 Main Street, Suite 456',
-              addressLocality: 'City',
-              addressRegion: 'State',
-              postalCode: '12345',
-              addressCountry: 'Country',
-            },
-          },
-        };
-
-      case 'about':
-        return {
-          ...baseSchema,
-          '@type': 'AboutPage',
-          mainEntity: {
-            '@type': 'Organization',
-            name: appName,
-            description: description,
-            url: 'https://example.com',
-            sameAs: [
-              'https://github.com/yourusername',
-              'https://twitter.com/yourusername',
-            ],
-          },
-        };
-
-      case 'api-example':
-        return {
-          ...baseSchema,
-          '@type': 'TechArticle',
-          articleBody: description,
-          proficiencyLevel: 'Beginner',
-          articleSection: 'API Integration',
-        };
-
-      case 'i18n-examples':
-        return {
-          ...baseSchema,
-          '@type': 'TechArticle',
-          articleBody: description,
-          proficiencyLevel: 'Intermediate',
-          articleSection: 'Internationalization',
-          about: {
-            '@type': 'Thing',
-            name: 'Internationalization',
-            description:
-              'Web application internationalization examples and patterns',
-          },
-        };
-
-      default:
-        return baseSchema;
-    }
-  };
-
   return (
     <Helmet>
-      <html lang={i18n.language} />
-      <title>{fullTitle}</title>
+      <html lang={i18n.language.split('-')[0]} />
+      <title>{error ? appName : fullTitle}</title>
       <meta name="description" content={description} />
+
+      {/* SEO directives */}
       {pageInfo.type === '404' && <meta name="robots" content="noindex" />}
+      {error && <meta name="robots" content="noindex" />}
 
-      {/* Open Graph / Facebook */}
+      {/* Open Graph tags */}
       <meta property="og:type" content="website" />
-      <meta property="og:url" content={url} />
-      <meta property="og:title" content={fullTitle} />
+      <meta property="og:url" content={currentUrl} />
+      <meta property="og:title" content={error ? appName : fullTitle} />
       <meta property="og:description" content={description} />
-      <meta property="og:image" content="https://example.com/og-image.jpg" />
+      <meta property="og:site_name" content={appName} />
 
-      {/* Twitter */}
-      <meta property="twitter:card" content="summary_large_image" />
-      <meta property="twitter:url" content={url} />
-      <meta property="twitter:title" content={fullTitle} />
-      <meta property="twitter:description" content={description} />
-      <meta
-        property="twitter:image"
-        content="https://example.com/twitter-image.jpg"
-      />
+      {/* Twitter Card tags */}
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:url" content={currentUrl} />
+      <meta name="twitter:title" content={error ? appName : fullTitle} />
+      <meta name="twitter:description" content={description} />
 
-      {/* Alternate language links */}
-      {alternateLinks.map((link) => (
-        <link
-          key={link.hrefLang}
-          rel="alternate"
-          hrefLang={link.hrefLang}
-          href={link.href}
-        />
+      {/* Language alternates */}
+      {alternateLinks.map(({ hrefLang, href }) => (
+        <link key={hrefLang} rel="alternate" hrefLang={hrefLang} href={href} />
       ))}
 
-      {/* Canonical link */}
-      <link rel="canonical" href={url} />
-
-      {/* Structured Data */}
-      <script type="application/ld+json">{JSON.stringify(getJsonLd())}</script>
+      {/* Canonical URL */}
+      <link rel="canonical" href={currentUrl} />
     </Helmet>
   );
 };

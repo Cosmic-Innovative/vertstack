@@ -1,6 +1,6 @@
 {
   "about": {
-    "title": "About the VERT Stack",
+    "title": "About",
     "description": "A powerful foundation for modern web applications, combining Vite, ESLint, React, and TypeScript to deliver fast, reliable, and type-safe development experiences.",
     "principles": {
       "title": "Core Principles",

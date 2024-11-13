@@ -10,6 +10,7 @@ export type PageNamespace =
   | 'userList'
   | 'notFound';
 
+// Validate page namespaces at runtime
 const validPages = new Set<PageNamespace>([
   'home',
   'about',
@@ -20,111 +21,71 @@ const validPages = new Set<PageNamespace>([
   'notFound',
 ]);
 
-const VALID_LANGUAGES = ['en', 'es'] as const;
-type ValidLanguage = (typeof VALID_LANGUAGES)[number];
-
-const isValidPageNamespace = (page: string): page is PageNamespace => {
+const isValidPage = (page: string): page is PageNamespace => {
   return validPages.has(page as PageNamespace);
 };
 
-const isValidLanguage = (lang: string): lang is ValidLanguage => {
-  return VALID_LANGUAGES.includes(lang as ValidLanguage);
+const normalizeLanguage = (lang: string): string => {
+  return lang.split('-')[0].toLowerCase();
 };
-
-const CACHE_PREFIX = 'vert_i18n_';
-const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours
-
-interface CachedTranslation {
-  timestamp: number;
-  data: Record<string, unknown>;
-}
 
 export const loadPageTranslations = async (
   page: PageNamespace,
   lang: string,
 ): Promise<boolean> => {
-  // Validate inputs
-  if (!isValidPageNamespace(page)) {
-    logger.error('Invalid page namespace', {
-      category: 'I18n',
-      page,
-      language: lang,
-    });
+  const normalizedLang = normalizeLanguage(lang);
+
+  if (!isValidPage(page)) {
+    logger.error('Invalid page namespace', { page, language: normalizedLang });
     return false;
   }
 
-  if (!isValidLanguage(lang)) {
-    logger.error('Invalid language', {
-      category: 'I18n',
-      page,
-      language: lang,
-    });
-    return false;
-  }
-
-  if (i18n.hasResourceBundle(lang, page)) {
-    return true;
-  }
-
-  // After validation, safely construct cache key
-  const safeKey = `${CACHE_PREFIX}${lang}_${page}` as const;
-
   try {
-    const cached = localStorage.getItem(safeKey);
-    if (cached) {
-      const parsedCache = JSON.parse(cached) as CachedTranslation;
-      if (Date.now() - parsedCache.timestamp < CACHE_DURATION) {
-        i18n.addResourceBundle(lang, page, parsedCache.data, true, true);
-        logger.debug(`Loaded cached translations for ${page}`, {
-          category: 'I18n',
-          source: 'cache',
-        });
-        return true;
-      }
-    }
-  } catch (error) {
-    logger.warn('Cache read failed', { error });
-  }
+    // Load translations if they're not already loaded
+    const loadPromises = [];
 
-  // Fetch from network using validated inputs
-  try {
-    const validatedPath = new URL(
-      `../../locales/pages/${lang}/${page}.json`,
-      import.meta.url,
-    ).pathname;
-
-    const translations = await import(/* @vite-ignore */ validatedPath);
-
-    // Create a Map for type-safe lookup
-    const translationMap = new Map(Object.entries(translations.default));
-    const pageData = translationMap.get(page);
-
-    if (!pageData) {
-      throw new Error(`Missing translations for ${page}`);
-    }
-
-    try {
-      localStorage.setItem(
-        safeKey,
-        JSON.stringify({
-          timestamp: Date.now(),
-          data: pageData,
+    if (!i18n.hasResourceBundle(normalizedLang, 'translation')) {
+      loadPromises.push(
+        import(`../../locales/${normalizedLang}.json`).then((module) => {
+          i18n.addResourceBundle(
+            normalizedLang,
+            'translation',
+            module.default,
+            true,
+            true,
+          );
         }),
       );
-    } catch (error) {
-      logger.warn('Cache write failed', { error });
     }
 
-    i18n.addResourceBundle(lang, page, pageData, true, true);
-    logger.info(`Loaded translations for ${page}`, {
-      category: 'I18n',
-      source: 'network',
-    });
+    if (!i18n.hasResourceBundle(normalizedLang, page)) {
+      loadPromises.push(
+        import(`../../locales/pages/${normalizedLang}/${page}.json`).then(
+          (module) => {
+            const pageData = new Map(Object.entries(module.default)).get(page);
+            if (!pageData) {
+              throw new Error(`Missing translations for ${page}`);
+            }
+            i18n.addResourceBundle(normalizedLang, page, pageData, true, true);
+          },
+        ),
+      );
+    }
+
+    if (loadPromises.length > 0) {
+      await Promise.all(loadPromises);
+      logger.info('Translations loaded successfully', {
+        page,
+        language: normalizedLang,
+      });
+    }
+
     return true;
   } catch (error) {
-    logger.error(`Failed to load translations for ${page}`, {
-      category: 'I18n',
+    logger.error('Translation loading failed', {
       error,
+      page,
+      language: normalizedLang,
     });
     return false;
   }
