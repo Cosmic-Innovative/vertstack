@@ -1,3 +1,5 @@
+import { addCsrfToken } from './csrf';
+
 export async function fetchData<T>(url: string): Promise<T> {
   try {
     // Validate URL to prevent potential security issues
@@ -6,11 +8,18 @@ export async function fetchData<T>(url: string): Promise<T> {
       throw new Error('Invalid URL protocol');
     }
 
+    const headers = new Headers({
+      'Content-Type': 'application/json',
+      'X-Requested-With': 'XMLHttpRequest',
+    });
+
+    // Add CSRF token to non-GET requests
+    if (url.method !== 'GET') {
+      addCsrfToken(headers);
+    }
+
     const response = await fetch(validatedUrl.toString(), {
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Requested-With': 'XMLHttpRequest',
-      },
+      headers,
     });
 
     if (!response.ok) {
