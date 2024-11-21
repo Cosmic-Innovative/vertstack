@@ -16,7 +16,7 @@ Before you begin, ensure you have:
 
 ```bash
 # Create new project
-git clone https://github.com/your-org/vert-stack-template my-project
+git clone https://github.com/Cosmic-Innovative/vertstack.git my-project
 cd my-project
 
 # Install dependencies
@@ -90,8 +90,8 @@ ANALYZE=true pnpm build
 ## Getting Help
 
 - 📖 Review our [documentation](../README.md)
-- 🐛 Report issues on our [issue tracker](https://github.com/your-org/vert-stack/issues)
-- 💬 Join our [discussions](https://github.com/your-org/vert-stack/discussions)
+- 🐛 Report issues on our [Issue Tracker](https://github.com/Cosmic-Innovative/vertstack/issues)
+- 💬 Join our [Discussions](telegram and whatsapp coming soon)
 - 🔍 Check the [troubleshooting guide](project-structure.md#troubleshooting)
 
 ## What's Next?

@@ -75,7 +75,7 @@ Architecture and patterns:
 1. **Installation**
 
    ```bash
-   git clone https://github.com/your-org/vert-stack-template my-project
+   git clone https://github.com/Cosmic-Innovative/vertstack.git my-project
    cd my-project
    pnpm install
    ```
@@ -110,8 +110,8 @@ We welcome contributions! Please see our [Contributing Guide](development/contri
 ## Support
 
 - 📖 Check our [Troubleshooting Guide](troubleshooting/README.md)
-- 🐛 Report issues on our [Issue Tracker](https://github.com/your-org/vert-stack/issues)
-- 💬 Join our [Discussions](https://github.com/your-org/vert-stack/discussions)
+- 🐛 Report issues on our [Issue Tracker](https://github.com/Cosmic-Innovative/vertstack/issues)
+- 💬 Join our [Discussions](telegram and whatsapp coming soon)
 
 ## License
 

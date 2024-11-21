@@ -22,7 +22,7 @@ The VERT Stack provides a solid foundation for modern web applications by combin
 
 ```bash
 # Create new project
-git clone https://github.com/your-org/vert-stack-template my-project
+git clone https://github.com/Cosmic-Innovative/vertstack.git my-project
 cd my-project
 
 # Install dependencies
@@ -96,8 +96,8 @@ We welcome contributions! Please see our [Contributing Guide](docs/development/c
 ## Support
 
 - 📚 [Documentation](docs/README.md)
-- 🐛 [Issue Tracker](https://github.com/your-org/vert-stack/issues)
-- 💬 [Discussions](https://github.com/your-org/vert-stack/discussions)
+- 🐛 [Issue Tracker](https://github.com/Cosmic-Innovative/vertstack/issues)
+- 💬 [Discussions](telegram and whatsapp coming soon)
 
 ## License
 

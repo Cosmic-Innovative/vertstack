@@ -33,7 +33,7 @@ This guide walks you through setting up a new VERT Stack project, from initial i
 
 ```bash
 # Clone the template
-git clone https://github.com/your-org/vert-stack-template my-project
+git clone https://github.com/Cosmic-Innovative/vertstack.git my-project
 cd my-project
 
 # Remove existing git history
