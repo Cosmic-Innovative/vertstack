@@ -1,0 +1,55 @@
+{
+  "termsOfService": {
+    "title": "Términos de Servicio",
+    "description": "Términos y condiciones para el uso de VERT Stack Template",
+    "overview": {
+      "title": "Descripción General",
+      "content": "Esta plantilla se proporciona tal cual para su uso en proyectos de desarrollo web. Al usar esta plantilla, aceptas estos términos."
+    },
+    "usage": {
+      "title": "Derechos de Uso",
+      "permitted": {
+        "title": "Puedes:",
+        "personal": "Usar esta plantilla en proyectos personales y comerciales",
+        "modify": "Modificar la plantilla según tus necesidades",
+        "share": "Compartir y distribuir tus modificaciones"
+      },
+      "prohibited": {
+        "title": "No puedes:",
+        "claim": "Reclamar esta plantilla como tu trabajo original",
+        "sell": "Vender la plantilla sin modificar",
+        "liability": "Hacer responsables a los creadores de la plantilla por problemas"
+      }
+    },
+    "limitations": {
+      "title": "Limitaciones",
+      "content": "Esta plantilla se proporciona 'tal cual' sin garantía de ningún tipo. No se hacen garantías sobre su idoneidad para ningún propósito."
+    }
+  },
+  "privacyPolicy": {
+    "title": "Política de Privacidad",
+    "description": "Política de privacidad y prácticas de manejo de datos para VERT Stack Template",
+    "dataCollection": {
+      "title": "Recopilación de Datos",
+      "content": "El VERT Stack Template está diseñado teniendo en cuenta la privacidad.",
+      "noPersonal": "No recopila información personal",
+      "noCookies": "No utiliza cookies",
+      "noTracking": "No rastrea a los usuarios"
+    },
+    "storage": {
+      "title": "Almacenamiento Local",
+      "preferences": "Almacenamiento local del navegador para preferencias",
+      "temporary": "Almacenamiento de sesión para datos temporales",
+      "noSensitive": "No se almacenan datos sensibles por defecto"
+    },
+    "security": {
+      "title": "Medidas de Seguridad",
+      "content": "La plantilla incluye configuración de encabezados de seguridad, medidas de protección XSS y prevención CSRF."
+    }
+  },
+  "common": {
+    "backToHome": "Volver al Inicio",
+    "lastUpdated": "Última Actualización",
+    "contactUs": "Contáctenos"
+  }
+}

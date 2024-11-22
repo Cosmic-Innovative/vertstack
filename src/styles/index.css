@@ -1,14 +1,36 @@
-/* Base styles */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base styles with enhanced accessibility */
 :root {
-  --primary-color: #0056b3;
-  --secondary-color: #2c3e50;
+  /* WCAG 2.1 compliant color variables */
+  --primary-color: #0052cc;
+  --secondary-color: #253858;
   --background-color: #f8f9fa;
-  --text-color: #333;
-  --link-color: #0056b3;
+  --text-color: #172b4d;
+  --link-color: #0052cc;
+  --link-hover-color: #0747a6;
   --error-color: #dc3545;
-  --focus-color: #007bff;
+  --focus-color: #0052cc;
+  --focus-ring-color: #4c9aff;
+  --focus-ring-width: 3px;
+  --navbar-height: 60px;
+  --footer-height: 60px;
 }
 
+html {
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+/* Enhanced body styles with better contrast */
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -18,14 +40,14 @@ body {
   background-color: var(--background-color);
   color: var(--text-color);
   line-height: 1.5;
-  letter-spacing: 0.12em;
-  word-spacing: 0.16em;
-  padding: 0;
   margin: 0;
+  padding: 0;
 }
 
-p {
-  max-width: 80ch; /* Improves readability */
+/* Enhanced focus styles for better accessibility */
+*:focus {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: 2px;
 }
 
 #root {
@@ -34,46 +56,209 @@ p {
   padding: 20px;
 }
 
-/* Typography */
+/* Typography with improved readability */
 h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
-  color: var(--secondary-color);
+  margin-top: 0;
   margin-bottom: 0.5em;
+  color: var(--text-color);
 }
 
-a {
-  color: var(--link-color);
+h1 {
+  font-size: 2rem; /* 32px at base 16px */
+  line-height: 1.2;
+}
+
+h2 {
+  font-size: 1.5rem; /* 24px at base 16px */
+  line-height: 1.3;
+}
+
+h3 {
+  font-size: 1.25rem; /* 20px at base 16px */
+  line-height: 1.4;
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  max-width: 70ch; /* Improve readability */
+}
+
+/* Improved responsive images */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block; /* Prevent layout shift */
+}
+
+/* Enhanced Skip Link */
+.skip-to-main {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  z-index: 9999;
+  background: var(--primary-color);
+  color: white;
   text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 0 0 4px 4px;
 }
 
-a:hover,
-a:focus {
-  text-decoration: underline;
-}
-
-/* Focus styles */
-a:focus,
-button:focus,
-input:focus,
-textarea:focus {
-  outline: 3px solid var(--focus-color);
+.skip-to-main:focus {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: auto;
+  height: auto;
+  overflow: visible;
+  outline: 2px solid var(--focus-color);
   outline-offset: 2px;
 }
 
-/* Layout */
-.container {
+@media (prefers-reduced-motion: no-preference) {
+  .skip-to-main:focus {
+    transition: outline-offset 0.1s ease;
+  }
+}
+
+/* App Layout */
+.app-wrapper {
+  max-width: 100%;
+  margin: 0 auto;
+  min-height: calc(100vh - var(--navbar-height) - var(--footer-height));
+}
+
+main {
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Content Sections with improved spacing */
+.content-section {
+  width: 100%;
+  margin: 0 auto;
+  margin-bottom: 2rem;
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  margin-bottom: 20px;
+  padding: 1.25rem;
 }
 
-/* Navigation */
+.content-wrapper {
+  max-width: 64rem;
+  margin: 0 auto;
+  padding: 1.25rem;
+}
+
+/* Enhanced Hero Section */
+.hero-section {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--background-color);
+  margin-bottom: 1rem;
+  width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hero-section.full-width {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  border-radius: 0;
+}
+
+/* Improved Loading Container */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  width: 100%;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+/* Enhanced Footer */
+.footer {
+  margin-top: auto;
+  padding: 2rem 0;
+  background-color: var(--background-color);
+  border-top: 1px solid #e9ecef;
+}
+
+.footer-link:hover,
+.footer-link:focus {
+  text-decoration: underline;
+  color: var(--link-hover-color);
+}
+
+/* Responsive Layout */
+.container {
+  width: 100%;
+  margin: 0 auto;
+}
+
+@media (min-width: 576px) {
+  .container {
+    max-width: 540px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 720px;
+  }
+}
+
+@media (min-width: 992px) {
+  .container {
+    max-width: 960px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1140px;
+  }
+}
+
+/* Enhanced Mobile Typography */
+@media (max-width: 768px) {
+  html {
+    font-size: 14px;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.75rem;
+  }
+
+  h3 {
+    font-size: 1.5rem;
+  }
+}
+
+/* Enhanced Navigation */
 nav {
   background-color: var(--secondary-color);
   padding: 10px 0;
@@ -85,36 +270,54 @@ nav ul {
   padding: 0;
   margin: 0;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 nav ul li {
-  margin: 0 10px;
+  margin-right: 20px;
 }
 
+nav ul li:last-child {
+  margin-right: 0;
+}
+
+/* Enhanced navigation links with better touch targets */
 nav ul li a {
   color: white;
   text-decoration: none;
-  padding: 5px 10px;
+  padding: 12px 16px; /* Larger touch target */
   border-radius: 4px;
   transition: background-color 0.3s ease;
+  display: inline-block;
+  min-height: 44px; /* Minimum touch target size */
+  min-width: 44px;
+  display: flex;
+  align-items: center;
 }
 
 nav ul li a:hover,
 nav ul li a:focus {
   background-color: rgba(255, 255, 255, 0.2);
+  text-decoration: underline; /* Visible focus indicator */
 }
 
-/* Buttons */
+/* Enhanced Button Styles */
 .button,
 .button-link {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  min-width: 44px;
   background-color: var(--primary-color);
   color: white;
   padding: 10px 20px;
   border-radius: 5px;
   text-decoration: none;
   transition: background-color 0.3s ease;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
 }
 
 .button:hover,
@@ -125,36 +328,40 @@ nav ul li a:focus {
   text-decoration: none;
 }
 
-/* Forms */
+/* Enhanced Form Controls */
 input,
 textarea {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   margin-bottom: 10px;
-  border: 1px solid #ddd;
+  border: 2px solid #ddd;
   border-radius: 4px;
+  font-size: 1rem;
+  min-height: 44px;
 }
 
-/* Lists */
+/* Improved Lists */
 ul {
   padding-left: 20px;
+  margin: 0;
 }
 
 li {
   margin-bottom: 5px;
 }
 
-/* Error messages */
+/* Enhanced Error Messages */
 .error {
   color: var(--error-color);
   background-color: #f8d7da;
   border: 1px solid var(--error-color);
-  padding: 10px;
+  padding: 12px;
   border-radius: 4px;
   margin-bottom: 10px;
+  font-weight: 500;
 }
 
-/* Loading indicator */
+/* Loading Indicator */
 .loading {
   text-align: center;
   padding: 20px;
@@ -167,11 +374,23 @@ li {
   font-display: swap;
 }
 
-/* High contrast mode */
+/* High Contrast Mode Support */
 @media (forced-colors: active) {
   .button,
   .button-link {
     border: 2px solid currentColor;
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
 
@@ -191,7 +410,7 @@ li {
   margin: 0;
 }
 
-/* Home Container Styles */
+/* Enhanced Home Container Styles */
 .home-container,
 .api-example-container {
   max-width: 800px;
@@ -207,7 +426,7 @@ li {
   margin-top: 30px;
 }
 
-/* User List Styles */
+/* Enhanced User List Styles */
 .user-list-container {
   background-color: white;
   border-radius: 8px;
@@ -221,21 +440,6 @@ li {
   border-bottom: 2px solid var(--primary-color);
   padding-bottom: 10px;
   margin-bottom: 20px;
-}
-
-.user-list-container p {
-  margin-bottom: 15px;
-}
-
-.api-info {
-  background-color: #e9ecef;
-  border-left: 4px solid var(--primary-color);
-  padding: 10px 15px;
-  margin-bottom: 20px;
-}
-
-.api-info h3 {
-  margin-top: 0;
 }
 
 .user-table {
@@ -260,6 +464,7 @@ li {
   background-color: #f2f2f2;
 }
 
+/* Enhanced Code Display */
 code {
   background-color: #f0f0f0;
   padding: 2px 4px;
@@ -267,37 +472,70 @@ code {
   font-family: 'Courier New', Courier, monospace;
 }
 
-/* Skip to main content link */
-.skip-link {
-  position: absolute;
-  top: -40px;
-  left: 0;
-  background: var(--primary-color);
-  color: white;
-  padding: 8px;
-  z-index: 100;
+/* Animation Support */
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-.skip-link:focus {
-  top: 0;
+/* Feature Items */
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 0;
 }
 
-/* Responsive design */
-@media screen and (max-width: 768px) {
-  body {
-    font-size: 16px;
+.details-toggle {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 0.5rem;
+  background: none;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.details-toggle:hover,
+.details-toggle:focus {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.details-toggle::before {
+  content: '▶';
+  display: inline-block;
+  margin-right: 0.5rem;
+  transform: rotate(0);
+  transition: transform 0.2s ease;
+}
+
+.details-toggle[aria-expanded='true']::before {
+  transform: rotate(90deg);
+}
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+  .hero-section {
+    aspect-ratio: 1200/252; /* Maintain aspect ratio on mobile */
+    height: auto; /* Allow height to adjust based on width */
+    min-height: unset; /* Remove min-height on mobile */
+  }
+  /* Enhanced mobile table display */
+  table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
-  .container {
-    padding: 10px;
-  }
-
-  nav ul {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  nav ul li {
-    margin: 5px 0;
+  /* Ensure touch targets are large enough */
+  button,
+  input[type='submit'],
+  input[type='reset'],
+  input[type='button'] {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 12px;
   }
 }

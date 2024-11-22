@@ -1,0 +1,7 @@
+{
+  "apiExample": {
+    "title": "Ejemplo de Integración de API",
+    "description": "Esta página demuestra patrones de integración de API en el stack VERT, mostrando manejo de errores, estados de carga y presentación de datos.",
+    "metaDescription": "Explora nuestro ejemplo de integración de API usando el Stack VERT. Aprende cómo obtener y mostrar datos de manera eficiente en tus aplicaciones React."
+  }
+}

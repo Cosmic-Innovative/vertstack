@@ -15,3 +15,11 @@ declare module 'virtual:pwa-register' {
     options?: RegisterSWOptions,
   ): (reloadPage?: boolean) => Promise<void>;
 }
+
+interface Window {
+  gtag?: (
+    command: string,
+    event: string,
+    params?: Record<string, unknown>,
+  ) => void;
+}

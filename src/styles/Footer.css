@@ -1,0 +1,273 @@
+/* Base footer styles */
+.footer {
+  background-color: #f8f9fa;
+  border-top: 1px solid #e9ecef;
+  padding: 1rem 0;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.footer-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+/* Language Switcher */
+.footer-language-selector {
+  flex-shrink: 0;
+}
+
+/* Navigation Links */
+.footer-links {
+  display: flex;
+  gap: 2rem;
+  margin: 0 auto; /* Center the links */
+  background-color: transparent;
+}
+
+.footer-link {
+  color: #666;
+  font-size: 0.875rem;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer-link:hover {
+  color: #333;
+  text-decoration: underline;
+}
+
+/* Attribution */
+.footer-attribution {
+  color: #666;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.footer-attribution a {
+  color: #0056b3;
+  text-decoration: none;
+}
+
+.footer-attribution a:hover {
+  text-decoration: underline;
+}
+
+.footer-copyright {
+  margin-left: 0.5rem;
+  color: #999;
+}
+
+/* Footer Navigation */
+.footer-navigation {
+  text-align: center;
+  padding: 0.75rem 0;
+  margin-top: 20px;
+  border-top: 1px solid #e9ecef;
+  background-color: #f8f9fa;
+}
+
+.footer-navigation ul {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  flex-wrap: nowrap; /* Prevent wrapping */
+  white-space: nowrap; /* Prevent text wrapping */
+}
+
+.footer-navigation a {
+  color: #666;
+  font-size: 0.75rem; /* Slightly smaller font for mobile compatibility */
+  text-decoration: none;
+  transition: color 0.2s ease;
+  padding: 0.25rem 0;
+  display: inline-block;
+}
+
+.footer-navigation a:hover {
+  color: #333;
+  text-decoration: underline;
+}
+
+/* Language Selector Styles */
+.footer-language-selector {
+  position: relative;
+}
+
+.language-display {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  cursor: pointer;
+  background-color: white;
+  transition: all 0.2s ease;
+}
+
+.language-display:hover {
+  border-color: #aaa;
+}
+
+.language-flag {
+  font-size: 1.2em;
+}
+
+.language-name {
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.language-dropdown-arrow {
+  color: #666;
+  margin-left: 0.5rem;
+  display: inline-block;
+  transform: rotate(180deg);
+}
+
+.language-options {
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  max-height: 300px;
+  overflow-y: auto;
+  padding-bottom: 8px;
+}
+
+/* Create an invisible bridge between selector and options */
+.footer-language-selector::after {
+  content: '';
+  position: absolute;
+  height: 8px;
+  bottom: 100%;
+  left: 0;
+  right: 0;
+  background: transparent;
+}
+
+/* Show options when hovering over selector or the options themselves */
+.footer-language-selector:hover .language-options,
+.language-options:hover {
+  display: block;
+}
+
+.language-option.active {
+  background-color: #e9ecef;
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+  .footer {
+    padding: 1.5rem 0;
+  }
+
+  .footer-content {
+    flex-direction: column;
+    gap: 1.5rem;
+    text-align: center;
+  }
+
+  .footer-language-selector {
+    width: 100%;
+    max-width: 200px;
+  }
+
+  .footer-links {
+    width: 100%;
+    justify-content: center;
+    gap: 1.5rem;
+  }
+
+  .footer-attribution {
+    width: 100%;
+    font-size: 0.875rem;
+  }
+
+  .footer-navigation ul {
+    gap: 1.5rem; /* Slightly reduced gap on mobile */
+    padding: 0 1rem; /* Add side padding for smaller screens */
+  }
+
+  /* Keep the navigation items from wrapping or getting too close on mobile */
+  .footer-navigation a {
+    padding: 0.25rem 0;
+  }
+
+  .language-display {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .language-options {
+    width: 100%;
+  }
+}
+
+/* Add smooth scrollbar for webkit browsers */
+.language-options::-webkit-scrollbar {
+  width: 8px;
+}
+
+.language-options::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.language-options::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.language-options::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Accessibility focus styles */
+.footer a:focus,
+.footer button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #0056b3;
+}
+
+/* Touch device optimizations */
+@media (hover: none) {
+  .language-options {
+    position: fixed;
+    left: 0;
+    right: 0;
+    margin: 0 1rem;
+    width: auto;
+    max-height: 50vh;
+  }
+
+  .popup-up .language-options {
+    bottom: 1rem;
+  }
+
+  .popup-down .language-options {
+    top: 1rem;
+  }
+
+  .language-option:active {
+    background-color: #e9ecef;
+  }
+}

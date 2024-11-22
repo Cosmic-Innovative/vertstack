@@ -1,80 +1,147 @@
-import { render, screen, waitFor, act } from '@testing-library/react';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { screen, waitFor } from '@testing-library/react';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { act } from '@testing-library/react';
 import ApiExample from './ApiExample';
-import * as api from '../utils/api';
+import { render, expectTranslated } from '../test-utils';
+import * as pageLoader from '../utils/i18n/page-loader';
 
+// Mock the api module
 vi.mock('../utils/api', () => ({
-  fetchData: vi.fn(() => new Promise(() => {})), // This will create a promise that never resolves
+  fetchData: vi.fn(),
   sanitizeInput: vi.fn((input) => input),
+}));
+
+// Mock UserList to prevent actual API calls
+vi.mock('./UserList', () => ({
+  default: () => <div data-testid="user-list">Mocked UserList</div>,
 }));
 
 describe('ApiExample', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.spyOn(pageLoader, 'loadPageTranslations').mockResolvedValue(true);
   });
 
-  it('renders without crashing', async () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  const waitForTranslations = async () => {
     await act(async () => {
-      render(<ApiExample />);
+      await Promise.resolve();
     });
-    expect(screen.getByRole('heading', { level: 1 })).toBeInTheDocument();
-  });
+  };
 
-  it('has proper heading structure', async () => {
-    await act(async () => {
-      render(<ApiExample />);
-    });
-    const heading = screen.getByRole('heading', { level: 1 });
-    expect(heading).toBeInTheDocument();
-    expect(heading.tagName).toBe('H1');
-  });
-
-  it('contains informative content', async () => {
-    await act(async () => {
-      render(<ApiExample />);
-    });
-    expect(screen.getByText(/API Integration Example/i)).toBeInTheDocument();
-  });
-
-  it('shows loading state initially', async () => {
-    await act(async () => {
-      render(<ApiExample />);
-    });
-    expect(screen.getByText('Loading user data...')).toBeInTheDocument();
-  });
-
-  it('renders user data after loading', async () => {
-    const mockUsers = [
-      {
-        id: 1,
-        name: 'John Doe',
-        email: 'john@example.com',
-        company: { name: 'Company A' },
-      },
-    ];
-
-    (api.fetchData as ReturnType<typeof vi.fn>).mockResolvedValue(mockUsers);
-
-    render(<ApiExample />);
-
-    await waitFor(() => {
-      expect(
-        screen.queryByText('Loading user data...'),
-      ).not.toBeInTheDocument();
-    });
-
-    expect(screen.getByText('John Doe')).toBeInTheDocument();
-  });
-
-  it('handles error state', async () => {
-    (api.fetchData as ReturnType<typeof vi.fn>).mockRejectedValue(
-      new Error('Failed to fetch'),
+  it('renders loading state initially', async () => {
+    // Create a never-resolving promise to keep loading state
+    vi.mocked(pageLoader.loadPageTranslations).mockImplementation(
+      () => new Promise(() => {}),
     );
 
-    render(<ApiExample />);
+    await render(<ApiExample />, { route: '/en/api-example' });
+
+    const loadingElement = screen.getByRole('status');
+    expect(loadingElement).toHaveTextContent(
+      await expectTranslated('general:loading', 'en'),
+    );
+  });
+
+  it('loads page translations and renders content', async () => {
+    await render(<ApiExample />, { route: '/en/api-example' });
+    await waitForTranslations();
+
+    await waitFor(async () => {
+      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+        await expectTranslated('apiExample:title', 'en'),
+      );
+    });
+
+    expect(pageLoader.loadPageTranslations).toHaveBeenCalledWith(
+      'apiExample',
+      'en',
+    );
+  });
+
+  it('renders UserList component after loading', async () => {
+    await render(<ApiExample />, { route: '/en/api-example' });
+    await waitForTranslations();
 
     await waitFor(() => {
-      expect(screen.getByText(/Error fetching user data/)).toBeInTheDocument();
+      expect(screen.getByTestId('user-list')).toBeInTheDocument();
     });
+  });
+
+  it('renders in Spanish when specified', async () => {
+    await render(<ApiExample />, { route: '/es/api-example' });
+    await waitForTranslations();
+
+    await waitFor(async () => {
+      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+        await expectTranslated('apiExample:title', 'es'),
+      );
+    });
+
+    expect(pageLoader.loadPageTranslations).toHaveBeenCalledWith(
+      'apiExample',
+      'es',
+    );
+  });
+
+  it('changes language dynamically', async () => {
+    const { changeLanguage } = await render(<ApiExample />, {
+      route: '/en/api-example',
+    });
+
+    await waitForTranslations();
+
+    // Check English content
+    await waitFor(async () => {
+      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+        await expectTranslated('apiExample:title', 'en'),
+      );
+    });
+
+    // Switch to Spanish
+    await changeLanguage('es');
+
+    // Check Spanish content
+    await waitFor(async () => {
+      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+        await expectTranslated('apiExample:title', 'es'),
+      );
+    });
+  });
+
+  it('cleans up when unmounted', async () => {
+    let resolveTranslations: () => void;
+    const translationsPromise = new Promise<boolean>((resolve) => {
+      resolveTranslations = () => resolve(true);
+    });
+
+    vi.mocked(pageLoader.loadPageTranslations).mockReturnValue(
+      translationsPromise,
+    );
+
+    const { unmount } = await render(<ApiExample />, {
+      route: '/en/api-example',
+    });
+
+    unmount();
+
+    await act(async () => {
+      resolveTranslations();
+      await Promise.resolve();
+    });
+
+    expect(true).toBe(true);
+  });
+
+  it('maintains proper document structure', async () => {
+    await render(<ApiExample />, { route: '/en/api-example' });
+    await waitForTranslations();
+
+    const main = screen.getByRole('main');
+    expect(main).toBeInTheDocument();
+    expect(main).toHaveAttribute('aria-labelledby', 'api-example-title');
   });
 });

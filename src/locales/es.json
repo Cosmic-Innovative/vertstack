@@ -1,0 +1,59 @@
+{
+  "navbar": {
+    "brand": "El VERT Stack",
+    "home": "Inicio",
+    "about": "Acerca de",
+    "contact": "Contacto",
+    "apiExample": "Ejemplo de API",
+    "i18nExamples": "Ejemplos de I18n",
+    "brandHomeLink": "El VERT App - Volver a la página principal"
+  },
+  "general": {
+    "appName": "Plantilla VERT Stack",
+    "skipToContent": "Saltar al contenido principal",
+    "loading": "Cargando..."
+  },
+  "errors": {
+    "somethingWentWrong": "Algo salió mal. Por favor, intenta refrescar la página.",
+    "fetchError": "Error al obtener datos de usuario: {{error}}",
+    "boundary": {
+      "title": "Algo salió mal",
+      "message": "Nos disculpamos, pero algo salió mal con esta parte de la aplicación.",
+      "showDetails": "Mostrar detalles técnicos",
+      "hideDetails": "Ocultar detalles técnicos",
+      "errorInfo": "Información del Error",
+      "actions": "Acciones de Recuperación de Error",
+      "retry": "Intentar de Nuevo",
+      "retryLabel": "Intentar cargar este componente nuevamente",
+      "refresh": "Actualizar Página",
+      "refreshLabel": "Recargar la página completa"
+    }
+  },
+  "footer": {
+    "ariaLabel": "Pie de página del sitio web",
+    "languageSelectorLabel": "Seleccionar idioma",
+    "attributionLabel": "Atribución del sitio web",
+    "navigationLabel": "Navegación del pie de página",
+    "createdWith": "Creado con",
+    "heartEmoji": "Corazón",
+    "by": "por",
+    "companyLinkLabel": "Visitar el sitio web de Cosmic Innovative",
+    "copyrightLabel": "Aviso de derechos de autor",
+    "privacy": "Política de Privacidad",
+    "terms": "Términos de Servicio",
+    "sitemap": "Mapa del sitio"
+  },
+  "accessibility": {
+    "sortBy": "Ordenar {{column}} ({{direction}})",
+    "ascending": "ordenado ascendente",
+    "descending": "ordenado descendente",
+    "none": "sin ordenar",
+    "emailUser": "Enviar correo a {{name}}",
+    "callUser": "Llamar a {{name}}",
+    "visitWebsite": "Visitar sitio web de {{name}}",
+    "companyCatchphrase": "Lema de {{company}}",
+    "userStatistics": "Estadísticas de usuarios",
+    "totalUsers": "Número total de usuarios",
+    "companiesRepresented": "Número de empresas representadas"
+  }
+}

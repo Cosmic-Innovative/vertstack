@@ -1,0 +1,33 @@
+name: Lighthouse CI
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  lhci:
+    name: Lighthouse CI
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js 20.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+      - name: Install dependencies
+        run: |
+          npm install -g pnpm
+          pnpm install
+      - name: Build project
+        run: pnpm build
+      - name: Run Lighthouse CI
+        uses: treosh/lighthouse-ci-action@v10
+        with:
+          configPath: './lighthouserc.json'
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+# TODO: Add mobile testing in the future
+# Consider adding a separate job or step for mobile Lighthouse testing
+# This will require adjusting the lighthouserc.json file and potentially
+# implementing mobile-specific optimizations in the application

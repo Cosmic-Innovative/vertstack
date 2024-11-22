@@ -1,7 +1,8 @@
 import React from 'react';
-import { render, screen, act } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest';
+import { screen } from '@testing-library/react';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import App from './App';
+import { render } from './test-utils';
 
 // Mock the components
 vi.mock('./components/Home', () => ({
@@ -17,45 +18,49 @@ vi.mock('./components/ApiExample', () => ({
   default: () => <div>API Example Page</div>,
 }));
 
-// Mock React.lazy
-vi.mock('react', async (importOriginal) => {
-  const actual = (await importOriginal()) as typeof React;
-  return {
-    ...actual,
-    lazy: (factory: () => Promise<{ default: React.ComponentType }>) =>
-      factory().then((module) => module.default),
-  };
-});
+// Mock ErrorBoundary
+vi.mock('./components/ErrorBoundary', () => ({
+  default: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+}));
 
 describe('App', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
   it('renders navigation and home page', async () => {
-    await act(async () => {
-      render(<App />);
-    });
+    render(<App useRouter={false} />, { route: '/en' });
 
-    // Check if navigation links are present
-    expect(screen.getByText('Home')).toBeInTheDocument();
-    expect(screen.getByText('About')).toBeInTheDocument();
-    expect(screen.getByText('Contact')).toBeInTheDocument();
-    expect(screen.getByText('API Example')).toBeInTheDocument();
+    // Use findBy instead of getBy for async elements
+    const aboutLink = await screen.findByText('About');
+    const contactLink = await screen.findByText('Contact');
+    const apiLink = await screen.findByText('API Example');
+    const i18nLink = await screen.findByText('I18n Examples');
+    const homePage = await screen.findByText('Home Page');
 
-    // Check if the home page is rendered by default
-    expect(await screen.findByText('Home Page')).toBeInTheDocument();
+    expect(aboutLink).toBeInTheDocument();
+    expect(contactLink).toBeInTheDocument();
+    expect(apiLink).toBeInTheDocument();
+    expect(i18nLink).toBeInTheDocument();
+    expect(homePage).toBeInTheDocument();
   });
 
   it('renders the navbar', async () => {
-    await act(async () => {
-      render(<App />);
+    render(<App useRouter={false} />);
+
+    // Be specific about which navigation we want
+    const navElement = await screen.findByRole('navigation', {
+      name: 'accessibility.mainNavigation',
     });
-    const navElement = screen.getByRole('navigation');
     expect(navElement).toBeInTheDocument();
   });
 
   it('renders the main container', async () => {
-    await act(async () => {
-      render(<App />);
-    });
-    const mainContainer = await screen.findByText('Home Page');
-    expect(mainContainer.closest('.container')).toBeInTheDocument();
+    render(<App useRouter={false} />, { route: '/en' });
+
+    // Use findByRole for async elements and don't require the name match
+    const mainContainer = await screen.findByRole('main');
+    expect(mainContainer).toBeInTheDocument();
+    expect(mainContainer).toHaveClass('container');
   });
 });

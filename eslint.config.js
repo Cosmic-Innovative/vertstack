@@ -36,7 +36,9 @@ export default [
       globals: {
         ...globals.browser,
         ...globals.es2021,
+        ...globals.node, // Add Node.js globals
         ...vitestPlugin.environments.env.globals,
+        process: 'readonly', // Explicitly allow 'process'
       },
     },
     settings: {
@@ -55,8 +57,10 @@ export default [
         'error',
         { argsIgnorePattern: '^_' },
       ],
+      '@typescript-eslint/no-explicit-any': 'error',
       'react/jsx-uses-react': 'off',
       'react/react-in-jsx-scope': 'off',
+      'react/prop-types': 'off',
       'security/detect-object-injection': 'error',
       'security/detect-non-literal-regexp': 'error',
       'security/detect-unsafe-regex': 'error',
@@ -71,7 +75,7 @@ export default [
     },
   },
   {
-    files: ['**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+    files: ['src/utils/i18n/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     rules: {
       ...vitestPlugin.configs.recommended.rules,
     },

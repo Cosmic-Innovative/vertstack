@@ -1,0 +1,59 @@
+{
+  "navbar": {
+    "brand": "The VERT Stack",
+    "home": "Home",
+    "about": "About",
+    "contact": "Contact",
+    "apiExample": "API Example",
+    "i18nExamples": "I18n Examples",
+    "brandHomeLink": "The VERT Stack - Return to homepage"
+  },
+  "general": {
+    "appName": "The VERT Stack Template",
+    "skipToContent": "Skip to main content",
+    "loading": "Loading..."
+  },
+  "errors": {
+    "somethingWentWrong": "Something went wrong. Please try refreshing the page.",
+    "fetchError": "Error fetching user data: {{error}}",
+    "boundary": {
+      "title": "Something went wrong",
+      "message": "We apologize, but something went wrong with this part of the application.",
+      "showDetails": "Show technical details",
+      "hideDetails": "Hide technical details",
+      "errorInfo": "Error Information",
+      "actions": "Error Recovery Actions",
+      "retry": "Try Again",
+      "retryLabel": "Try loading this component again",
+      "refresh": "Refresh Page",
+      "refreshLabel": "Reload the entire page"
+    }
+  },
+  "footer": {
+    "ariaLabel": "Website footer",
+    "languageSelectorLabel": "Select language",
+    "attributionLabel": "Website attribution",
+    "navigationLabel": "Footer navigation",
+    "createdWith": "Created with",
+    "heartEmoji": "Heart",
+    "by": "by",
+    "companyLinkLabel": "Visit Cosmic Innovative website",
+    "copyrightLabel": "Copyright notice",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "sitemap": "Sitemap"
+  },
+  "accessibility": {
+    "sortBy": "Sort {column} ({direction})",
+    "ascending": "ascending",
+    "descending": "descending",
+    "none": "not sorted",
+    "emailUser": "Email {name}",
+    "callUser": "Call {name}",
+    "visitWebsite": "Visit {name}'s website",
+    "companyCatchphrase": "{company} catchphrase",
+    "userStatistics": "User statistics",
+    "totalUsers": "Total number of users",
+    "companiesRepresented": "Number of companies represented"
+  }
+}

@@ -1,0 +1,141 @@
+.language-switcher {
+  position: relative;
+  min-width: 200px;
+  touch-action: pan-y pinch-zoom;
+}
+
+.language-display {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  cursor: pointer;
+  background-color: white;
+  transition: all 0.2s ease;
+  width: 100%;
+  justify-content: space-between;
+  min-height: 44px;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.language-display:hover {
+  border-color: #aaa;
+}
+
+.language-display:focus {
+  outline: none;
+  border-color: var(--focus-color);
+  box-shadow: 0 0 0 2px rgba(0, 86, 179, 0.2);
+}
+
+.language-flag {
+  font-size: 1.2em;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.language-name {
+  flex-grow: 1;
+  text-align: left;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.language-dropdown-arrow {
+  color: #666;
+  margin-left: 0.5rem;
+  transition: transform 0.2s ease;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.language-switcher.is-active .language-dropdown-arrow {
+  transform: rotate(180deg);
+}
+
+.language-options {
+  position: absolute;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  width: 100%;
+  max-height: 300px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.popup-up .language-options {
+  bottom: calc(100% + 8px);
+  transform-origin: bottom center;
+}
+
+.popup-down .language-options {
+  top: calc(100% + 8px);
+  transform-origin: top center;
+}
+
+.language-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 0.2s ease;
+  min-height: 44px;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.language-option:hover {
+  background-color: #f8f9fa;
+}
+
+.language-option:focus {
+  outline: none;
+  background-color: #e9ecef;
+  box-shadow: 0 0 0 2px var(--focus-color);
+}
+
+.language-option.active {
+  background-color: #e9ecef;
+}
+
+@media (max-width: 768px) {
+  .language-switcher {
+    width: 100%;
+  }
+
+  .language-options {
+    position: fixed;
+    left: 0;
+    right: 0;
+    margin: 0 1rem;
+    width: auto;
+    max-height: 50vh;
+  }
+
+  .popup-up .language-options {
+    bottom: 1rem;
+  }
+
+  .popup-down .language-options {
+    top: 1rem;
+  }
+}
+
+/* Add active state styles for touch feedback */
+@media (hover: none) {
+  .language-option:active {
+    background-color: #e9ecef;
+  }
+}

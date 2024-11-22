@@ -1,0 +1,33 @@
+# www.robotstxt.org/
+# Allow crawling of all content
+User-agent: *
+Allow: /
+
+# Block access to API paths
+Disallow: /api/
+
+# Block access to development/staging environments
+Disallow: /dev/
+Disallow: /staging/
+
+# Sitemap location
+Sitemap: https://example.com/sitemap.xml
+
+# Adding some common crawl optimizations
+# Crawl-delay: 10   # Uncomment and adjust if needed for your server capacity
+
+# Block specific bots known for aggressive crawling (uncomment if needed)
+# User-agent: AhrefsBot
+# Crawl-delay: 10
+
+# User-agent: MJ12bot
+# Crawl-delay: 10
+
+# Prevent media files from being indexed (optional, uncomment if needed)
+# User-agent: *
+# Disallow: /*.pdf$
+# Disallow: /*.doc$
+# Disallow: /*.jpg$
+# Disallow: /*.jpeg$
+# Disallow: /*.gif$
+# Disallow: /*.png$

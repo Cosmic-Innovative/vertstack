@@ -1,0 +1,36 @@
+{
+  "about": {
+    "title": "About",
+    "description": "A powerful foundation for modern web applications, combining Vite, ESLint, React, and TypeScript to deliver fast, reliable, and type-safe development experiences.",
+    "principles": {
+      "title": "Core Principles",
+      "speed": {
+        "title": "Lightning Fast Development",
+        "description": "Built on Vite for instant server start and blazing fast HMR, making development a joy."
+      },
+      "quality": {
+        "title": "Code Quality First",
+        "description": "Integrated ESLint configuration ensures consistent, high-quality code across your entire project."
+      },
+      "types": {
+        "title": "Type Safety",
+        "description": "Full TypeScript integration provides robust type checking and enhanced developer tooling."
+      },
+      "modern": {
+        "title": "Modern Best Practices",
+        "description": "Incorporates current web development standards, accessibility, and performance optimizations."
+      }
+    },
+    "builtFor": {
+      "title": "Built For Modern Teams",
+      "teams": {
+        "title": "Development Teams",
+        "description": "Perfect for teams who value code quality, type safety, and development speed."
+      },
+      "projects": {
+        "title": "Production Projects",
+        "description": "Ready for real-world applications with built-in optimization and testing infrastructure."
+      }
+    }
+  }
+}

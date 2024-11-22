@@ -1,0 +1,42 @@
+{
+  "i18nExamples": {
+    "title": "Ejemplos de Internacionalización",
+    "description": "Ejemplos comunes de formato para números, monedas, fechas y más.",
+
+    "prices": {
+      "title": "Precios y Monedas",
+      "product": "Precio del Producto",
+      "discount": "Precio con Descuento",
+      "off": "de descuento"
+    },
+
+    "units": {
+      "title": "Unidades y Medidas",
+      "temperature": "Temperatura",
+      "fileSize": "Tamaño del Archivo",
+      "distance": "Distancia"
+    },
+
+    "stats": {
+      "title": "Estadísticas y Métricas",
+      "progress": "Progreso",
+      "engagement": "Interacción",
+      "views": "{{formatted}} visualizaciones"
+    },
+
+    "dates": {
+      "title": "Fechas y Horarios",
+      "event": "Programación del Evento",
+      "upcoming": "próximo",
+      "past": "pasado"
+    },
+
+    "lists": {
+      "title": "Listas y Opciones",
+      "options": "Opciones Disponibles",
+      "option1": "Plan Básico",
+      "option2": "Plan Premium",
+      "option3": "Plan Empresarial"
+    }
+  }
+}
