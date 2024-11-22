@@ -48,9 +48,7 @@ describe('UserList', () => {
     await waitForTranslations();
 
     await waitFor(async () => {
-      const errorText = await expectTranslated('userList:loadingError', 'en', {
-        error: 'Failed to fetch',
-      });
+      const errorText = await expectTranslated('userList:loadingError', 'en');
       const alertElement = screen.getByRole('alert');
       expect(alertElement).toBeInTheDocument();
       expect(alertElement).toHaveTextContent(errorText);

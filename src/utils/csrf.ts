@@ -21,7 +21,7 @@ const defaultOptions: CsrfOptions = {
 };
 
 export const csrfMiddleware = (options: CsrfOptions = defaultOptions) => {
-  return async (req: Request, res: Response, next: () => void) => {
+  return async (req: Request, next: () => void) => {
     if (
       req.method === 'GET' ||
       req.method === 'HEAD' ||
@@ -30,22 +30,23 @@ export const csrfMiddleware = (options: CsrfOptions = defaultOptions) => {
       return next();
     }
 
-    const token = req.headers[
-      options.headerName?.toLowerCase() ?? ''
-    ] as string;
-    const cookie = req.cookies[options.cookieName ?? ''];
+    const token = req.headers.get(options.headerName?.toLowerCase() ?? '');
+    const cookieHeader = req.headers.get('cookie');
+    const cookies = Object.fromEntries(
+      cookieHeader?.split(';').map((c) => c.trim().split('=')) ?? [],
+    );
+    const cookie = cookies[options.cookieName ?? ''];
 
     if (!token || !cookie || token !== cookie) {
       logger.logSecurityEvent('CSRF token validation failed', 'high', {
         method: req.method,
-        path: req.path,
-        headers: req.headers,
+        url: new URL(req.url).pathname,
+        headers: Object.fromEntries(req.headers.entries()),
       });
 
-      res.status(403).json({
-        error: 'Invalid CSRF token',
+      return new Response(JSON.stringify({ error: 'Invalid CSRF token' }), {
+        status: 403,
       });
-      return;
     }
 
     next();

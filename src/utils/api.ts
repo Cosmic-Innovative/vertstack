@@ -1,6 +1,8 @@
 import { addCsrfToken } from './csrf';
-
-export async function fetchData<T>(url: string): Promise<T> {
+export async function fetchData<T>(
+  url: string,
+  options?: RequestInit,
+): Promise<T> {
   try {
     // Validate URL to prevent potential security issues
     const validatedUrl = new URL(url);
@@ -14,7 +16,7 @@ export async function fetchData<T>(url: string): Promise<T> {
     });
 
     // Add CSRF token to non-GET requests
-    if (url.method !== 'GET') {
+    if (options?.method && options.method !== 'GET') {
       addCsrfToken(headers);
     }
 

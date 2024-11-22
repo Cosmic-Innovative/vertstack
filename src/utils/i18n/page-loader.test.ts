@@ -25,7 +25,7 @@ describe('loadPageTranslations with cache', () => {
     localStorage.clear();
     vi.clearAllMocks();
     vi.mocked(i18n.hasResourceBundle).mockReturnValue(false);
-    vi.mocked(i18n.addResourceBundle).mockImplementation(() => {});
+    vi.mocked(i18n.addResourceBundle).mockReturnValue(i18n);
   });
 
   afterEach(() => {
@@ -82,14 +82,12 @@ describe('loadPageTranslations with cache', () => {
     });
 
     // Mock successful network fetch as fallback
-    vi.mock('../../locales/en.json', () => ({ default: { some: 'data' } }), {
-      virtual: true,
-    });
-    vi.mock(
-      '../../locales/pages/en/home.json',
-      () => ({ default: { home: { some: 'data' } } }),
-      { virtual: true },
-    );
+    vi.mock('../../locales/en.json', () => ({
+      default: { some: 'data' },
+    }));
+    vi.mock('../../locales/pages/en/home.json', () => ({
+      default: { home: { some: 'data' } },
+    }));
 
     const result = await loadPageTranslations('home', 'en');
 
