@@ -101,8 +101,8 @@ We welcome contributions! Please see our [Contributing Guide](docs/development/c
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+The VERT Stack is available under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ---
 
-_Built with ❤️ by the VERT Stack community_
+_Built with ❤️ by the Cosmic Innovative team_

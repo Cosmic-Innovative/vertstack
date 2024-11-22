@@ -1,4 +1,4 @@
-# VERT Stack Documentation
+# The VERT Stack Documentation
 
 Welcome to the VERT Stack documentation. This comprehensive guide will help you build modern, type-safe web applications with our battle-tested stack combining Vite, ESLint, React, and TypeScript.
 
@@ -6,7 +6,7 @@ Welcome to the VERT Stack documentation. This comprehensive guide will help you 
 
 ### 🚀 [Getting Started](getting-started/README.md)
 
-Start your journey with VERT Stack:
+Start your journey with the VERT Stack:
 
 - [Installation Guide](getting-started/installation.md) - Set up your development environment
 - [Project Structure](getting-started/project-structure.md) - Understand the VERT Stack architecture
@@ -115,7 +115,7 @@ We welcome contributions! Please see our [Contributing Guide](development/contri
 
 ## License
 
-VERT Stack is available under the MIT License. See the [LICENSE](../LICENSE) file for more information.
+The VERT Stack is available under the MIT License. See the [LICENSE](../LICENSE) file for more information.
 
 ---
 

@@ -1,13 +1,13 @@
-# Getting Started with VERT Stack
+# Getting Started with the VERT Stack
 
-Welcome to VERT Stack! This guide will help you get up and running quickly and introduce you to the key concepts and features of the stack.
+Welcome to the VERT Stack! This guide will help you get up and running quickly and introduce you to the key concepts and features of the stack.
 
 ## Prerequisites
 
 Before you begin, ensure you have:
 
 - **Node.js** - Version 18.x or later
-- **pnpm** - Version 8.x or later (VERT Stack uses pnpm exclusively)
+- **pnpm** - Version 8.x or later (The VERT Stack uses pnpm exclusively)
 - **Modern web browser** - For development and testing
 - **Code editor** - We recommend VS Code with our recommended extensions
 - **Git** - For version control

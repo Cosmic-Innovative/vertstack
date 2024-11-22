@@ -5,7 +5,7 @@ This guide explains the organization and key components of a VERT Stack applicat
 ## Directory Structure
 
 ```
-vert-stack-template/
+vertstack/
 │
 ├── .github/                      # GitHub Actions and CI/CD configuration
 │   └── workflows/
