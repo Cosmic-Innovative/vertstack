@@ -13,6 +13,7 @@ interface PageInfo {
   namespace: PageNamespace | 'legal';
   titleKey: string;
   descriptionKey: string;
+  keywordKey: string;
   type?: '404';
   isLegal?: boolean;
 }
@@ -24,6 +25,7 @@ const VALID_ROUTES = new Map<string, PageInfo>([
       namespace: 'home',
       titleKey: 'title',
       descriptionKey: 'description',
+      keywordKey: 'keywords',
     },
   ],
   [
@@ -32,6 +34,7 @@ const VALID_ROUTES = new Map<string, PageInfo>([
       namespace: 'about',
       titleKey: 'title',
       descriptionKey: 'description',
+      keywordKey: 'keywords',
     },
   ],
   [
@@ -40,6 +43,7 @@ const VALID_ROUTES = new Map<string, PageInfo>([
       namespace: 'contact',
       titleKey: 'title',
       descriptionKey: 'description',
+      keywordKey: 'keywords',
     },
   ],
   [
@@ -48,6 +52,7 @@ const VALID_ROUTES = new Map<string, PageInfo>([
       namespace: 'apiExample',
       titleKey: 'title',
       descriptionKey: 'description',
+      keywordKey: 'keywords',
     },
   ],
   [
@@ -56,6 +61,7 @@ const VALID_ROUTES = new Map<string, PageInfo>([
       namespace: 'i18nExamples',
       titleKey: 'title',
       descriptionKey: 'description',
+      keywordKey: 'keywords',
     },
   ],
   // Legal pages
@@ -65,6 +71,7 @@ const VALID_ROUTES = new Map<string, PageInfo>([
       namespace: 'legal',
       titleKey: 'termsOfService.title',
       descriptionKey: 'termsOfService.description',
+      keywordKey: 'keywords',
       isLegal: true,
     },
   ],
@@ -74,6 +81,7 @@ const VALID_ROUTES = new Map<string, PageInfo>([
       namespace: 'legal',
       titleKey: 'privacyPolicy.title',
       descriptionKey: 'privacyPolicy.description',
+      keywordKey: 'keywords',
       isLegal: true,
     },
   ],
@@ -97,6 +105,7 @@ const TitleComponent: React.FC = () => {
       namespace: 'notFound',
       titleKey: 'title',
       descriptionKey: 'description',
+      keywordKey: 'keywords',
       type: '404',
     };
   }, [pathname]);
@@ -191,6 +200,10 @@ const TitleComponent: React.FC = () => {
     ? t(`legal:${pageInfo.descriptionKey}`)
     : t(`${pageInfo.namespace}:${pageInfo.descriptionKey}`);
 
+  const keywords = pageInfo.isLegal
+    ? t(`legal:${pageInfo.keywordKey}`)
+    : t(`${pageInfo.namespace}:${pageInfo.keywordKey}`);
+
   const appName = t('general.appName');
   const fullTitle = `${title} - ${appName}`;
 
@@ -209,6 +222,7 @@ const TitleComponent: React.FC = () => {
       <html lang={i18n.language.split('-')[0]} />
       <title>{error ? appName : fullTitle}</title>
       <meta name="description" content={description} />
+      <meta name="keywords" content={keywords} />
 
       {/* SEO directives */}
       {pageInfo.type === '404' && <meta name="robots" content="noindex" />}
