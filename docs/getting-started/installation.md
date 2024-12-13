@@ -54,22 +54,21 @@ pnpm exec eslint --version
 
 ### 3. Configure Environment
 
-```bash
-# Copy environment templates
-cp .env.example .env
-cp .env.development.example .env.development
-cp .env.staging.example .env.staging
-cp .env.production.example .env.production
-```
-
-Edit the environment files to match your needs:
+Edit the environment files to match your needs: (turn on hidden files to view locally!)
 
 - `.env` - Base configuration
 - `.env.development` - Development settings
 - `.env.staging` - Staging settings
 - `.env.production` - Production settings
 
-### 4. HTTPS Setup (Optional)
+### 4. Make the first commit
+
+```bash
+git add .
+git commit -m "First commit to esablish your own history"
+```
+
+### 5. HTTPS Setup (Optional)
 
 Required for PWA development:
 

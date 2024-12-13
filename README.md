@@ -21,6 +21,9 @@ The VERT Stack provides a solid foundation for modern web applications by combin
 ## Quick Start
 
 ```bash
+# Install pnpm
+npm install -g pnpm
+
 # Create new project
 git clone https://github.com/Cosmic-Innovative/vertstack.git my-project
 cd my-project
@@ -105,4 +108,4 @@ The VERT Stack is available under the MIT License. See the [LICENSE](LICENSE) fi
 
 ---
 
-_Built with ❤️ by the Cosmic Innovative team_
+_Built with ❤️ by Cosmic Innovative_

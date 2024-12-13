@@ -119,4 +119,4 @@ The VERT Stack is available under the MIT License. See the [LICENSE](../LICENSE)
 
 ---
 
-_Built with ❤️ by the Cosmic Innovative team_
+_Built with ❤️ by Cosmic Innovative_
