@@ -7,7 +7,7 @@
     "dev": "vite",
     "dev:http": "VITE_USE_HTTPS=false vite",
     "dev:https": "VITE_USE_HTTPS=true vite",
-    "build": "tsc && vite build",
+    "build": "tsx src/utils/generate-sitemap.ts && tsc && vite build",
     "preview": "vite preview",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
