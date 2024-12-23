@@ -1,7 +1,7 @@
 import { submitSitemapToSearchEngines } from './searchEngineSubmit';
 import { logger } from './logger';
 
-// Note: This client-side sitemap generation is a simplified approach.
+// Note: This build time sitemap generation is a simplified approach.
 // For production applications, especially those with dynamic content,
 // it's recommended to generate sitemaps server-side. This ensures
 // that the sitemap always reflects the current state of your website
@@ -16,8 +16,6 @@ import { logger } from './logger';
  * 6. Image and video sitemap support if needed
  */
 
-const baseUrl = process.env.VITE_PUBLIC_URL || 'http://localhost:5173';
-
 const pages = [
   { url: '/', changefreq: 'daily', priority: 1 },
   { url: '/about', changefreq: 'weekly', priority: 0.8 },
@@ -30,7 +28,7 @@ const pages = [
 
 const languages = ['en', 'es'];
 
-export async function generateSitemap(): Promise<string> {
+export async function generateSitemap(baseUrl: string): Promise<string> {
   try {
     logger.info('Starting sitemap generation', { category: 'SEO' });
 

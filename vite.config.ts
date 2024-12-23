@@ -257,6 +257,25 @@ export default defineConfig(({ mode }) => {
       },
     },
     configureServer(server) {
+      // Sitemap handler as the very first middleware
+      server.middlewares.use((req, _, next) => {
+        // Force early route capture for sitemap
+        if (req.url === '/sitemap.xml') {
+          req.url = '/__sitemap.xml';
+        }
+        next();
+      });
+      // Add custom route handler before the SPA handler
+      server.middlewares.use(async (req, res, next) => {
+        if (req.url === '/__sitemap.xml') {
+          const sitemap = await generateSitemap(env.VITE_PUBLIC_URL);
+          res.setHeader('Content-Type', 'application/xml');
+          res.end(sitemap);
+          return;
+        }
+        next();
+      });
+
       server.middlewares.use(async (req, res, next) => {
         // Set security headers with development-friendly CSP
         res.setHeader(
@@ -326,20 +345,6 @@ export default defineConfig(({ mode }) => {
           res.writeHead(302, { Location: '/en/' });
           res.end();
           return;
-        }
-
-        if (url === '/sitemap.xml' || /^\/[a-z]{2}\/sitemap\.xml$/.test(url)) {
-          try {
-            const sitemap = await generateSitemap();
-            res.setHeader('Content-Type', 'application/xml');
-            res.end(sitemap);
-            return;
-          } catch (error) {
-            console.error('Error generating or sending sitemap:', error);
-            res.statusCode = 500;
-            res.end('Error generating sitemap');
-            return;
-          }
         }
 
         next();

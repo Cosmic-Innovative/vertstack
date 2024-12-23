@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <url>
+    <loc>https://example.com/en/</loc>
+    <changefreq>daily</changefreq>
+    <priority>1</priority>
+
+    <xhtml:link rel="alternate" hreflang="en" href="https://example.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://example.com/es/"/>
+  </url>
+  <url>
+    <loc>https://example.com/es/</loc>
+    <changefreq>daily</changefreq>
+    <priority>1</priority>
+
+    <xhtml:link rel="alternate" hreflang="en" href="https://example.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://example.com/es/"/>
+  </url>
+  <url>
+    <loc>https://example.com/en/about</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+
+    <xhtml:link rel="alternate" hreflang="en" href="https://example.com/en/about"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://example.com/es/about"/>
+  </url>
+  <url>
+    <loc>https://example.com/es/about</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+
+    <xhtml:link rel="alternate" hreflang="en" href="https://example.com/en/about"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://example.com/es/about"/>
+  </url>
+  <url>
+    <loc>https://example.com/en/contact</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+
+    <xhtml:link rel="alternate" hreflang="en" href="https://example.com/en/contact"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://example.com/es/contact"/>
+  </url>
+  <url>
+    <loc>https://example.com/es/contact</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+
+    <xhtml:link rel="alternate" hreflang="en" href="https://example.com/en/contact"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://example.com/es/contact"/>
+  </url>
+  <url>
+    <loc>https://example.com/en/api-example</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+
+    <xhtml:link rel="alternate" hreflang="en" href="https://example.com/en/api-example"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://example.com/es/api-example"/>
+  </url>
+  <url>
+    <loc>https://example.com/es/api-example</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+
+    <xhtml:link rel="alternate" hreflang="en" href="https://example.com/en/api-example"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://example.com/es/api-example"/>
+  </url>
+  <url>
+    <loc>https://example.com/en/i18n-examples</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+
+    <xhtml:link rel="alternate" hreflang="en" href="https://example.com/en/i18n-examples"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://example.com/es/i18n-examples"/>
+  </url>
+  <url>
+    <loc>https://example.com/es/i18n-examples</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+
+    <xhtml:link rel="alternate" hreflang="en" href="https://example.com/en/i18n-examples"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://example.com/es/i18n-examples"/>
+  </url>
+  <url>
+    <loc>https://example.com/en/terms</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+
+    <xhtml:link rel="alternate" hreflang="en" href="https://example.com/en/terms"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://example.com/es/terms"/>
+  </url>
+  <url>
+    <loc>https://example.com/es/terms</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+
+    <xhtml:link rel="alternate" hreflang="en" href="https://example.com/en/terms"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://example.com/es/terms"/>
+  </url>
+  <url>
+    <loc>https://example.com/en/privacy</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+
+    <xhtml:link rel="alternate" hreflang="en" href="https://example.com/en/privacy"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://example.com/es/privacy"/>
+  </url>
+  <url>
+    <loc>https://example.com/es/privacy</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+
+    <xhtml:link rel="alternate" hreflang="en" href="https://example.com/en/privacy"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://example.com/es/privacy"/>
+  </url>
+</urlset>
