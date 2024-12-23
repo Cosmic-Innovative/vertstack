@@ -20,13 +20,6 @@ Comprehensive guide for developing with the VERT Stack.
 - Integration testing
 - Coverage requirements
 
-### [Contributing](contributing.md)
-
-- Development workflow
-- Pull request process
-- Code review guidelines
-- Quality standards
-
 ### [Bundle Analysis](bundle-analysis.md)
 
 - Bundle composition
@@ -34,19 +27,19 @@ Comprehensive guide for developing with the VERT Stack.
 - Performance tracking
 - Optimization strategies
 
-### [Documentation Tools](documentation-tools.md)
-
-- Documentation management
-- Status tracking
-- Verification process
-- Best practices
-
 ### [Build Configuration](build-configuration.md)
 
 - Vite configuration
 - Build optimization
 - Security settings
 - Asset handling
+
+### [Contributing](contributing.md)
+
+- Development workflow
+- Pull request process
+- Code review guidelines
+- Quality standards
 
 ## Available Scripts
 
